@@ -1,8 +1,8 @@
 # Build Stage
 FROM maven:3.8.4-openjdk-17-slim AS build
 WORKDIR /build
-COPY pom.xml .
-COPY src ./src
+COPY ListingPosting-microservice/pom.xml .
+COPY ListingPosting-microservice/src ./src
 RUN mvn clean install -DskipTests
 
 # Application Stage
@@ -14,7 +14,7 @@ ENV JAR_FILE=target/*.jar
 ENV APP_PORT=8081
 
 # Copie du JAR depuis la phase de build
-COPY --from=build /build/${JAR_FILE} /app/app.jar
+COPY --from=build /build/ListingPosting-microservice/${JAR_FILE} /app/app.jar
 
 # Nettoyage des dépendances inutiles
 RUN apk add --no-cache && \
