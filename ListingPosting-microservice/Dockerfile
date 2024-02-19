@@ -2,7 +2,7 @@
 FROM maven:3.8.4-openjdk-17-slim AS build
 WORKDIR /build
 COPY . .
-RUN mvn clean install -DskipTests
+RUN mvn -B package --file pom.xml
 
 # Application Stage
 FROM eclipse-temurin:17-jdk-alpine
