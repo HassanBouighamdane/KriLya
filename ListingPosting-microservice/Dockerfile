@@ -1,8 +1,9 @@
 # Build Stage
 FROM maven:3.8.4-openjdk-17-slim AS build
 WORKDIR /build
-COPY . .
-RUN mvn -B package --file pom.xml
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean install -DskipTests
 
 # Application Stage
 FROM eclipse-temurin:17-jdk-alpine
@@ -28,4 +29,3 @@ EXPOSE ${APP_PORT}
 
 # Commande d'entrée pour lancer l'application
 ENTRYPOINT ["java", "-jar", "app.jar"]
-
