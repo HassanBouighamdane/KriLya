@@ -14,7 +14,7 @@ ENV JAR_FILE=target/*.jar
 ENV APP_PORT=8081
 
 # Copie du JAR depuis la phase de build
-COPY --from=build /build/ListingPosting-microservice/${JAR_FILE} /app/app.jar
+COPY --from=build /build/${JAR_FILE} /app/app.jar
 
 # Nettoyage des dépendances inutiles
 RUN apk add --no-cache && \
