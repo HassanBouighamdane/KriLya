@@ -6,16 +6,16 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Posting-microservice CI
+name: User-microservice CI
 
 on:
   push:
     paths:
-      - 'ListingPosting-microservice/**'
+      - 'UserManagement-microservice/**'
     branches: [ "master" ]
   pull_request:
     paths:
-      - 'ListingPosting-microservice/**'
+      - 'UserManagement-microservice/**'
     branches: [ "master" ]
 
 
@@ -40,6 +40,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./ListingPosting-microservice/Dockerfile
+          file: ./UserManagement-microservice/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/posting-microservice:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/userManagement-microservice:latest
