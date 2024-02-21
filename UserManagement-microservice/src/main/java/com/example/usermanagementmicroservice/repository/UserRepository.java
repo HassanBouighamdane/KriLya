@@ -1,6 +1,6 @@
-package com.krilya.krilya.repository;
+package com.example.usermanagementmicroservice.repository;
 
-import com.krilya.krilya.model.User;
+import com.example.usermanagementmicroservice.models.User;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;

@@ -1,7 +1,8 @@
-package com.krilya.krilya.controller;
+package com.example.usermanagementmicroservice.controllers;
 
-import com.krilya.krilya.model.User;
-import com.krilya.krilya.services.UserServices;
+
+import com.example.usermanagementmicroservice.models.User;
+import com.example.usermanagementmicroservice.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,10 +11,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-    private final UserServices userService;
+    private final UserService userService;
 
     @Autowired
-    public UserController(UserServices userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -42,3 +43,4 @@ public class UserController {
         userService.deleteUser(id);
     }
 }
+

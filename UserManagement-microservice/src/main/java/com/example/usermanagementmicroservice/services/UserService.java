@@ -1,18 +1,20 @@
-package com.krilya.krilya.services;
+package com.example.usermanagementmicroservice.services;
 
-import com.krilya.krilya.model.User;
-import com.krilya.krilya.repository.UserRepository;
+
+
+import com.example.usermanagementmicroservice.models.User;
+import com.example.usermanagementmicroservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class UserServices {
+public class UserService {
     private final UserRepository userRepository;
 
     @Autowired
-    public UserServices(UserRepository userRepository) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -43,3 +45,4 @@ public class UserServices {
         userRepository.deleteById(id);
     }
 }
+
