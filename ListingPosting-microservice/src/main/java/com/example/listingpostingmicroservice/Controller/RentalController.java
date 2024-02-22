@@ -47,4 +47,25 @@ public class RentalController {
         rentalService.deleteRental(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    //search by category , title && sorting 
+    @GetMapping("/search")
+    public ResponseEntity<List<Rental>> searchRentals(
+            @RequestParam(name = "category", required = false) String category,
+            @RequestParam(name = "title", required = false) String title,
+            @RequestParam(name = "sortBy", defaultValue = "title") String sortBy,
+            @RequestParam(name = "sortOrder", defaultValue = "asc") String sortOrder
+    ) {
+        List<Rental> rentals;
+        if (category != null && title != null) {
+            rentals = rentalService.searchByCategoryAndTitle(category, title, sortBy, sortOrder);
+        } else if (category != null) {
+            rentals = rentalService.searchByCategory(category, sortBy, sortOrder);
+        } else if (title != null) {
+            rentals = rentalService.searchByTitle(title, sortBy, sortOrder);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+        return new ResponseEntity<>(rentals, HttpStatus.OK);
+    }
 }
