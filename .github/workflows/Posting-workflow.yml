@@ -12,11 +12,11 @@ on:
   push:
     paths:
       - 'ListingPosting-microservice/**'
-    branches: [ "master" ]
+    branches: [ "master","hassan" ]
   pull_request:
     paths:
       - 'ListingPosting-microservice/**'
-    branches: [ "master" ]
+    branches: [ "master","hassan" ]
 
 
 jobs:
