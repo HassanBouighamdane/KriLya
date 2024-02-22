@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,9 +32,23 @@ public class RentalController {
     }
 
     @PostMapping
-    public ResponseEntity<Rental> createRental(@RequestBody Rental rental) {
-        Rental createdRental = rentalService.createRental(rental);
-        return new ResponseEntity<>(createdRental, HttpStatus.CREATED);
+    public ResponseEntity<Rental> createRental(@RequestParam("pictures") MultipartFile[] pictures,
+                                               @RequestParam("description") String description,
+                                               @RequestParam("pricePerDay") double pricePerDay,
+                                               @RequestParam("availability") boolean availability,
+                                               @RequestParam("location") String location) {
+        try {
+            // Handle file upload logic here
+            // For each file in pictures array, save it to your file storage or process it as needed
+
+            // Then, create a new Rental object and save it to the database
+            Rental rental = new Rental(description, pricePerDay, availability, location);
+            Rental createdRental = rentalService.createRental(rental);
+
+            return new ResponseEntity<>(createdRental, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PutMapping("/{id}")

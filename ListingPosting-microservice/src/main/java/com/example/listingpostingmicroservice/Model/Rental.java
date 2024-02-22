@@ -47,4 +47,10 @@ public class Rental {
         this.categoryIds = categoryIds;
     }
 
+    public Rental(String description, double pricePerDay, boolean availability, String location) {
+        this.description = description;
+        this.pricePerDay = pricePerDay;
+        this.availability = availability;
+        this.location = location;
+    }
 }
