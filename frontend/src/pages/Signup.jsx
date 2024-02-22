@@ -3,6 +3,10 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import logo from '../images/logo-nobg.png';
 import '../assets/css/signup.css';
+import axios from 'axios';
+import '../App.css'
+
+const baseUrl = "http://localhost:8080";
 
 function Signup() {
   const validationSchema = Yup.object({
@@ -20,15 +24,26 @@ function Signup() {
       .required('Confirm Password is required'),
   });
 
-  const handleSubmit = (values, { setSubmitting }) => {
-    console.log(values);
+  const handleSubmit = async (values, { setSubmitting }) => {
+    await axios.post(`${baseUrl}/api/users`,{
+      "id" : 1,
+      "username" : values.username,
+      "email" : values.email,
+      "password"  : values.password
+    })
+    .then((res)=> {
+      console.log(res);
+    })
+    .catch((err)=> {
+      console.log(err);
+    })
     setSubmitting(false);
   };
 
   return (
     <div className="signup-container">
       <img src={logo} alt="Logo" className="logo" />
-      <h1>Signup</h1>
+      <h1>Create your account for free</h1>
       <Formik
         initialValues={{
           username: '',
@@ -65,7 +80,7 @@ function Signup() {
               <ErrorMessage name="confirmPassword" component="div" className="error-message" />
             </div>
 
-            <button type="submit" className="btn btn-primary">Submit</button>
+            <button type="submit" className="btn button" id='btn'>Sign up</button>
           </Form>
         )}
       </Formik>
