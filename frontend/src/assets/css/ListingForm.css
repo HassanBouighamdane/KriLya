@@ -1,0 +1,30 @@
+.listing-form-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+
+}
+#form-title{
+    color: #0A1D56;
+}
+
+.listing-form-container form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.listing-form-container form label {
+    font-weight: bold;
+}
+
+.listing-form-container form input[type="text"],
+.listing-form-container form input[type="number"],
+.listing-form-container form input[type="file"] {
+    margin-bottom: 10px;
+}
+
+.listing-form-container form button {
+    margin-top: 10px;
+}
