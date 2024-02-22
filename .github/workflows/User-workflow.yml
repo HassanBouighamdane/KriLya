@@ -42,4 +42,4 @@ jobs:
           context: .
           file: ./UserManagement-microservice/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/userManagement-microservice:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/usermanagement-microservice:latest
