@@ -1,5 +1,6 @@
 package com.example.usermanagementmicroservice.models;
 
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -7,6 +8,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @NoArgsConstructor
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+
 @Document(collection = "users")
 public class User {
     @Id
@@ -17,6 +23,13 @@ public class User {
     private String email;
 
     private String password;
+
+
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
 
 
 }

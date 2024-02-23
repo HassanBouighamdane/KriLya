@@ -1,0 +1,5 @@
+com\krilya\krilya\controller\UserController.class
+com\krilya\krilya\KrilyaApplication.class
+com\krilya\krilya\model\User.class
+com\krilya\krilya\repository\UserRepository.class
+com\krilya\krilya\services\UserServices.class
