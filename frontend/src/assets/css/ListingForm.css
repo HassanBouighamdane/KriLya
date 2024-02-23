@@ -1,0 +1,53 @@
+.listing-form-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+
+}
+#form-title{
+    color: #0A1D56;
+}
+
+.listing-form-container form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.listing-form-container form label {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.listing-form-container form input[type="text"],
+.listing-form-container form input[type="number"],
+.listing-form-container form input[type="file"],
+.listing-form-container form input[as="textarea"],
+.listing-form-container form input[as="select"]{
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.listing-form-container form button {
+    margin-top: 10px;
+    background-color: #0A1D56;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 0.25rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
+}
+
+.listing-form-container form button:hover {
+    background-color: #002f6c;
+    color: #FFFFFF;
+}
+
+.listing-form-container form button:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
+}
