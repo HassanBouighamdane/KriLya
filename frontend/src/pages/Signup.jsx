@@ -1,6 +1,7 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import img from '../images/pc.jpg';
 import logo from '../images/logo-nobg.png';
 import '../assets/css/signup.css';
 import axios from 'axios';
@@ -41,7 +42,11 @@ function Signup() {
     };
 
     return (
-        <div className="signup-container">
+        <div className='max-w-screen-xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-4 p-10'>
+            <div className='md:order-1 flex justify-center'>
+            <img src={img} alt="img" className="" />
+            </div>
+        <div className="signup-container md:order-2">
             <img src={logo} alt="Logo" className="logo" />
             <h1>Create your account for free</h1>
             <Formik
@@ -70,13 +75,13 @@ function Signup() {
 
                         <div className="form-group">
                             <label htmlFor="password">Password</label>
-                            <Field type="password" name="password" className="form-control" />
+                            <Field type="password" name="password" className="form-control" placeholder="**********" />
                             <ErrorMessage name="password" component="div" className="error-message" />
                         </div>
 
                         <div className="form-group">
                             <label htmlFor="confirmPassword">Confirm Password</label>
-                            <Field type="password" name="confirmPassword" className="form-control" />
+                            <Field type="password" name="confirmPassword" className="form-control" placeholder="**********"/>
                             <ErrorMessage name="confirmPassword" component="div" className="error-message" />
                         </div>
 
@@ -84,6 +89,7 @@ function Signup() {
                     </Form>
                 )}
             </Formik>
+        </div>
         </div>
     );
 }
