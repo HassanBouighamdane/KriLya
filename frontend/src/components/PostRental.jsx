@@ -7,6 +7,7 @@ import { FiImage } from 'react-icons/fi';
 const baseUrl = "http://localhost:8081";
 function PostRental() {
     const [formData, setFormData] = useState({
+        title:'',
         description: '',
         pricePerDay: '',
         availability: true,
@@ -32,6 +33,7 @@ function PostRental() {
         e.preventDefault();
         try {
             const formDataToSend = new FormData();
+            formDataToSend.append('title', formData.title);
             formDataToSend.append('description', formData.description);
             formDataToSend.append('pricePerDay', formData.pricePerDay);
             formDataToSend.append('availability', formData.availability);
@@ -45,6 +47,7 @@ function PostRental() {
             if (response.status === 201) {
                 // Reset form fields after successful submission
                 setFormData({
+                    title: '',
                     description: '',
                     pricePerDay: '',
                     availability: true,
@@ -66,8 +69,10 @@ function PostRental() {
         <div className="listing-form-container">
             <h2 id={"form-title"}>Create a Rental</h2>
             <Form onSubmit={handleSubmit}>
+                <Form.Group controlId="title">
+                    <Form.Control  type="text" name="title" value={formData.title} onChange={handleChange} placeholder="Title"/>
+                </Form.Group>
                 <Form.Group controlId="description">
-
                     <Form.Control  as="textarea" name="description" value={formData.description} onChange={handleChange} placeholder="Description"/>
                 </Form.Group>
                 <Form.Group controlId="pricePerDay">
