@@ -2,12 +2,14 @@ package com.example.listingpostingmicroservice.Service;
 
 import com.example.listingpostingmicroservice.Model.Rental;
 import com.example.listingpostingmicroservice.Repository.RentalRepository;
+import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.Comparator;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RentalService {
@@ -23,9 +25,12 @@ public class RentalService {
         return rentalRepository.findById(id);
     }
 
-    public Rental createRental(Rental rental) {
+    public Rental createRental(String title,String description, double pricePerDay, boolean availability, String location, MultipartFile[] pictures) throws Exception {
+        List<Binary> pictureDataList = convertMultipartFilesToBinaries(pictures);
+        Rental rental = new Rental(title,description, pricePerDay, availability, location, pictureDataList);
         return rentalRepository.save(rental);
     }
+
 
     public Rental updateRental(String id, Rental rental) {
         return rentalRepository.save(rental);
@@ -35,6 +40,13 @@ public class RentalService {
         rentalRepository.deleteById(id);
     }
 
+    private List<Binary> convertMultipartFilesToBinaries(MultipartFile[] files) throws IOException {
+        List<Binary> binaries = new ArrayList<>();
+        for (MultipartFile file : files) {
+            binaries.add(new Binary(file.getBytes()));
+        }
+        return binaries;
+    }
     //
 
     public List<Rental> searchByCategory(String category, String sortBy, String sortOrder) {
@@ -64,18 +76,11 @@ public class RentalService {
 
 
     private Comparator<Rental> getComparator(String sortBy, String sortOrder) {
-        Comparator<Rental> comparator;
-        switch (sortBy.toLowerCase()) {
-            case "title":
-                comparator = Comparator.comparing(Rental::getTitle);
-                break;
-            case "price":
-                comparator = Comparator.comparing(Rental::getPricePerDay);
-                break;
-            default:
-                comparator = Comparator.comparing(Rental::getTitle);
-                break; // Add a break statement here
-        }
+        Comparator<Rental> comparator = switch (sortBy.toLowerCase()) {
+            case "title" -> Comparator.comparing(Rental::getTitle);
+            case "price" -> Comparator.comparing(Rental::getPricePerDay);
+            default -> Comparator.comparing(Rental::getTitle); // Add a break statement here
+        };
         if (sortOrder.equalsIgnoreCase("desc")) {
             comparator = comparator.reversed();
         }

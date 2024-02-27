@@ -2,17 +2,20 @@ package com.example.listingpostingmicroservice.Controller;
 
 import com.example.listingpostingmicroservice.Model.Rental;
 import com.example.listingpostingmicroservice.Service.RentalService;
+import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/rentals")
+@CrossOrigin(origins = "http://localhost:3000")
 public class RentalController {
 
     @Autowired
@@ -32,20 +35,15 @@ public class RentalController {
     }
 
     @PostMapping
-    public ResponseEntity<Rental> createRental(@RequestParam("pictures") MultipartFile[] pictures,
+    public ResponseEntity<Rental> createRental(@RequestParam("title") String title,
                                                @RequestParam("description") String description,
                                                @RequestParam("pricePerDay") double pricePerDay,
                                                @RequestParam("availability") boolean availability,
-                                               @RequestParam("location") String location) {
+                                               @RequestParam("location") String location,
+                                                @RequestParam("pictures") MultipartFile[] pictures) {
         try {
-            // Handle file upload logic here
-            // For each file in pictures array, save it to your file storage or process it as needed
-
-            // Then, create a new Rental object and save it to the database
-            Rental rental = new Rental(description, pricePerDay, availability, location);
-            Rental createdRental = rentalService.createRental(rental);
-
-            return new ResponseEntity<>(createdRental, HttpStatus.CREATED);
+            Rental rental = rentalService.createRental(title,description, pricePerDay, availability, location, pictures);
+            return new ResponseEntity<>(rental, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -57,13 +55,14 @@ public class RentalController {
         return new ResponseEntity<>(updatedRental, HttpStatus.OK);
     }
 
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRental(@PathVariable("id") String id) {
         rentalService.deleteRental(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    //search by category , title && sorting 
+    //search by category , title && sorting
     @GetMapping("/search")
     public ResponseEntity<List<Rental>> searchRentals(
             @RequestParam(name = "category", required = false) String category,
