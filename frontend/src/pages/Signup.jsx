@@ -85,7 +85,7 @@ function Signup() {
                             <ErrorMessage name="confirmPassword" component="div" className="error-message" />
                         </div>
 
-                        <button type="submit" className="btn button" id='btn'>Sign up</button>
+                        <button type="submit" className="btn button" id='btn' >Sign up</button>
                     </Form>
                 )}
             </Formik>

@@ -3,7 +3,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 function Navbar(){
-    
 
     return (
         <nav class="bg-white border-gray-200">
@@ -18,7 +17,7 @@ function Navbar(){
                 <Link to="" class="block py-2 px-3 text-gray-600 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 active" >Home</Link>
               </li>
               <li>
-                <Link to="/post" class="block py-2 px-3 text-gray-600 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 active">Home</Link>
+                <Link to="/home" class="block py-2 px-3 text-gray-600 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 active">Home</Link>
               </li>
               
               <li>

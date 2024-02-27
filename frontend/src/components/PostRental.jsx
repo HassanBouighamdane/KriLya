@@ -1,11 +1,11 @@
 import React, {useRef, useState} from 'react';
 import { Form, Button } from 'react-bootstrap';
 import axios from "axios";
-import '../assets/css/ListingForm.css'; // Import CSS file for additional styling
+import '../assets/css/PostRental.css'; // Import CSS file for additional styling
 import { FiImage } from 'react-icons/fi';
 
 const baseUrl = "http://localhost:8081";
-function ListingForm() {
+function PostRental() {
     const [formData, setFormData] = useState({
         description: '',
         pricePerDay: '',
@@ -51,7 +51,7 @@ function ListingForm() {
                     location: '',
                     pictures: [],
                 });
-                alert('Rental posted successfully!');
+                alert('RentalCard posted successfully!');
             } else {
                 alert('Error posting rental. Please try again.');
             }
@@ -111,4 +111,4 @@ function ListingForm() {
     );
 }
 
-export default ListingForm;
+export default PostRental;

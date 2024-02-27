@@ -2,16 +2,18 @@
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Signup from './pages/Signup';
-import ListingForm from "./components/ListingForm";
+import PostRental from "./components/PostRental";
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import Home from './pages/Home'
 
 function App() {
 
   const routes = [
     //auth
     {url : "", component: Signup},
-      {url:"post",component:ListingForm}
+      {url:"post",component:PostRental},
+      {url:"home",component:Home}
   ]
 
   return (
@@ -32,7 +34,6 @@ function App() {
                     />
                   ))}
                    <Route path="*">
-            
           </Route>
                 </Switch>
              
