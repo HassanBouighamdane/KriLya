@@ -3,7 +3,7 @@ FROM maven:3.8.4-openjdk-17-slim AS build
 WORKDIR /build
 COPY ListingPosting-microservice/pom.xml .
 COPY ListingPosting-microservice/src ./src
-RUN mvn clean install -DskipTests
+RUN mvn clean package
 
 # Application Stage
 FROM eclipse-temurin:17-jdk-alpine
