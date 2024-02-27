@@ -1,8 +1,8 @@
 # Build Stage
 FROM maven:3.8.4-openjdk-17-slim AS build
 WORKDIR /build
-COPY ./pom.xml .
-COPY ./src ./src
+COPY ListingPosting-microservice/pom.xml .
+COPY ListingPosting-microservice/src ./src
 RUN mvn clean package -B
 
 # Application Stage
