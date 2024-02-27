@@ -5,7 +5,8 @@ import Signup from './pages/Signup';
 import PostRental from "./components/PostRental";
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import Home from './pages/Home'
+import Home from './pages/Home';
+import Login from './pages/Login';
 
 function App() {
 
@@ -13,7 +14,9 @@ function App() {
     //auth
     {url : "", component: Signup},
       {url:"post",component:PostRental},
-      {url:"home",component:Home}
+    {url:"home",component:Home},
+    {url:"login",component:Login}
+
   ]
 
   return (

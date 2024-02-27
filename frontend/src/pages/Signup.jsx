@@ -5,6 +5,7 @@ import img from '../images/pc.jpg';
 import logo from '../images/logo-nobg.png';
 import '../assets/css/signup.css';
 import axios from 'axios';
+import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import '../App.css'
 
 const baseUrl = "http://localhost:8080";
@@ -26,8 +27,7 @@ function Signup() {
     });
 
     const handleSubmit = async (values, { setSubmitting }) => {
-        await axios.post(`${baseUrl}/api/users`,{
-            "id" : 1,
+        await axios.post(`${baseUrl}/api/auth/register`,{
             "username" : values.username,
             "email" : values.email,
             "password"  : values.password
@@ -44,11 +44,11 @@ function Signup() {
     return (
         <div className='max-w-screen-xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-4 p-10'>
             <div className='md:order-1 flex justify-center'>
-            <img src={img} alt="img" className="" />
+                <img src={img} alt="img" className="" />
             </div>
-        <div className="signup-container md:order-2">
-            <img src={logo} alt="Logo" className="logo" />
-            <h1>Create your account for free</h1>
+            <div className="md:order-2 flex justify-center items-center">
+            
+
             <Formik
                 initialValues={{
                     username: '',
@@ -60,33 +60,44 @@ function Signup() {
                 onSubmit={handleSubmit} // Use form submission function
             >
                 {({ isSubmitting, errors }) => (
-                    <Form className="signup-form">
-                        <div className="form-group">
-                            <label htmlFor="username">Username</label>
-                            <Field placeholder="Username" type="text" name="username" className="form-control" />
-                            <ErrorMessage name="username" component="div" className="error-message" />
-                        </div>
+                    
+                    <Form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-2/3 bg-gray-100">
+                    <img src={logo} alt="Logo" className="logo" />
+                    <h1>Create your account for free</h1>
+                    <div className="mb-6">
+                        <label className="block text-gray-700 text-sm font-bold mb-2">Username</label>
+                        <Field placeholder="Username" type="text" name="username" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                        <ErrorMessage name="email" component="i" className="error-message text-red-500 text-xs" />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" >
+                            Email
+                        </label>
+                        <Field placeholder="email@example.com" type="email" name="email" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                        <ErrorMessage name="email" component="i" className="error-message text-red-500 text-xs" />
+                        
+                    </div>
+                    
+                    <div className="mb-6">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" >
+                            Password
+                        </label>
+                        <Field type="password" name="password" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" placeholder="**********" />
+                        <ErrorMessage name="password" component="i" className="error-message text-xs text-red-500" />
+                    </div>
+                    <div className="mb-6">
 
-                        <div className="form-group">
-                            <label htmlFor="email">Email</label>
-                            <Field placeholder="email@example.com" type="email" name="email" className="form-control" />
-                            <ErrorMessage name="email" component="div" className="error-message" />
-                        </div>
+                            <label className="block text-gray-700 text-sm font-bold mb-2">Confirm Password</label>
+                            <Field type="password" name="confirmPassword" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" placeholder="**********"/>
+                            <ErrorMessage name="confirmPassword" component="i" className="error-message text-xs text-red-500" />
+                    </div>
 
-                        <div className="form-group">
-                            <label htmlFor="password">Password</label>
-                            <Field type="password" name="password" className="form-control" placeholder="**********" />
-                            <ErrorMessage name="password" component="div" className="error-message" />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="confirmPassword">Confirm Password</label>
-                            <Field type="password" name="confirmPassword" className="form-control" placeholder="**********"/>
-                            <ErrorMessage name="confirmPassword" component="div" className="error-message" />
-                        </div>
-
-                        <button type="submit" className="btn button" id='btn' >Sign up</button>
-                    </Form>
+                    <button type="submit" id="btn" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">
+                    Sign up
+                    </button>
+                    <div>don't have an account ? <Link to="/login" className="text-blue-500">Login</Link> </div>
+                    
+                </Form>
                 )}
             </Formik>
         </div>
