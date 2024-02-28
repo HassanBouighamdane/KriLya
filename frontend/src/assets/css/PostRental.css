@@ -2,15 +2,18 @@ body {
     margin: 0;
 }
 .modal-overlay {
-    position: fixed;
-    top: 0;
+    position: relative;
+    border-radius: 3px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000; /* Ensure the modal is above other content */
     width: 100%;
-    height: auto; /* Let the height adjust based on content */
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+    height: auto;
+    max-height: 80%;
+    overflow-y: auto;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* Ensure the modal is above other content */
 }
 
 .modal-content {

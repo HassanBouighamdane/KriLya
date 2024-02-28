@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik'; 
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
-import { FiImage } from 'react-icons/fi';
 import '../assets/css/PostRental.css';
-import img from '../images/bg.jpg';
-import logo from '../images/logo-nobg.png';
+
 
 const baseUrl = "http://localhost:8081";
 
@@ -63,57 +61,93 @@ function PostRental() {
                                 pictures: [],
                             }}
                             validationSchema={validationSchema}
-                            onSubmit={handleSubmit} 
+                            onSubmit={handleSubmit}
                         >
                             {({ isSubmitting, errors,setFieldValue }) => (
                                 <Form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-2/3 bg-gray-100">
-                                    <h2 id="form-title" className="text-center">Create a Rental</h2>
+                                    <h2 id="form-title" className="text-center">Post</h2>
                                     <div className="mb-4">
                                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="title">
                                             Title
                                         </label>
-                                        <Field type="text" name="title" id="title" placeholder="Title" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-                                        <ErrorMessage name="title" component="i" className="error-message text-red-500 text-xs" />
+                                        <Field type="text" name="title" id="title" placeholder="Title"
+                                               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
+                                        <ErrorMessage name="title" component="i"
+                                                      className="error-message text-red-500 text-xs"/>
                                     </div>
                                     <div className="mb-4">
-                                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
+                                        <label className="block text-gray-700 text-sm font-bold mb-2"
+                                               htmlFor="description">
                                             Description
                                         </label>
-                                        <Field as="textarea" name="description" id="description" placeholder="Description" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-                                        <ErrorMessage name="description" component="i" className="error-message text-red-500 text-xs" />
+                                        <Field as="textarea" name="description" id="description"
+                                               placeholder="Description"
+                                               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
+                                        <ErrorMessage name="description" component="i"
+                                                      className="error-message text-red-500 text-xs"/>
                                     </div>
                                     <div className="mb-4">
-                                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="pricePerDay">
+                                        <label className="block text-gray-700 text-sm font-bold mb-2"
+                                               htmlFor="pricePerDay">
                                             Price per Day
                                         </label>
-                                        <Field type="number" name="pricePerDay" id="pricePerDay" placeholder="Price per Day" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
-                                        <ErrorMessage name="pricePerDay" component="i" className="error-message text-red-500 text-xs" />
+                                        <Field type="number" name="pricePerDay" id="pricePerDay"
+                                               placeholder="Price per Day"
+                                               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
+                                        <ErrorMessage name="pricePerDay" component="i"
+                                                      className="error-message text-red-500 text-xs"/>
                                     </div>
                                     <div className="mb-4">
-                                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="location">
+                                        <label className="block text-gray-700 text-sm font-bold mb-2"
+                                               htmlFor="location">
                                             Location
                                         </label>
-                                        <Field as="select" name="location" id="location" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                        <Field as="select" name="location" id="location"
+                                               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                                             <option value="">Select Location</option>
                                             <option value="Rabat">Rabat</option>
                                             <option value="Casablanca">Casablanca</option>
                                             <option value="Marrakech">Marrakech</option>
                                         </Field>
-                                        <ErrorMessage name="location" component="i" className="error-message text-red-500 text-xs" />
+                                        <ErrorMessage name="location" component="i"
+                                                      className="error-message text-red-500 text-xs"/>
                                     </div>
-                                    <div className="mb-4">
-                                        <label className="block text-gray-700 text-sm font-bold mb-2">
-                                            Upload Pictures
+                                    <div className="flex items-center justify-center w-full">
+                                        <label
+                                            htmlFor="dropzone-file"
+                                            className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                                        >
+                                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                                <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                                                     aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                     viewBox="0 0 20 16">
+                                                    <path stroke="currentColor" strokeLinecap="round"
+                                                          strokeLinejoin="round" strokeWidth="2"
+                                                          d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                                                </svg>
+                                                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span
+                                                    className="font-semibold">Click to upload</span> or drag and drop
+                                                </p>
+                                                <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or
+                                                    GIF (MAX. 800x400px)</p>
+                                            </div>
+                                            <input
+                                                id="dropzone-file"
+                                                type="file"
+                                                name="pictures"
+                                                multiple
+                                                className="hidden"
+                                                onChange={(event) => {
+                                                    const files = event.target.files;
+                                                    setFieldValue("pictures", files);
+                                                }}
+                                            />
                                         </label>
-                                        <input type="file" name="pictures"  multiple className="hidden" onChange={(event) => {
-                                            const files = event.target.files;
-                                            // eslint-disable-next-line no-undef
-                                            setFieldValue("pictures", files); // Assuming you're using Formik and have access to setFieldValue function
-                                        }}/>
-                                        <FiImage className="picture-icon" onClick={() => { document.getElementsByName("pictures")[0].click() }} style={{ fontSize: '24px' }} />
-                                        <ErrorMessage name="pictures" component="i" className="error-message text-red-500 text-xs" />
                                     </div>
-                                    <button type="submit" id="btn" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">
+
+
+                                    <button type="submit" id="btn"
+                                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">
                                         Post
                                     </button>
                                 </Form>
