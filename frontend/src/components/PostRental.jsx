@@ -65,7 +65,7 @@ function PostRental() {
                             validationSchema={validationSchema}
                             onSubmit={handleSubmit} 
                         >
-                            {({ isSubmitting, errors }) => (
+                            {({ isSubmitting, errors,setFieldValue }) => (
                                 <Form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-2/3 bg-gray-100">
                                     <h2 id="form-title" className="text-center">Create a Rental</h2>
                                     <div className="mb-4">
@@ -105,7 +105,11 @@ function PostRental() {
                                         <label className="block text-gray-700 text-sm font-bold mb-2">
                                             Upload Pictures
                                         </label>
-                                        <input type="file" name="pictures"  multiple className="hidden" />
+                                        <input type="file" name="pictures"  multiple className="hidden" onChange={(event) => {
+                                            const files = event.target.files;
+                                            // eslint-disable-next-line no-undef
+                                            setFieldValue("pictures", files); // Assuming you're using Formik and have access to setFieldValue function
+                                        }}/>
                                         <FiImage className="picture-icon" onClick={() => { document.getElementsByName("pictures")[0].click() }} style={{ fontSize: '24px' }} />
                                         <ErrorMessage name="pictures" component="i" className="error-message text-red-500 text-xs" />
                                     </div>
