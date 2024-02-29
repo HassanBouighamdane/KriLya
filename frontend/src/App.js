@@ -10,7 +10,6 @@ import Login from './pages/Login';
 import RenatlItemDetails from './components/RentalItemDetails';
 
 function App() {
-
   const routes = [
     //auth
     {url : "", component: Signup},
@@ -19,6 +18,7 @@ function App() {
     {url:"login",component:Login},
       {url:"details",component:RenatlItemDetails},
   ]
+
 
   return (
     <div className="App">
