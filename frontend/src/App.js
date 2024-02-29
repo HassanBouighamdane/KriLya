@@ -16,7 +16,6 @@ function App() {
       {url:"post",component:PostRental},
     {url:"home",component:Home},
     {url:"login",component:Login}
-    
 
   ]
 

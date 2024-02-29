@@ -10,7 +10,7 @@ const AddToFavorites = ({ handleFavoritesClick }) => {
 				height='1em'
 				viewBox='0 0 16 16'
 				className='bi bi-heart-fill'
-				fill='red'
+				fill='#c0c0c0'
 				xmlns='http://www.w3.org/2000/svg'
 				onClick={handleFavoritesClick}
 			>
