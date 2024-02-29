@@ -69,9 +69,9 @@ export default function RentalCard({ title, description, images, pricePerDay, lo
                 <div>
                 </div>
             </CardBody>
-            <CardFooter className="pt-3 bg-blue-400 " >
-                <Button size="lg" fullWidth={true} color="red" background-color="#000">
-                    Reserve
+            <CardFooter className="p-3 bg-blue-900 " >
+                <Button className='bg-blue-900' size="lg" fullWidth={true} >
+                    Book
                 </Button>
             </CardFooter>
         </Card>
