@@ -5,12 +5,14 @@ import img from '../images/pc.jpg';
 import logo from '../images/logo-nobg.png';
 import '../assets/css/signup.css';
 import axios from 'axios';
-import { Link } from 'react-router-dom/cjs/react-router-dom.min';
+import {useNavigate} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import '../App.css'
 
 const baseUrl = "http://localhost:8080";
 
 function Signup() {
+    const navigate = useNavigate();
     const validationSchema = Yup.object({
         username: Yup.string()
             .min(3, 'Username must be at least 3 characters')
@@ -34,6 +36,7 @@ function Signup() {
         })
             .then((res)=> {
                 console.log(res);
+                navigate("/home")
             })
             .catch((err)=> {
                 console.log(err);

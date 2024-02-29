@@ -4,13 +4,15 @@ import * as Yup from 'yup';
 import img from '../images/pc.jpg';
 import logo from '../images/logo-nobg.png';
 import '../assets/css/signup.css';
+import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
-import { Link } from 'react-router-dom/cjs/react-router-dom.min';
+import { Link } from 'react-router-dom';
 import '../App.css'
 
 const baseUrl = "http://localhost:8080";
 
 function Login() {
+    const navigate = useNavigate();
     const validationSchema = Yup.object({
         email: Yup.string()
             .email('Invalid email address')
@@ -27,6 +29,7 @@ function Login() {
         })
             .then((res)=> {
                 console.log(res);
+                navigate("/home")
             })
             .catch((err)=> {
                 console.log(err);
