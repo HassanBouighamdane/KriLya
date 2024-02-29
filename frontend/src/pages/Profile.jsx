@@ -6,12 +6,11 @@ import Review from '../components/Review';
 function Profile() {
     const User = {firstname: "Jose", lastname: "Morinho", address: "12 rue xcvc rabat", phone: "0678585858",
      description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus omnis, reiciendis aperiam numquam nam porro unde, iusto iste animi earum enim sapiente facere! Excepturi neque in eius expedita adipisci? Odit?"
-    ,gender: "Male", email: "mail@gm.com", createdAt: "12 jan 2020", status: "Active"
+    ,gender: "Male", email: "mail@gm.com", createdAt: "12 jan 2020", status: "Active", rating: "4.89", responseRate: "1h"
     }
     
     return (
         <div className='mb-auto'>
-            <h1 className='mb-4 text-4xl font-extrabold text-center'>{User.firstname} {User.lastname}</h1>
         
             <div className="container mx-auto my-5 p-5">
                 <div className="md:flex no-wrap md:-mx-2 ">
@@ -44,10 +43,7 @@ function Profile() {
                                     <span>Address</span>
                                     <span className="ml-auto">{User.address}</span>
                                 </li>
-                                <li className="flex items-center py-3">
-                                    <span>Rating</span>
-                                    <span className="ml-auto">{User.createdAt}</span>
-                                </li>
+                                
                             </ul>
                         </div>
 
@@ -86,15 +82,20 @@ function Profile() {
                                 <span className="tracking-wide">Insights</span>
                             </div>
                             <div className="text-gray-700">
-                                <div className="grid md:grid-cols-2 text-sm">
-                                    <div className="grid grid-cols-2">
+                                <div className="grid md:grid-cols-3 text-sm text-center">
+                                    <div className="">
                                         <div className="px-4 py-2 font-semibold">Rating</div>
-                                        <div className="px-2 py-2 font-extrabold text-3xl">4.87</div>
+                                        <span className="px-2 py-2 font-extrabold text-3xl text-yellow-500">{User.rating}</span><span className='text-xl semi-bold'>/ 5</span>
                                     </div>
-                                    <div className="grid grid-cols-2">
+                                    <div className="">
                                         <div className="px-4 py-2 font-semibold">Reviews</div>
                                         <div className="px-4 py-2 font-extrabold text-3xl">128</div>
                                     </div>
+                                    <div className="">
+                                        <div className="px-4 py-2 font-semibold">Response Rate</div>
+                                        <div className="px-4 py-2 font-extrabold text-3xl text-green-500">{User.responseRate}</div>
+                                    </div>
+                                   
                                    
                                    
                                 </div>

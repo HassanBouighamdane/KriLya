@@ -12,7 +12,7 @@ function Review(avatar) {
                                     <div className="flex gap-2">
                                     <img className='w-10 h-10 rounded-full mx-auto' src={profile} alt='avatar' />
                                         {/* <div className="w-7 h-7 text-center rounded-full">J</div> */}
-                                        <span>Jess Hopkins</span>
+                                        <span>Ahmed Haroun</span>
                                     </div>
                                     <div className="flex p-1 gap-1 text-orange-300">
                                         <ion-icon name="star"></ion-icon>
@@ -24,13 +24,13 @@ function Review(avatar) {
                                 </div>
 
                                 <div>
-                                    Gorgeous design! Even more responsive than the previous version. A pleasure to use!
+                                    Tres bon service !
                                 </div>
 
                                 <div className="flex justify-between">
                                     <span>Feb 13, 2021</span>
-                                    <button className="p-1 px-2 text-white bg-blue-900 hover:bg-blue-800 border border-blue-950 bg-opacity-60">
-                                        <ion-icon name="share-outline"></ion-icon> Share
+                                    <button className="p-1 px-2 text-white bg-blue-900 hover:bg-blue-800 border border-blue-950">
+                                        <ion-icon name="share-outline"></ion-icon> Show item
                                     </button>
                                 </div>
                                 </div>
