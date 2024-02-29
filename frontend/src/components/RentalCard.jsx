@@ -82,10 +82,10 @@ export default function RentalCard({id,title, description, images, pricePerDay, 
               +20
             </span>
                     </Tooltip>
+                    <CardBody/>
                 </div>
-                <div>
-                </div>
-            </CardBody>
+                
+            
             <CardFooter className="p-3 bg-blue-900 " >
                 <Button className='bg-blue-900' size="lg" fullWidth={true} >
                     Book
