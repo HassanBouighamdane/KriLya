@@ -1,12 +1,13 @@
 import React, {useRef, useState} from 'react';
 import { Form, Button } from 'react-bootstrap';
 import axios from "axios";
-import '../assets/css/ListingForm.css'; // Import CSS file for additional styling
+import '../assets/css/PostRental.css'; // Import CSS file for additional styling
 import { FiImage } from 'react-icons/fi';
 
 const baseUrl = "http://localhost:8081";
-function ListingForm() {
+function PostRental() {
     const [formData, setFormData] = useState({
+        title:'',
         description: '',
         pricePerDay: '',
         availability: true,
@@ -32,6 +33,7 @@ function ListingForm() {
         e.preventDefault();
         try {
             const formDataToSend = new FormData();
+            formDataToSend.append('title', formData.title);
             formDataToSend.append('description', formData.description);
             formDataToSend.append('pricePerDay', formData.pricePerDay);
             formDataToSend.append('availability', formData.availability);
@@ -45,13 +47,14 @@ function ListingForm() {
             if (response.status === 201) {
                 // Reset form fields after successful submission
                 setFormData({
+                    title: '',
                     description: '',
                     pricePerDay: '',
                     availability: true,
                     location: '',
                     pictures: [],
                 });
-                alert('Rental posted successfully!');
+                alert('RentalCard posted successfully!');
             } else {
                 alert('Error posting rental. Please try again.');
             }
@@ -66,8 +69,10 @@ function ListingForm() {
         <div className="listing-form-container">
             <h2 id={"form-title"}>Create a Rental</h2>
             <Form onSubmit={handleSubmit}>
+                <Form.Group controlId="title">
+                    <Form.Control  type="text" name="title" value={formData.title} onChange={handleChange} placeholder="Title"/>
+                </Form.Group>
                 <Form.Group controlId="description">
-
                     <Form.Control  as="textarea" name="description" value={formData.description} onChange={handleChange} placeholder="Description"/>
                 </Form.Group>
                 <Form.Group controlId="pricePerDay">
@@ -111,4 +116,4 @@ function ListingForm() {
     );
 }
 
-export default ListingForm;
+export default PostRental;
