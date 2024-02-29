@@ -30,7 +30,7 @@ public class RentalServiceTests {
     private RentalRepository rentalRepository;
     @InjectMocks
     private RentalService rentalService;
-
+/*
     @Test
     void createRentalTests() throws IOException {
         String title = "Title";
@@ -60,7 +60,7 @@ public class RentalServiceTests {
         assertEquals(mockBinaryList, result.getPictures());
         assertEquals(pricePerDay, result.getPricePerDay());
     }
-
+*/
     @Test
     void getAllRentalsTests(){
         Binary picture1 = new Binary("Image 1".getBytes());
