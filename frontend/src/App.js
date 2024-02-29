@@ -2,7 +2,7 @@
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Signup from './pages/Signup';
-import ListingForm from "./components/ListingForm";
+import PostRental from "./components/PostRental";
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -19,7 +19,7 @@ function App() {
         <Route exact path="/" element={<Signup />} />
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/home" element={<Home />} />
-        <Route exact path="/post" element={<ListingForm />} />
+        <Route exact path="/post" element={<PostRental />} />
       </Routes>
       <Footer />
     </Router>
