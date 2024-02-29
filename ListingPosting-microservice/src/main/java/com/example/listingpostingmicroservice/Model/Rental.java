@@ -24,7 +24,7 @@ public class Rental {
     @Getter
     private double pricePerDay;
     @Getter
-    private boolean availability;
+    private boolean available;
     @Getter
     private String location;
     @Getter
@@ -39,7 +39,7 @@ public class Rental {
         this.title = title;
         this.description = description;
         this.pricePerDay = pricePerDay;
-        this.availability = availability;
+        this.available = availability;
         this.location = location;
         this.pictures = pictures;
         this.ownerId = ownerId;
@@ -50,7 +50,7 @@ public class Rental {
         this.title = title;
         this.description = description;
         this.pricePerDay = pricePerDay;
-        this.availability = availability;
+        this.available = availability;
         this.location = location;
         this.pictures = pictures;
     }

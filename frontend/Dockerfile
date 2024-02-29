@@ -1,7 +1,7 @@
 # Stage 1: Build
 FROM node:20.10.0-alpine AS build
 WORKDIR /app
-COPY . .
+COPY ./frontend .
 RUN npm install
 RUN npm run build
 

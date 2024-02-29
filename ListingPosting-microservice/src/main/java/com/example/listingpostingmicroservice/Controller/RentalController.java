@@ -18,8 +18,11 @@ import java.util.Optional;
 @CrossOrigin(origins = "http://localhost:3000")
 public class RentalController {
 
+    private final RentalService rentalService;
     @Autowired
-    private RentalService rentalService;
+    private RentalController(RentalService rentalService){
+        this.rentalService=rentalService;
+    };
 
     @GetMapping
     public ResponseEntity<List<Rental>> getAllRentals() {
