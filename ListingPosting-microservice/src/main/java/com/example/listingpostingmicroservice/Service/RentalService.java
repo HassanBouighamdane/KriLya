@@ -14,8 +14,11 @@ import java.util.stream.Collectors;
 @Service
 public class RentalService {
 
+    private final RentalRepository rentalRepository;
     @Autowired
-    private RentalRepository rentalRepository;
+    public RentalService(RentalRepository rentalRepository) {
+        this.rentalRepository = rentalRepository;
+    }
 
     public List<Rental> getAllRentals() {
         return rentalRepository.findAll();
@@ -25,22 +28,46 @@ public class RentalService {
         return rentalRepository.findById(id);
     }
 
-    public Rental createRental(String title,String description, double pricePerDay, boolean availability, String location, MultipartFile[] pictures) throws Exception {
+    public Rental createRental(String title, String description, double pricePerDay, boolean availability, String location, MultipartFile[] pictures) throws IOException {
         List<Binary> pictureDataList = convertMultipartFilesToBinaries(pictures);
-        Rental rental = new Rental(title,description, pricePerDay, availability, location, pictureDataList);
+        Rental rental = new Rental(title, description, pricePerDay, availability, location, pictureDataList);
         return rentalRepository.save(rental);
     }
 
 
-    public Rental updateRental(String id, Rental rental) {
-        return rentalRepository.save(rental);
+    public Rental updateRental(String id, Rental rentalUpdates) {
+        Optional<Rental> optionalRental = rentalRepository.findById(id);
+        if (optionalRental.isPresent()) {
+            Rental existingRental = optionalRental.get();
+            // Update only the fields that are provided in rentalUpdates
+            if (!rentalUpdates.getTitle().equals(existingRental.getTitle())) {
+                existingRental.setTitle(rentalUpdates.getTitle());
+            }
+            if (!rentalUpdates.getDescription().equals(existingRental.getDescription())) {
+                existingRental.setDescription(rentalUpdates.getDescription());
+            }
+            if (rentalUpdates.getPricePerDay() != existingRental.getPricePerDay()) {
+                existingRental.setPricePerDay(rentalUpdates.getPricePerDay());
+            }
+            if (rentalUpdates.isAvailable() != existingRental.isAvailable()) {
+                existingRental.setAvailable(rentalUpdates.isAvailable());
+            }
+            if (!rentalUpdates.getLocation().equals(existingRental.getLocation())) {
+                existingRental.setLocation(rentalUpdates.getLocation());
+            }
+            // Save the updated rental
+            return rentalRepository.save(existingRental);
+        } else {
+            // Handle case when rental with given id is not found
+            return null;
+        }
     }
 
     public void deleteRental(String id) {
         rentalRepository.deleteById(id);
     }
 
-    private List<Binary> convertMultipartFilesToBinaries(MultipartFile[] files) throws IOException {
+    public List<Binary> convertMultipartFilesToBinaries(MultipartFile[] files) throws IOException {
         List<Binary> binaries = new ArrayList<>();
         for (MultipartFile file : files) {
             binaries.add(new Binary(file.getBytes()));
@@ -49,7 +76,7 @@ public class RentalService {
     }
     //
 
-    public List<Rental> searchByCategory(String category, String sortBy, String sortOrder) {
+    public List<Rental> searchByCategory(String category, String sortBy, String sortOrder)  {
         List<Rental> rentals = getAllRentals();
         Comparator<Rental> comparator = getComparator(sortBy, sortOrder);
         return rentals.stream()

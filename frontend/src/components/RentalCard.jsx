@@ -1,7 +1,7 @@
 import React from 'react';
 import AddToFavorites from '../components/AddToFavorites'; // Import AddToFavorites component
 import RemoveFromFavorites from '../components/RemoveFromFavorites'; // Import RemoveFromFavorites component
-
+import { Link } from 'react-router-dom';
 import {
     Card,
     CardHeader,
@@ -11,16 +11,17 @@ import {
     Button,
 } from "@material-tailwind/react";
 
-export default function RentalCard({ title, description, images, pricePerDay, location, isFavorite, handleFavouritesClick }) {
+export default function RentalCard({id,title, description, images, pricePerDay, location, isFavorite, handleFavouritesClick,handleDetailsClick }) {
     const imageSrc = `data:image/png;base64,${images}`;
 
     return (
         <Card className="border-4 p-8 w-full max-w-[25rem] flex flex-col justify-between" style={{ paddingTop: 12, boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', minHeight: '100%' }}>
             <div>
                 <CardHeader floated={false} color="blue-gray">
-                    <img
+                    <img 
                         src={imageSrc}
                         alt="Item Image"
+                    
                     />
                     {isFavorite ? (
                         <RemoveFromFavorites handleFavoritesClick={handleFavouritesClick} className="absolute top-2 right-2 z-10" />
@@ -57,10 +58,15 @@ export default function RentalCard({ title, description, images, pricePerDay, lo
                 </CardBody>
             </div>
 
-            <CardFooter className="pt-3">
-            <Button className="pt-3 bg-blue-400 rounded-none" fullWidth={true} size="lg" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '10px' }}>
-                    Reserve
+            <CardFooter className="pt-3 flex justify-between mt-3 space-x-4 ">
+             <Button className='bg-blue-900' size="lg" fullWidth={true} >
+                    Book
                 </Button>
+                <Link className="block w-full" to={`/items/${id}/details`}>
+                <Button onClick={handleDetailsClick} className="pt-3 bg-gray-600 " fullWidth={true} size="lg" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '10px' }}>
+                    See more 
+                </Button>
+                </Link>
             </CardFooter>
         </Card>
     );
