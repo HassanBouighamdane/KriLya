@@ -7,10 +7,19 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Login from './pages/Login';
+import RenatlItemDetails from './components/RentalItemDetails';
 
 function App() {
+  const routes = [
+    //auth
+    {url : "", component: Signup},
+      {url:"post",component:PostRental},
+    {url:"home",component:Home},
+    {url:"login",component:Login},
+      {url:"details",component:RenatlItemDetails},
+  ]
 
-  
+
   return (
     <div className="App">
     <Router>
@@ -20,6 +29,7 @@ function App() {
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/home" element={<Home />} />
         <Route exact path="/post" element={<PostRental />} />
+        <Route exact path="/items/:id/details" element={<RenatlItemDetails/>} />
       </Routes>
       <Footer />
     </Router>

@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+
+import React, {useEffect, useState} from 'react';
+import { Link } from 'react-router-dom';
 import RentalCard from "../components/RentalCard";
 import { FaDesktop, FaPrint, FaSolarPanel, FaBatteryFull, FaSearch } from 'react-icons/fa';
 import '../assets/css/Home.css';
+import {fetchRentals,fetchRental} from '../services/api'
 import PostRental from '../components/PostRental';
 
 export default function Home() {
-
     const [rentals, setRentals] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [sortBy, setSortBy] = useState('title');
@@ -14,25 +16,18 @@ export default function Home() {
     const [favourites, setFavourites] = useState([]);
 
     useEffect(() => {
-        async function fetchRentals() {
+        async function fetchAllItems() {
             try {
-                let url = 'http://localhost:8081/api/rentals';
-
-                url += `?title=${searchQuery}&sortBy=${sortBy}&sortOrder=${sortOrder}`;
-
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch rentals');
-                }
-                const data = await response.json();
+                const data = await fetchRentals();
                 setRentals(data);
             } catch (error) {
-                console.error('Error fetching rentals:', error);
+                console.error('Error fetching data:', error);
             }
         }
-
-        fetchRentals();
+    
+        fetchAllItems();
     }, [searchQuery, sortBy, sortOrder]);
+
 
     const handleFilterClick = (filter) => {
         setSearchQuery(filter);
@@ -129,13 +124,15 @@ export default function Home() {
                         {favoriteRentals.map((rental, index) => (
                             <RentalCard
                                 key={index}
+                                id={rental.id}
                                 title={rental.title}
                                 description={rental.description}
-                                images={rental.pictures.map(picture => picture.data)}
+                                images={rental.pictures[0].data}
                                 pricePerDay={rental.pricePerDay}
                                 location={rental.location}
                                 isFavorite={true}
                                 handleFavouritesClick={() => removeFavourite(rental)}
+                                handleDetailsClick={()=>fetchRental(rental.id)}
                             />
                         ))}
                     </div>
@@ -148,13 +145,15 @@ export default function Home() {
                     {otherRentals.map((rental, index) => (
                         <RentalCard
                             key={index}
+                            id={rental.id}
                             title={rental.title}
                             description={rental.description}
-                            images={rental.pictures.map(picture => picture.data)}
+                            images={rental.pictures[0].data}
                             pricePerDay={rental.pricePerDay}
                             location={rental.location}
                             isFavorite={false}
                             handleFavouritesClick={() => addFavourite(rental)}
+                            handleDetailsClick={()=>rental.id}
                         />
                     ))}
                 </div>
