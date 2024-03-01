@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import img from '../images/pc.jpg';
+import img from '../images/bg.jpg';
 import logo from '../images/logo-nobg.png';
 
 import axios from 'axios';
