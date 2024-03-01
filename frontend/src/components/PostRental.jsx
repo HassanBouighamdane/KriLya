@@ -47,7 +47,7 @@ function PostRental() {
 
     return (
         <div>
-            <button onClick={() => setShowModal(true)} type="button" class="relative w-full flex justify-center items-center px-5 py-2.5 font-medium tracking-wide text-white capitalize   bg-black rounded-md hover:bg-gray-900  focus:outline-none   transition duration-300 transform active:scale-95 ease-in-out mb-10">
+            <button onClick={() => setShowModal(true)} type="button" class=" w-50 flex  items-center text-center px-5 py-2.5 font-medium tracking-wide text-white capitalize   bg-black rounded-md hover:bg-gray-900  focus:outline-none   transition duration-300 transform active:scale-95 ease-in-out mb-10">
             <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF">
                <g>
                   <rect fill="none" height="24" width="24"></rect>
@@ -58,7 +58,7 @@ function PostRental() {
                   </g>
                </g>
             </svg>
-            <span class="pl-2 mx-1">Rent Out Your Item</span>
+            <span class="pl-2 mx-1 ">Rent Out An Item</span>
          </button>
             {showModal && (
                 <div className="modal-overlay" onClick={() => setShowModal(false)}>
