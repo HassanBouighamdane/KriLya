@@ -1,10 +1,8 @@
 import logo from '../images/logo-nobg.png';
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import {useNavigate} from 'react-router-dom';
-import { useEffect, useContext } from 'react';
+import React, { useState ,useEffect, useContext} from 'react';
+import {useNavigate,Link,useLocation } from 'react-router-dom';
 import { MyContext } from '../providers/UserProvider';
-import { Link,useLocation } from 'react-router-dom';
+
 function Navbar(){
   const { data, setData } = useContext(MyContext);
   const navigate = useNavigate();
