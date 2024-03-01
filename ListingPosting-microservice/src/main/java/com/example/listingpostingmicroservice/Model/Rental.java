@@ -7,6 +7,8 @@ import lombok.Getter;
 import org.bson.types.Binary;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.Date;
 import java.util.List;
 
 @NoArgsConstructor
@@ -30,9 +32,11 @@ public class Rental {
     @Getter
     private List<Binary> pictures;
     @Getter
+    private Date date;
+    @Getter
     private String ownerId;
     @Getter
-    private List<String> categoryIds; 
+    private List<String> categoryIds;
 
 
     public Rental(String title, String description, double pricePerDay, boolean availability, String location,List<Binary> pictures, String ownerId, List<String> categoryIds) {
@@ -44,6 +48,7 @@ public class Rental {
         this.pictures = pictures;
         this.ownerId = ownerId;
         this.categoryIds = categoryIds;
+        this.date = new Date();
     }
 
     public Rental(String title,String description, double pricePerDay, boolean availability, String location,List<Binary> pictures) {
@@ -53,5 +58,6 @@ public class Rental {
         this.available = availability;
         this.location = location;
         this.pictures = pictures;
+        this.date = new Date();
     }
 }

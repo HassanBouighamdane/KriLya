@@ -9,9 +9,11 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
 import RenatlItemDetails from './components/RentalItemDetails';
+import PageNotFound from './pages/PageNotFound';
 
 
 function App() {
+  /*** 
   const routes = [
     //auth
     {url : "", component: Signup},
@@ -19,7 +21,8 @@ function App() {
     {url:"home",component:Home},
     {url:"login",component:Login},
       {url:"details",component:RenatlItemDetails},
-  ]
+  ]***/
+  
 
 
   return (
@@ -33,6 +36,7 @@ function App() {
         <Route exact path="/post" element={<PostRental />} />
         <Route exact path="/profile" element={<Profile />} />
         <Route exact path="/items/:id/details" element={<RenatlItemDetails/>} />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
       <Footer />
     </Router>
