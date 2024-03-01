@@ -2,7 +2,8 @@
 import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 import RentalCard from "../components/RentalCard";
-import { FaDesktop, FaPrint, FaSolarPanel, FaBatteryFull, FaSearch } from 'react-icons/fa';
+import { FaDesktop, FaPrint, FaTools, FaMotorcycle , FaSearch } from 'react-icons/fa';
+import { GiClothes } from "react-icons/gi";
 import '../assets/css/Home.css';
 import {fetchRentals,fetchRental} from '../services/api'
 import PostRental from '../components/PostRental';
@@ -66,13 +67,13 @@ export default function Home() {
 
     return (
         <div className="container mx-auto px-4 py-20 ">
-         <PostRental/>
+         
             <div className="hero-headline flex flex-col items-center justify-center pt-2 text-center mb-10">
                 <h1 className="font-bold text-5xl text-gray-900">Do you need to use items in a short time?</h1>
                 <h2 className="font-base text-3xl text-gray-600">You are in the right place :)</h2>
             </div>
 
-            <div className="max-w-md mx-auto mb-20">
+            <div className="max-w-md mx-auto mb-10">
                 <div className="border border-black  overflow-hidden" style={{ padding: '8px' }}>
                     <div className="relative flex items-center w-full h-12 rounded-lg focus-within:shadow-lg bg-white overflow-hidden">
                         <div className="grid place-items-center h-full w-12 text-gray-300">
@@ -89,7 +90,9 @@ export default function Home() {
                     </div>
                 </div>
             </div>
-
+            <div className='flex justify-center'>
+                <PostRental/>
+            </div>
             <div className="filter-bar">
                 <button
                     className={`filter-button ${activeFilter === 'computers' ? 'active' : ''}`}
@@ -98,22 +101,22 @@ export default function Home() {
                     <FaDesktop /> <span className="button-text">Computers</span>
                 </button>
                 <button
-                    className={`filter-button ${activeFilter === 'printers' ? 'active' : ''}`}
-                    onClick={() => handleFilterClick('printers')}
+                    className={`filter-button ${activeFilter === 'Clothes' ? 'active' : ''}`}
+                    onClick={() => handleFilterClick('Clothes')}
                 >
-                    <FaPrint /> <span className="button-text">Printers</span>
+                    <GiClothes /> <span className="button-text">Clothes</span>
                 </button>
                 <button
-                    className={`filter-button ${activeFilter === 'solar-panels' ? 'active' : ''}`}
-                    onClick={() => handleFilterClick('solar-panels')}
+                    className={`filter-button ${activeFilter === 'Tools' ? 'active' : ''}`}
+                    onClick={() => handleFilterClick('Tools')}
                 >
-                    <FaSolarPanel /> <span className="button-text">Solar Panels</span>
+                    <FaTools /> <span className="button-text">Tools</span>
                 </button>
                 <button
-                    className={`filter-button ${activeFilter === 'digital-signage' ? 'active' : ''}`}
-                    onClick={() => handleFilterClick('digital-signage')}
+                    className={`filter-button ${activeFilter === 'Vehicules' ? 'active' : ''}`}
+                    onClick={() => handleFilterClick('Vehicules')}
                 >
-                    <FaBatteryFull style={{ transform: 'rotate(90deg)' }} /> <span className="button-text">Digital Signage</span>
+                    <FaMotorcycle  /> <span className="button-text">Vehicules</span>
                 </button>
             </div>
 

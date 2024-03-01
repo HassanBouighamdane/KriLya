@@ -13,7 +13,7 @@ export default function PageNotFound() {
             </h1>
 
             <h6 className="mb-2 text-2xl font-bold text-center text-gray-800 md:text-3xl">
-              <span className="text-red-500">Oops!</span> Page{" "}
+              <span className="text-blue-900">Oops!</span> Page{" "}
               Not Found
             </h6>
 
