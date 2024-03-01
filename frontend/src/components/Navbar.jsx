@@ -1,9 +1,22 @@
 import logo from '../images/logo-nobg.png';
-import React from 'react';
-import { Link,useLocation } from 'react-router-dom';
-import PostRental from './PostRental';
+import React, { useState ,useEffect, useContext} from 'react';
+import {useNavigate,Link,useLocation } from 'react-router-dom';
+import { MyContext } from '../providers/UserProvider';
 
 function Navbar(){
+  const { data, setData } = useContext(MyContext);
+  const navigate = useNavigate();
+  const [ isUserLoggedIn, setUserLoggedIn]= useState(false)
+  useEffect(() => {
+    const jwtToken = localStorage.getItem('jwtToken');
+    if (jwtToken) {
+      setUserLoggedIn(true);
+    } else {
+      setUserLoggedIn(false);
+      navigate('/login');
+    }
+    
+  }, []);
   const location = useLocation();
 
   // Function to determine if the button should be displayed
@@ -12,6 +25,12 @@ function Navbar(){
       return !['/login', '/','/signup'].includes(location.pathname);
   };
 
+
+  const handleLogout = () => {
+    localStorage.removeItem('jwtToken');
+    setUserLoggedIn(false);
+    navigate('/login');
+  };
     return (
         <nav className="bg-white border-gray-200">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 pt-1">
@@ -41,6 +60,29 @@ function Navbar(){
               <li>
                 <Link to="/post" className="block py-2 px-3 text-gray-600 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 active">About us</Link>
               </li>
+              {isUserLoggedIn && 
+              <li>
+                <button onClick={handleLogout} className="block py-2 px-3 text-gray-600 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 active">Logout</button>
+              </li>
+              }
+
+              {shouldDisplayButton() && (
+                    <li>
+                        <button type="button" className="w-50 flex items-center text-center px-5 py-2.5 font-medium tracking-wide text-white capitalize bg-black rounded-md hover:bg-gray-900 focus:outline-none transition duration-300 transform active:scale-95 ease-in-out">
+                            <svg xmlns="http://www.w3.org/2000/svg" enableBackground="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF">
+                                <g>
+                                    <rect fill="none" height="24" width="24"></rect>
+                                </g>
+                                <g>
+                                    <g>
+                                        <path d="M19,13h-6v6h-2v-6H5v-2h6V5h2v6h6V13z"></path>
+                                    </g>
+                                </g>
+                            </svg>
+                            <span className="pl-2 mx-1">Rent Out An Item</span>
+                        </button>
+                    </li>
+                )}
               
             </ul>
           </div>

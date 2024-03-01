@@ -3,15 +3,17 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import img from '../images/bg.jpg';
 import logo from '../images/logo-nobg.png';
-import '../assets/css/signup.css';
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { MyContext } from '../providers/UserProvider';
 import '../App.css'
 
 const baseUrl = "http://localhost:8080";
 
 function Login() {
+    const { data, setData } = useContext(MyContext);
     const navigate = useNavigate();
     const validationSchema = Yup.object({
         email: Yup.string()
@@ -29,6 +31,8 @@ function Login() {
         })
             .then((res)=> {
                 console.log(res);
+                localStorage.setItem('jwtToken', res.data.token);
+                setData(res.data.user);
                 navigate("/home")
             })
             .catch((err)=> {
@@ -70,11 +74,11 @@ function Login() {
                         <label className="block text-gray-700 text-sm font-bold mb-2" >
                             Password
                         </label>
-                        <Field type="password" name="password" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" placeholder="**********" />
+                        <Field type="password" name="password" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="**********" />
                         <ErrorMessage name="password" component="i" className="error-message text-xs text-red-500" />
                     
                     </div>
-                    <button type="submit" id="btn" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">
+                    <button type="submit" id="btn" className="bg-blue-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">
                         Login
                     </button>
                     <div>don't have an account ? <Link to="/" className="text-blue-500">Sign up</Link> </div>
