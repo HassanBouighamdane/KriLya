@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import avatar from '../images/avatar.jpg';
 import RentalCard from '../components/RentalCard';
 import Review from '../components/Review';
@@ -6,21 +6,28 @@ import { MdInsights } from "react-icons/md";
 import { IoCartSharp } from "react-icons/io5";
 import useFetch from '../hooks/useFetch';
 import API from '../services/UserManagementApi';
+import { FaEdit } from 'react-icons/fa';
 
 
 function Profile() {
-    const User = {firstname: "Jose", lastname: "Morinho", address: "12 rue xcvc rabat", phone: "0678585858",
-     description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus omnis, reiciendis aperiam numquam nam porro unde, iusto iste animi earum enim sapiente facere! Excepturi neque in eius expedita adipisci? Odit?"
-    ,gender: "Male", email: "mail@gm.com", createdAt: "", status: "Active", rating: "4.89", responseRate: "1h"
-    }
+   
 
-    const {data, loading, error} = useFetch(API.PROFILE.GET_ALL);
 
+    const {data: profile, loading: profileLoading, error: profileError} = useFetch(API.PROFILE.GET_ONE(1));
+    const {data: user, loading: userLoading, error: userError} = useFetch(API.USER.GET_ONE(1));
+    const [User, setUser] = useState({});
+    useEffect(()=>{
+        if(profile) setUser(profile);
+        if(user) setUser({...User, email: user.email})
+
+    },[profile, user, User]);
+
+    
 
 
     const reviews = "";
 
-    
+   
     return (
         <div className='mb-auto'>
         
@@ -30,11 +37,13 @@ function Profile() {
                     <div className="w-full md:w-3/12 md:mx-2">
 
                         <div className="bg-white p-3 border-t-4 border-blue-900">
+                           <button><FaEdit className='ml-auto' /></button> 
+                      
                             <div className="image overflow-hidden">
                                    <img className='w-40 h-40 rounded-full mx-auto' src={avatar} alt='avatar' />
                         
                             </div>
-                            <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">{User.firstname} {User.lastname}</h1>
+                            <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">{User.firstname? User.firstname: User.username} {User.lastname}</h1>
                             <h3 className="text-gray-600 font-lg text-semibold leading-6">{User.description? User.description:"-"}</h3>
                             <ul
                                 className="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
@@ -45,7 +54,7 @@ function Profile() {
                                 </li>
                                 <li className="flex items-center py-3">
                                     <span>Email</span>
-                                    <span className="ml-auto">{User.email}</span>
+                                    <span className="ml-auto">{User.email? User.email : "-"}</span>
                                 </li>
                                 <li className="flex items-center py-3">
                                     <span>Member since</span>
@@ -106,9 +115,7 @@ function Profile() {
                                    
                                 </div>
                             </div>
-                            {/* <button
-                                className="block w-full text-blue-800 text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4">Show
-                                Full Information</button> */}
+                        
                         </div>
 
                        
@@ -140,4 +147,9 @@ function Profile() {
     );
 }
 
+  // const User = {firstname: "Jose", lastname: "Morinho", address: "12 rue xcvc rabat", phone: "0678585858",
+    //  description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus omnis, reiciendis aperiam numquam nam porro unde, iusto iste animi earum enim sapiente facere! Excepturi neque in eius expedita adipisci? Odit?"
+    // ,gender: "Male", email: "mail@gm.com", createdAt: "", status: "Active", rating: "4.89", responseRate: "1h"
+    // }
+    
 export default Profile;

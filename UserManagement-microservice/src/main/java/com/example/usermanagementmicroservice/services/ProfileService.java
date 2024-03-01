@@ -41,6 +41,10 @@ public class ProfileService {
             if (updatedProfile.getBio() != null) {
                 existingProfile.setBio(updatedProfile.getBio());
             }
+
+            if (updatedProfile.getPhone() != null) {
+                existingProfile.setPhone(updatedProfile.getPhone());
+            }
             
            if (updatedProfile.getFirstName() != null) {
                 existingProfile.setFirstName(updatedProfile.getFirstName());
@@ -62,8 +66,8 @@ public class ProfileService {
                 existingProfile.setStatus(updatedProfile.getStatus());
             }
     
-            if (updatedProfile.getRating() != null) {
-                existingProfile.setRating(updatedProfile.getRating());
+            if (updatedProfile.getGender() != null) {
+                existingProfile.setRating(updatedProfile.getGender());
             }
     
             if (updatedProfile.getResponseRate() != null) {

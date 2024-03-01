@@ -1,7 +1,6 @@
 import React, {useRef} from 'react';
 import { Formik, Form, Field } from 'formik';
 import avatar from '../images/avatar.jpg';
-import { FaArrowDown } from 'react-icons/fa';
 
 
 

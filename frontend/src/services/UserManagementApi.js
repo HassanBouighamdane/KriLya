@@ -8,6 +8,13 @@ const API = {
     UPDATE: id => `${BASE_URL}/profiles/${id}`, // PUT to update a profile by ID
     DELETE: id => `${BASE_URL}/profiles/${id}`, // DELETE to delete a profile by ID
   },
+  USER: {
+    GET_ALL: `${BASE_URL}/users`, // GET all profiles
+    GET_ONE: id => `${BASE_URL}/users/${id}`, // GET one profile by ID
+    CREATE: `${BASE_URL}/users`, // POST to create a new profile
+    UPDATE: id => `${BASE_URL}/users/${id}`, // PUT to update a profile by ID
+    DELETE: id => `${BASE_URL}/users/${id}`, // DELETE to delete a profile by ID
+  },
   
 };
 
