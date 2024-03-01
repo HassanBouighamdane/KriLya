@@ -37,5 +37,3 @@ We welcome contributions from the community to help improve KriLya. If you have 
 - Hassan Bouighamd [@HassanBouighamdane](https://github.com/HassanBouighamdane)
 - EL MEHDI BOUTOUMIT [@mehdiboutoumit](https://github.com/mehdiboutoumit)
 
-## License
-This project is licensed under the [MIT License](LICENSE.md). Feel free to use, modify, and distribute the code for your own purposes.
