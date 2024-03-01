@@ -3,6 +3,7 @@ import './App.css';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Signup from './pages/Signup';
 import PostRental from "./components/PostRental";
+import { MyProvider } from './providers/UserProvider';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -14,6 +15,7 @@ function App() {
   return (
     <div className="App">
     <Router>
+    <MyProvider>
       <Navbar />
       <Routes>
         <Route exact path="/" element={<Signup />} />
@@ -22,6 +24,7 @@ function App() {
         <Route exact path="/post" element={<PostRental />} />
       </Routes>
       <Footer />
+    </MyProvider>
     </Router>
   </div>
   );

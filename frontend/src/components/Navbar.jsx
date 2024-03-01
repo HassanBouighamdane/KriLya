@@ -1,9 +1,30 @@
 import logo from '../images/logo-nobg.png';
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
+import { useEffect, useContext } from 'react';
+import { MyContext } from '../providers/UserProvider';
 
 function Navbar(){
+  const { data, setData } = useContext(MyContext);
+  const navigate = useNavigate();
+  const [ isUserLoggedIn, setUserLoggedIn]= useState(false)
+  useEffect(() => {
+    const jwtToken = localStorage.getItem('jwtToken');
+    if (jwtToken) {
+      setUserLoggedIn(true);
+    } else {
+      setUserLoggedIn(false);
+      navigate('/login');
+    }
+    
+  }, []);
 
+  const handleLogout = () => {
+    localStorage.removeItem('jwtToken');
+    setUserLoggedIn(false);
+    navigate('/login');
+  };
     return (
         <nav className="bg-white border-gray-200">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 pt-1">
@@ -33,6 +54,11 @@ function Navbar(){
               <li>
                 <Link to="/post" className="block py-2 px-3 text-gray-600 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 active">Contact</Link>
               </li>
+              {isUserLoggedIn && 
+              <li>
+                <button onClick={handleLogout} className="block py-2 px-3 text-gray-600 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 active">Logout</button>
+              </li>
+              }
             </ul>
           </div>
         </div>
