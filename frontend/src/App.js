@@ -11,6 +11,7 @@ import Login from './pages/Login';
 import Profile from './pages/Profile';
 import RenatlItemDetails from './components/RentalItemDetails';
 import PageNotFound from './pages/PageNotFound';
+import UpdateProfile from './pages/UpdateProfile';
 
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
         <Route exact path="/home" element={<Home />} />
         <Route exact path="/post" element={<PostRental />} />
         <Route exact path="/profile" element={<Profile />} />
+        <Route exact path="/updateprofile" element={<UpdateProfile />} />
         <Route exact path="/items/:id/details" element={<RenatlItemDetails/>} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>

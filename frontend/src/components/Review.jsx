@@ -1,9 +1,10 @@
 import React from 'react'
 
-import profile from '../images/profile.jpg'
+import profile from '../images/avatar.jpg'
 
-function Review(avatar) {
-    const av = `data:image/jpg;base64,${avatar}`;
+function Review(userId, rating, comment, date) {
+
+  
   return (
     <div>
       <div className="flex flex-col gap-2 bg-blue-100 p-4">
