@@ -1,8 +1,24 @@
 import logo from '../images/logo-nobg.png';
-import React from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
+import { useEffect, useContext } from 'react';
+import { MyContext } from '../providers/UserProvider';
 import { Link,useLocation } from 'react-router-dom';
-
 function Navbar(){
+  const { data, setData } = useContext(MyContext);
+  const navigate = useNavigate();
+  const [ isUserLoggedIn, setUserLoggedIn]= useState(false)
+  useEffect(() => {
+    const jwtToken = localStorage.getItem('jwtToken');
+    if (jwtToken) {
+      setUserLoggedIn(true);
+    } else {
+      setUserLoggedIn(false);
+      navigate('/login');
+    }
+    
+  }, []);
   const location = useLocation();
 
   // Function to determine if the button should be displayed
@@ -11,6 +27,12 @@ function Navbar(){
       return !['/login', '/','/signup'].includes(location.pathname);
   };
 
+
+  const handleLogout = () => {
+    localStorage.removeItem('jwtToken');
+    setUserLoggedIn(false);
+    navigate('/login');
+  };
     return (
         <nav className="bg-white border-gray-200">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 pt-1">
@@ -40,6 +62,12 @@ function Navbar(){
               <li>
                 <Link to="/post" className="block py-2 px-3 text-gray-600 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 active">About us</Link>
               </li>
+              {isUserLoggedIn && 
+              <li>
+                <button onClick={handleLogout} className="block py-2 px-3 text-gray-600 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 active">Logout</button>
+              </li>
+              }
+
               {shouldDisplayButton() && (
                     <li>
                         <button type="button" className="w-50 flex items-center text-center px-5 py-2.5 font-medium tracking-wide text-white capitalize bg-black rounded-md hover:bg-gray-900 focus:outline-none transition duration-300 transform active:scale-95 ease-in-out">

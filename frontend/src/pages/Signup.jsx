@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import img from '../images/bg.jpg';
 import logo from '../images/logo-nobg.png';
-import '../assets/css/signup.css';
+
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 import { Link } from 'react-router-dom';
@@ -36,6 +36,7 @@ function Signup() {
         })
             .then((res)=> {
                 console.log(res);
+                localStorage.setItem('jwtToken', res.data.token);
                 navigate("/home")
             })
             .catch((err)=> {
@@ -67,7 +68,7 @@ function Signup() {
                     <Form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-2/3 bg-gray-100">
                     <img src={logo} alt="Logo" className="logo" />
                     <h1>Create your account for free</h1>
-                    <div className="mb-6">
+                    <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2">Username</label>
                         <Field placeholder="Username" type="text" name="username" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                         <ErrorMessage name="email" component="i" className="error-message text-red-500 text-xs" />
@@ -81,21 +82,23 @@ function Signup() {
                         
                     </div>
                     
-                    <div className="mb-6">
+                    <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" >
                             Password
                         </label>
-                        <Field type="password" name="password" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" placeholder="**********" />
+                        <Field type="password" name="password" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="**********" />
                         <ErrorMessage name="password" component="i" className="error-message text-xs text-red-500" />
                     </div>
-                    <div className="mb-6">
+                    <div className="mb-4">
 
-                            <label className="block text-gray-700 text-sm font-bold mb-2">Confirm Password</label>
-                            <Field type="password" name="confirmPassword" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" placeholder="**********"/>
+                            <label className="block text-gray-700 text-sm font-bold mb-2">
+                                Confirm Password
+                            </label>
+                            <Field type="password" name="confirmPassword" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="**********"/>
                             <ErrorMessage name="confirmPassword" component="i" className="error-message text-xs text-red-500" />
                     </div>
 
-                    <button type="submit" id="btn" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">
+                    <button type="submit" id="btn" className="bg-blue-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">
                     Sign up
                     </button>
                     <div>don't have an account ? <Link to="/login" className="text-blue-500">Login</Link> </div>
