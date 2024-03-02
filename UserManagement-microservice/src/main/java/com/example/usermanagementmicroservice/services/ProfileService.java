@@ -34,12 +34,13 @@ public class ProfileService {
         Optional<Profile> existingProfileOptional = profileRepository.findById(id);
         if (existingProfileOptional.isPresent()) {
             Profile existingProfile = existingProfileOptional.get();
-            if (updatedProfile.getUsername() != null) {
-                existingProfile.setUsername(updatedProfile.getUsername());
-            }
             
             if (updatedProfile.getBio() != null) {
                 existingProfile.setBio(updatedProfile.getBio());
+            }
+
+            if (updatedProfile.getPhone() != null) {
+                existingProfile.setPhone(updatedProfile.getPhone());
             }
             
            if (updatedProfile.getFirstName() != null) {
@@ -62,8 +63,8 @@ public class ProfileService {
                 existingProfile.setStatus(updatedProfile.getStatus());
             }
     
-            if (updatedProfile.getRating() != null) {
-                existingProfile.setRating(updatedProfile.getRating());
+            if (updatedProfile.getGender() != null) {
+                existingProfile.setGender(updatedProfile.getGender());
             }
     
             if (updatedProfile.getResponseRate() != null) {
