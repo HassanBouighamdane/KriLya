@@ -58,7 +58,7 @@ function PostRental() {
                   </g>
                </g>
             </svg>
-            <span class="pl-2 mx-1 ">Rent Out An Item</span>
+            <span className="pl-2 mx-1 ">Rent Out An Item</span>
          </button>
             {showModal && (
                 <div className="modal-overlay" onClick={() => setShowModal(false)}>
