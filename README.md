@@ -34,6 +34,6 @@ We welcome contributions from the community to help improve KriLya. If you have 
 ## Contributors
 - RihabAitBahessou  [@rihabab](https://github.com/rihabab)
 - Ben Hadin Maryem [@maryembe](https://github.com/maryembe)
-- Hassan Bouighamd [@HassanBouighamdane](https://github.com/HassanBouighamdane)
+- Hassan Bouighamdane [@HassanBouighamdane](https://github.com/HassanBouighamdane)
 - EL MEHDI BOUTOUMIT [@mehdiboutoumit](https://github.com/mehdiboutoumit)
 
