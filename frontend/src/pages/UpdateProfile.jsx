@@ -1,10 +1,13 @@
 import React, {useRef} from 'react';
 import { Formik, Form, Field } from 'formik';
 import avatar from '../images/avatar.jpg';
-
+import { FaArrowLeft } from 'react-icons/fa';
+import { useHandleBack } from '../hooks/useHandleBack';
+import API from '../services/UserManagementApi';
 
 
 function UpdateProfile() {
+    
     const initialValues = {
         firstname: "Jose",
         lastname: "Morinho",
@@ -21,6 +24,7 @@ function UpdateProfile() {
     };
 
     const fileInputRef = useRef(null);
+    const handleBack = useHandleBack();
 
     const handleFileInputChange = (e) => {
         const file = e.target.files[0];
@@ -34,14 +38,29 @@ function UpdateProfile() {
 
     const handleSubmit = (values) => {
         console.log("Form submitted with values:", values);
-        // Handle form submission, e.g., send form values to backend API
+        const options = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(values),
+        };
+        fetch(API.PROFILE.UPDATE(1), options)
+        .then(response => console.log(response))
+        .catch(err => console.log(err));
+
+        
     };
+
+    
 
     return (
         <div className="container max-w-xl mx-auto">
+          
             <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                 <Form>
                     <div className="bg-white p-3 border-t-4 border-blue-900 space-y-5">
+                   <button type='button' onClick={()=>handleBack("/profile")}><FaArrowLeft/></button> 
                     <div className="relative">
                         <div className="image overflow-hidden">
                             <img className="w-40 h-40 rounded-full mx-auto" src={initialValues.picture? initialValues.picture: avatar} alt="avatar" />

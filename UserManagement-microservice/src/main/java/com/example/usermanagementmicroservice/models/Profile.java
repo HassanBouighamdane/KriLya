@@ -19,8 +19,6 @@ public class Profile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
-
     private String bio;
 
     private String phone;
@@ -48,9 +46,8 @@ public class Profile {
    
 
     public double calculateProfileCompleteness() {
-        int totalFields = 8; 
+        int totalFields = 7; 
         int completedFields = 0;
-        if (username != null && !username.isEmpty()) completedFields++;
         if (firstName != null && !firstName.isEmpty()) completedFields++;
         if (lastName != null && !lastName.isEmpty()) completedFields++;
         if (bio != null && !bio.isEmpty()) completedFields++;

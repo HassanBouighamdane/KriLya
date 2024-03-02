@@ -34,9 +34,6 @@ public class ProfileService {
         Optional<Profile> existingProfileOptional = profileRepository.findById(id);
         if (existingProfileOptional.isPresent()) {
             Profile existingProfile = existingProfileOptional.get();
-            if (updatedProfile.getUsername() != null) {
-                existingProfile.setUsername(updatedProfile.getUsername());
-            }
             
             if (updatedProfile.getBio() != null) {
                 existingProfile.setBio(updatedProfile.getBio());
@@ -67,7 +64,7 @@ public class ProfileService {
             }
     
             if (updatedProfile.getGender() != null) {
-                existingProfile.setRating(updatedProfile.getGender());
+                existingProfile.setGender(updatedProfile.getGender());
             }
     
             if (updatedProfile.getResponseRate() != null) {

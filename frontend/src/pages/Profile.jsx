@@ -7,22 +7,52 @@ import { IoCartSharp } from "react-icons/io5";
 import useFetch from '../hooks/useFetch';
 import API from '../services/UserManagementApi';
 import { FaEdit } from 'react-icons/fa';
+import {useNavigate} from 'react-router-dom';
 
 
 function Profile() {
+
+    const navigate = useNavigate();
    
 
 
     const {data: profile, loading: profileLoading, error: profileError} = useFetch(API.PROFILE.GET_ONE(1));
     const {data: user, loading: userLoading, error: userError} = useFetch(API.USER.GET_ONE(1));
     const [User, setUser] = useState({});
-    useEffect(()=>{
-        if(profile) setUser(profile);
-        if(user) setUser({...User, email: user.email})
+    const [userEmail, setUserEmail] = useState('');
+    const [username, setUsername] = useState('');
 
-    },[profile, user, User]);
+    // Update User state when profile data is available
+    useEffect(() => {
+        if (profile) {
+            setUser(prevUser => ({
+                ...prevUser,
+                ...profile
+            }));
+        }
+        console.log(profile);
+    }, [profile]);
 
-    
+    // Update userEmail state when user data is available
+    useEffect(() => {
+        if (user && user.email && user.username) {
+            setUserEmail(user.email);
+            setUsername(user.username);
+        }
+    }, [user]);
+
+    // Update User state with userEmail
+    useEffect(() => {
+        setUser(prevUser => ({
+            ...prevUser,
+            email: userEmail,
+            username: username
+        }));
+    }, [userEmail]);
+
+    const handleEdit = ()=>{
+        navigate("/updateprofile")
+    }
 
 
     const reviews = "";
@@ -37,14 +67,14 @@ function Profile() {
                     <div className="w-full md:w-3/12 md:mx-2">
 
                         <div className="bg-white p-3 border-t-4 border-blue-900">
-                           <button><FaEdit className='ml-auto' /></button> 
+                           <button onClick={handleEdit}><FaEdit className='ml-auto' /></button> 
                       
                             <div className="image overflow-hidden">
                                    <img className='w-40 h-40 rounded-full mx-auto' src={avatar} alt='avatar' />
                         
                             </div>
                             <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">{User.firstname? User.firstname: User.username} {User.lastname}</h1>
-                            <h3 className="text-gray-600 font-lg text-semibold leading-6">{User.description? User.description:"-"}</h3>
+                            <h3 className="text-gray-500 font-lg text-semibold leading-6">{User.description? User.description:"Bio ..."}</h3>
                             <ul
                                 className="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
                                 <li className="flex items-center py-3">
@@ -55,6 +85,10 @@ function Profile() {
                                 <li className="flex items-center py-3">
                                     <span>Email</span>
                                     <span className="ml-auto">{User.email? User.email : "-"}</span>
+                                </li>
+                                <li className="flex items-center py-3">
+                                    <span>Phone</span>
+                                    <span className="ml-auto">{User.phone? User.phone : "-"}</span>
                                 </li>
                                 <li className="flex items-center py-3">
                                     <span>Member since</span>
