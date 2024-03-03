@@ -1,6 +1,6 @@
 
 import './App.css';
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes ,useLocation} from "react-router-dom";
 import Signup from './pages/Signup';
 import PostRental from "./components/PostRental";
 import { MyProvider } from './providers/UserProvider';
@@ -13,29 +13,21 @@ import RenatlItemDetails from './components/RentalItemDetails';
 import PageNotFound from './pages/PageNotFound';
 import UpdateProfile from './pages/UpdateProfile';
 
-
 function App() {
-  /*** 
-  const routes = [
-    //auth
-    {url : "", component: Signup},
-      {url:"post",component:PostRental},
-    {url:"home",component:Home},
-    {url:"login",component:Login},
-      {url:"details",component:RenatlItemDetails},
-  ]***/
   
+
 
 
   return (
     <div className="App">
     <Router>
+   
     <MyProvider>
-      <Navbar />
+     <Navbar />
       <Routes>
-        <Route exact path="/" element={<Signup />} />
+        <Route exact path="/" element={<Home />} />
+        <Route exact path="/signup" element={<Signup />} />
         <Route exact path="/login" element={<Login />} />
-        <Route exact path="/home" element={<Home />} />
         <Route exact path="/post" element={<PostRental />} />
         <Route exact path="/profile" element={<Profile />} />
         <Route exact path="/updateprofile" element={<UpdateProfile />} />

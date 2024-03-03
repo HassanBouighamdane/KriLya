@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import avatar from '../images/avatar.jpg';
+import avatar from '../assets/images/avatar.jpg';
 import RentalCard from '../components/RentalCard';
 import Review from '../components/Review';
 import { MdInsights } from "react-icons/md";

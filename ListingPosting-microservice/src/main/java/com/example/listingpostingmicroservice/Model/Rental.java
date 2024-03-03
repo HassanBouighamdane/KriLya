@@ -3,9 +3,9 @@ package com.example.listingpostingmicroservice.Model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Getter;
 import org.bson.types.Binary;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
@@ -19,23 +19,16 @@ public class Rental {
 
     @Id
     private String id;
-    @Getter
+    @Indexed
     private String title;
-    @Getter
     private String description;
-    @Getter
     private double pricePerDay;
-    @Getter
     private boolean available;
-    @Getter
     private String location;
-    @Getter
     private List<Binary> pictures;
-    @Getter
     private Date date;
-    @Getter
+    @Indexed
     private String ownerId;
-    @Getter
     private List<String> categoryIds;
 
 

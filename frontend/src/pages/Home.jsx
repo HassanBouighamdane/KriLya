@@ -2,7 +2,7 @@
 import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 import RentalCard from "../components/RentalCard";
-import { FaDesktop, FaPrint, FaTools, FaMotorcycle , FaSearch } from 'react-icons/fa';
+import { FaDesktop, FaTools, FaMotorcycle , FaSearch } from 'react-icons/fa';
 import { GiClothes } from "react-icons/gi";
 import '../assets/css/Home.css';
 import {fetchRentals,fetchRental} from '../services/api'

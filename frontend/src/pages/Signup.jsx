@@ -1,8 +1,8 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import img from '../images/bg.jpg';
-import logo from '../images/logo-nobg.png';
+import img from '../assets/images/bg.jpg';
+import logo from '../assets/images/logo-nobg.png';
 
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
@@ -101,7 +101,7 @@ function Signup() {
                     <button type="submit" id="btn" className="bg-blue-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">
                     Sign up
                     </button>
-                    <div>don't have an account ? <Link to="/login" className="text-blue-500">Login</Link> </div>
+                    <div>You have an account ? <Link to="/login" className="text-blue-500">Login</Link> </div>
                     
                 </Form>
                 )}

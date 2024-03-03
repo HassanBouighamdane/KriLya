@@ -1,6 +1,6 @@
 import React from 'react'
 
-import profile from '../images/avatar.jpg'
+import profile from '../assets/images/avatar.jpg'
 
 function Review(userId, rating, comment, date) {
 

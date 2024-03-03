@@ -1,8 +1,8 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import img from '../images/bg.jpg';
-import logo from '../images/logo-nobg.png';
+import img from '../assets/images/bg.jpg';
+import logo from '../assets/images/logo-nobg.png';
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import { useContext } from 'react';
@@ -33,7 +33,7 @@ function Login() {
                 console.log(res);
                 localStorage.setItem('jwtToken', res.data.token);
                 setData(res.data.user);
-                navigate("/home")
+                navigate("/")
             })
             .catch((err)=> {
                 console.log(err);
@@ -81,7 +81,7 @@ function Login() {
                     <button type="submit" id="btn" className="bg-blue-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">
                         Login
                     </button>
-                    <div>don't have an account ? <Link to="/" className="text-blue-500">Sign up</Link> </div>
+                    <div>don't have an account ? <Link to="/signup" className="text-blue-500">Sign up</Link> </div>
                     
                 </Form>
                   )}
