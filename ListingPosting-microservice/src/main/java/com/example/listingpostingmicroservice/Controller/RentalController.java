@@ -2,14 +2,12 @@ package com.example.listingpostingmicroservice.Controller;
 
 import com.example.listingpostingmicroservice.Model.Rental;
 import com.example.listingpostingmicroservice.Service.RentalService;
-import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,8 +23,11 @@ public class RentalController {
     };
 
     @GetMapping
-    public ResponseEntity<List<Rental>> getAllRentals() {
-        List<Rental> rentals = rentalService.getAllRentals();
+    public ResponseEntity<List<Rental>> getAllRentals(
+            @RequestParam (defaultValue = "0") int pageNo,
+            @RequestParam (defaultValue = "10") int pageSize,
+            @RequestParam (defaultValue = "id") String SortBy) {
+        List<Rental> rentals = rentalService.getAllRentals(pageNo,pageSize,SortBy);
         return new ResponseEntity<>(rentals, HttpStatus.OK);
     }
 
@@ -64,7 +65,17 @@ public class RentalController {
         rentalService.deleteRental(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
+/*
+    @GetMapping("/search")
+    public ResponseEntity<List<Rental>> searchRentals(@RequestParam String searchText){
+        List<Rental> foundRentals=rentalService.searchRentals(searchText);
+        if(!foundRentals.isEmpty()) {
+            return new ResponseEntity<>(foundRentals, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+    }
+/*
     //search by category , title && sorting
     @GetMapping("/search")
     public ResponseEntity<List<Rental>> searchRentals(
@@ -85,4 +96,6 @@ public class RentalController {
         }
         return new ResponseEntity<>(rentals, HttpStatus.OK);
     }
+
+ */
 }

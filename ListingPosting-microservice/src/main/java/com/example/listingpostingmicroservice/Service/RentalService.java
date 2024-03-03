@@ -4,6 +4,10 @@ import com.example.listingpostingmicroservice.Model.Rental;
 import com.example.listingpostingmicroservice.Repository.RentalRepository;
 import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,42 +23,41 @@ public class RentalService {
     public RentalService(RentalRepository rentalRepository) {
         this.rentalRepository = rentalRepository;
     }
-
-    public List<Rental> getAllRentals() {
-        return rentalRepository.findAll();
+    //CRUD Operations
+    public List<Rental> getAllRentals(int pageNo,int pageSize,String sortBy) {
+        Pageable paging =PageRequest.of(pageNo,pageSize, Sort.by(sortBy));
+        Page<Rental> pageResult=rentalRepository.findAll(paging);
+        return pageResult.getContent();
     }
-
     public Optional<Rental> getRentalById(String id) {
         return rentalRepository.findById(id);
     }
-
     public Rental createRental(String title, String description, double pricePerDay, boolean availability, String location, MultipartFile[] pictures) throws IOException {
         List<Binary> pictureDataList = convertMultipartFilesToBinaries(pictures);
         Rental rental = new Rental(title, description, pricePerDay, availability, location, pictureDataList);
         return rentalRepository.save(rental);
     }
-
-
     public Rental updateRental(String id, Rental rentalUpdates) {
         Optional<Rental> optionalRental = rentalRepository.findById(id);
         if (optionalRental.isPresent()) {
             Rental existingRental = optionalRental.get();
             // Update only the fields that are provided in rentalUpdates
-            if (!rentalUpdates.getTitle().equals(existingRental.getTitle())) {
+            if (rentalUpdates.getTitle() != null && !rentalUpdates.getTitle().equals(existingRental.getTitle())) {
                 existingRental.setTitle(rentalUpdates.getTitle());
             }
-            if (!rentalUpdates.getDescription().equals(existingRental.getDescription())) {
+            if (rentalUpdates.getDescription() != null && !rentalUpdates.getDescription().equals(existingRental.getDescription())) {
                 existingRental.setDescription(rentalUpdates.getDescription());
             }
-            if (rentalUpdates.getPricePerDay() != existingRental.getPricePerDay()) {
+            if (rentalUpdates.getPricePerDay() != 0 && rentalUpdates.getPricePerDay()!=existingRental.getPricePerDay()) {
                 existingRental.setPricePerDay(rentalUpdates.getPricePerDay());
             }
             if (rentalUpdates.isAvailable() != existingRental.isAvailable()) {
                 existingRental.setAvailable(rentalUpdates.isAvailable());
             }
-            if (!rentalUpdates.getLocation().equals(existingRental.getLocation())) {
+            if (rentalUpdates.getLocation() != null && !rentalUpdates.getLocation().equals(existingRental.getLocation())) {
                 existingRental.setLocation(rentalUpdates.getLocation());
             }
+
             // Save the updated rental
             return rentalRepository.save(existingRental);
         } else {
@@ -62,10 +65,11 @@ public class RentalService {
             return null;
         }
     }
-
     public void deleteRental(String id) {
         rentalRepository.deleteById(id);
     }
+    //pagination and Sorting
+
 
     public List<Binary> convertMultipartFilesToBinaries(MultipartFile[] files) throws IOException {
         List<Binary> binaries = new ArrayList<>();
@@ -75,7 +79,11 @@ public class RentalService {
         return binaries;
     }
     //
-
+/*
+    public List<Rental> searchRentals(String searchText){
+        return rentalRepository.findRentalBySearchText(searchText);
+    }
+/*
     public List<Rental> searchByCategory(String category, String sortBy, String sortOrder)  {
         List<Rental> rentals = getAllRentals();
         Comparator<Rental> comparator = getComparator(sortBy, sortOrder);
@@ -112,5 +120,5 @@ public class RentalService {
             comparator = comparator.reversed();
         }
         return comparator; // Return the comparator outside the switch statement
-    }
+    }*/
 }
