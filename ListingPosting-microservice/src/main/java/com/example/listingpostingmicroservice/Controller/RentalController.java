@@ -1,8 +1,11 @@
 package com.example.listingpostingmicroservice.Controller;
 
 import com.example.listingpostingmicroservice.Model.Rental;
-import com.example.listingpostingmicroservice.Service.RentalService;
+import com.example.listingpostingmicroservice.Service.Interfaces.RentalService;
+import com.example.listingpostingmicroservice.Service.RentalServiceImp;
+import com.example.listingpostingmicroservice.Service.SearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +21,7 @@ public class RentalController {
 
     private final RentalService rentalService;
     @Autowired
-    private RentalController(RentalService rentalService){
+    private RentalController(RentalServiceImp rentalService){
         this.rentalService=rentalService;
     };
 
@@ -44,7 +47,7 @@ public class RentalController {
                                                @RequestParam("pricePerDay") double pricePerDay,
                                                @RequestParam("availability") boolean availability,
                                                @RequestParam("location") String location,
-                                                @RequestParam("pictures") MultipartFile[] pictures) {
+                                                @RequestParam(value = "pictures", required = false) MultipartFile[] pictures) {
         try {
             Rental rental = rentalService.createRental(title,description, pricePerDay, availability, location, pictures);
             return new ResponseEntity<>(rental, HttpStatus.CREATED);
@@ -64,6 +67,18 @@ public class RentalController {
     public ResponseEntity<Void> deleteRental(@PathVariable("id") String id) {
         rentalService.deleteRental(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Rental>> dynamicSearch(
+            @RequestParam String query,
+            @RequestParam SearchCriteria criteria,
+            @RequestParam(defaultValue = "0") int pageNo,
+            @RequestParam(defaultValue = "20") int pageSize,
+            @RequestParam(defaultValue = "id") String sortBy) {
+
+        List<Rental> result = rentalService.dynamicSearch(query, criteria, pageNo, pageSize, sortBy);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 /*
     @GetMapping("/search")
