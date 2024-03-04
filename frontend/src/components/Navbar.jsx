@@ -1,9 +1,14 @@
-import logo from '../images/logo-nobg.png';
+import logo from '../assets/images/logo-nobg.png';
 import React, { useState ,useEffect, useContext} from 'react';
 import {useNavigate,Link,useLocation } from 'react-router-dom';
 import { MyContext } from '../providers/UserProvider';
 
 function Navbar(){
+  const location = useLocation();
+  const isLoginPage = location.pathname === '/login';
+  const isSignupPage = location.pathname === '/signup';
+
+ 
   const { data, setData } = useContext(MyContext);
   const navigate = useNavigate();
   const [ isUserLoggedIn, setUserLoggedIn]= useState(false)
@@ -17,13 +22,6 @@ function Navbar(){
     }
     
   }, []);
-  const location = useLocation();
-
-  // Function to determine if the button should be displayed
-  const shouldDisplayButton = () => {
-      // Check if current route is login or signup
-      return !['/login', '/','/signup'].includes(location.pathname);
-  };
 
 
   const handleLogout = () => {
@@ -31,6 +29,9 @@ function Navbar(){
     setUserLoggedIn(false);
     navigate('/login');
   };
+  if (isLoginPage || isSignupPage) {
+    return null;
+  }
     return (
         <nav className="bg-white border-gray-200">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 pt-1">

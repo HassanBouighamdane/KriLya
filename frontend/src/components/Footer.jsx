@@ -1,4 +1,4 @@
-import logo from '../images/logo-min-nobg.png'
+import logo from '../assets/images/logo-min-nobg.png'
 
 function Footer(){
     return(

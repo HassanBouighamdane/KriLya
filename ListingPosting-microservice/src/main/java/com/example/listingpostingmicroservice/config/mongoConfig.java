@@ -10,7 +10,6 @@ public class mongoConfig extends AbstractMongoClientConfiguration {
     protected String getDatabaseName() {
         return "Posting-Database";
     }
-
     @Override
     public boolean autoIndexCreation() {
         return true;

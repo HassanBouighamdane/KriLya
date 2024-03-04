@@ -1,6 +1,6 @@
 import React, {useRef} from 'react';
 import { Formik, Form, Field } from 'formik';
-import avatar from '../images/avatar.jpg';
+import avatar from '../assets/images/avatar.jpg';
 import { FaArrowLeft } from 'react-icons/fa';
 import { useHandleBack } from '../hooks/useHandleBack';
 import API from '../services/UserManagementApi';
