@@ -1,6 +1,6 @@
 
 import './App.css';
-import { BrowserRouter as Router, Route, Routes ,useLocation} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import Signup from './pages/Signup';
 import PostRental from "./components/PostRental";
 import { MyProvider } from './providers/UserProvider';
@@ -14,14 +14,9 @@ import PageNotFound from './pages/PageNotFound';
 import UpdateProfile from './pages/UpdateProfile';
 
 function App() {
-  
-
-
-
   return (
     <div className="App">
     <Router>
-   
     <MyProvider>
      <Navbar />
       <Routes>

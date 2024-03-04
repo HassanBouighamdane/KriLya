@@ -15,14 +15,16 @@ export default function RentalCard({id,title, description, images, pricePerDay, 
     const imageSrc = `data:image/png;base64,${images}`;
 
     return (
-        <Card className="border-4 p-8 w-full max-w-[25rem] flex flex-col justify-between" style={{ paddingTop: 12, boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', minHeight: '100%' }}>
+        <Card className="border-2 p-3 w-full max-w-[20rem] flex flex-col justify-between ml-2 mr-2">
             <div>
                 <CardHeader floated={false} color="blue-gray">
-                    <img 
-                        src={imageSrc}
-                        alt="Item Image"
-                    
-                    />
+                <div className='h-40 w-max '>
+                        <img
+                            className=" h-full w-auto object-cover"
+                            src={imageSrc}
+                            alt="Item Image"
+                        />
+                    </div>
                     {isFavorite ? (
                         <RemoveFromFavorites handleFavoritesClick={handleFavouritesClick} className="absolute top-2 right-2 z-10" />
                     ) : (
@@ -31,7 +33,7 @@ export default function RentalCard({id,title, description, images, pricePerDay, 
                 </CardHeader>
 
                 <CardBody>
-                    <div className="mb-3 flex items-center justify-between" style={{ marginTop: '10px' }}>
+                    <div className="m-1 flex items-center justify-between" >
                         <Typography variant="h5" color="blue-gray" className="font-medium">
                             {title}
                         </Typography>

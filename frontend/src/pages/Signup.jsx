@@ -37,7 +37,7 @@ function Signup() {
             .then((res)=> {
                 console.log(res);
                 localStorage.setItem('jwtToken', res.data.token);
-                navigate("/home")
+                navigate("/")
             })
             .catch((err)=> {
                 console.log(err);

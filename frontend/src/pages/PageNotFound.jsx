@@ -22,7 +22,7 @@ export default function PageNotFound() {
             </p>
 
             <Link
-              to="/home"
+              to="/"
               className="px-5 py-2 rounded-md text-blue-100 bg-blue-900 hover:bg-blue-700"
             >
               Go home

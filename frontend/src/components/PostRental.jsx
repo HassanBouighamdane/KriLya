@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState,useCallback } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
+import { useDropzone } from "react-dropzone";
+import { Alert,AlertTitle } from '@mui/material';
 
 const baseUrl = "http://localhost:8081";
 
-const PostRental = () => {
+const PostRental = ({ onPostSuccess }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [errorAlertOpen, setErrorAlertOpen] = useState(false);
 
     const toggleModal = () => {
         setIsOpen(!isOpen);
@@ -37,43 +40,60 @@ const PostRental = () => {
             const response = await axios.post(baseUrl + '/api/rentals', formDataToSend);
 
             if (response.status === 201) {
-                alert('Rental posted successfully!');
                 toggleModal(); // Close the modal after successful submission
+                onPostSuccess();
             } else {
-                alert('Error posting rental. Please try again.');
+                setErrorAlertOpen(true);
+                setTimeout(() => {
+                    setErrorAlertOpen(false);
+                }, 3000);
             }
         } catch (error) {
             console.error('Error posting rental:', error);
-            alert('Error posting rental. Please try again.');
+            setErrorAlertOpen(true);
+            setTimeout(() => {
+                setErrorAlertOpen(false);
+            }, 3000);
         } finally {
             setSubmitting(false);
         }
     };
+    
 
     return (
-        <div className=''>
+        <div >
+            
             <button
                 onClick={toggleModal}
                 data-modal-target="crud-modal"
                 data-modal-toggle="crud-modal"
-                className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                className="block text-white bg-blue-800 hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 type="button"
             >
                 Rent out an item
             </button>
 
             {isOpen && (
+                
                 <div
                     id="crud-modal"
                     tabIndex="-1"
                     aria-hidden="true"
-                    className="fixed inset-0 z-50 overflow-y-auto bg-gray-500 bg-opacity-75 flex justify-center items-center"
+                    className="fixed inset-0 z-50 overflow-y-auto bg-gray-600 bg-opacity-80 flex justify-center items-center "
                 >
-                    <div className="relative bg-white rounded-lg shadow-lg">
+                    <div className="relative bg-white rounded-lg shadow-lg w-4/5  md:w-2/3 ">
+                        {/* Display error alert */}
+            {errorAlertOpen && (
+                <Alert severity="error" onClose={() => setErrorAlertOpen(false)}>
+                    <AlertTitle>Error</AlertTitle>
+                    Error posting rental. Please try again.
+                </Alert>
+            )}
                         <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                            <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                            
+                            <div className="flex items-center justify-between p-4 border-b rounded-t dark:border-gray-600">
                                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                    Create New Rental
+                                    Post item
                                 </h3>
                                 <button
                                     onClick={toggleModal}
@@ -113,11 +133,11 @@ const PostRental = () => {
                             >
                                 {({ isSubmitting, errors, setFieldValue }) => (
                                     <Form className="p-4 md:p-5">
-                                        <div className="grid gap-4 mb-4 grid-cols-2">
-                                            <div className="col-span-2">
+                                        <div className="grid gap-4 mb-2 grid-cols-2">
+                                            <div className="col-span-2 sm:col-span-1">
                                                 <label
                                                     htmlFor="title"
-                                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                                    className="block mb-1 text-sm font-medium text-gray-900 dark:text-white"
                                                 >
                                                     Title
                                                 </label>
@@ -130,22 +150,28 @@ const PostRental = () => {
                                                 />
                                                 <ErrorMessage name="title" component="i" className="error-message text-red-500 text-xs"/>
                                             </div>
-                                            <div className="col-span-2">
+                                            <div className="col-span-2 sm:col-span-1">
                                                 <label
-                                                    htmlFor="description"
-                                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                                    htmlFor="category"
+                                                    className="block mb-1 text-sm font-medium text-gray-900 dark:text-white"
                                                 >
-                                                    Description
+                                                    Category
                                                 </label>
                                                 <Field
-                                                    as="textarea"
-                                                    name="description"
-                                                    id="description"
-                                                    placeholder="Description"
-                                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                />
-                                                <ErrorMessage name="description" component="i" className="error-message text-red-500 text-xs"/>
+                                                    as="select"
+                                                    name="category"
+                                                    id="category"
+                                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                >
+                                                    <option value="">Select category</option>
+                                                    <option value="TV">TV/Monitors</option>
+                                                    <option value="PC">PC</option>
+                                                    <option value="GA">Gaming/Console</option>
+                                                    <option value="PH">Phones</option>
+                                                </Field>
+                                                <ErrorMessage name="category" component="i" className="error-message text-red-500 text-xs"/>
                                             </div>
+                                
                                             <div className="col-span-2 sm:col-span-1">
                                                 <label
                                                     htmlFor="pricePerDay"
@@ -165,7 +191,7 @@ const PostRental = () => {
                                             <div className="col-span-2 sm:col-span-1">
                                                 <label
                                                     htmlFor="location"
-                                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                                    className="block mb-1 text-sm font-medium text-gray-900 dark:text-white"
                                                 >
                                                     Location
                                                 </label>
@@ -184,29 +210,25 @@ const PostRental = () => {
                                             </div>
                                             <div className="col-span-2 sm:col-span-1">
                                                 <label
-                                                    htmlFor="category"
-                                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                                    htmlFor="description"
+                                                    className="block mb-1 text-sm font-medium text-gray-900 dark:text-white"
                                                 >
-                                                    Category
+                                                    Description
                                                 </label>
                                                 <Field
-                                                    as="select"
-                                                    name="category"
-                                                    id="category"
-                                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                >
-                                                    <option value="">Select category</option>
-                                                    <option value="TV">TV/Monitors</option>
-                                                    <option value="PC">PC</option>
-                                                    <option value="GA">Gaming/Console</option>
-                                                    <option value="PH">Phones</option>
-                                                </Field>
-                                                <ErrorMessage name="category" component="i" className="error-message text-red-500 text-xs"/>
+                                                    as="textarea"
+                                                    name="description"
+                                                    id="description"
+                                                    placeholder="Description"
+                                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                />
+                                                <ErrorMessage name="description" component="i" className="error-message text-red-500 text-xs"/>
                                             </div>
-                                            <div className="col-span-2">
+                                            
+                                            <div className="col-span-2 sm:col-span-1">
                                                 <label
                                                     htmlFor="pictures"
-                                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                                    className="block mb-1 text-sm font-medium text-gray-900 dark:text-white"
                                                 >
                                                     Pictures
                                                 </label>
@@ -223,9 +245,12 @@ const PostRental = () => {
                                                 />
                                                 <ErrorMessage name="pictures" component="i" className="error-message text-red-500 text-xs"/>
                                             </div>
+    
+                                        </div>
+                                        <div className="flex justify-center">
                                             <button
                                                 type="submit"
-                                                className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                                className="text-white inline-flex items-center bg-blue-900 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                             >
                                                 <svg
                                                     className="me-1 -ms-1 w-5 h-5"
@@ -239,9 +264,9 @@ const PostRental = () => {
                                                         clipRule="evenodd"
                                                     />
                                                 </svg>
-                                                Add new rental
+                                                Post
                                             </button>
-                                        </div>
+                                            </div>
                                     </Form>
                                 )}
                             </Formik>
@@ -249,6 +274,7 @@ const PostRental = () => {
                     </div>
                 </div>
             )}
+          
         </div>
     );
 };
