@@ -51,10 +51,8 @@ function Login() {
                 
             <Formik
                 initialValues={{
-                    username: '',
                     email: '',
                     password: '',
-                    confirmPassword: '',
                 }}
                 validationSchema={validationSchema} 
                 onSubmit={handleSubmit} 

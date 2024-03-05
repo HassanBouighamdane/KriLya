@@ -1,14 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState,useCallback } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
-import '../assets/css/PostRental.css';
-
+import { useDropzone } from "react-dropzone";
+import { Alert,AlertTitle } from '@mui/material';
 
 const baseUrl = "http://localhost:8081";
 
-function PostRental() {
-    const [showModal, setShowModal] = useState(false);
+const PostRental = ({ onPostSuccess }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [errorAlertOpen, setErrorAlertOpen] = useState(false);
+
+    const toggleModal = () => {
+        setIsOpen(!isOpen);
+    };
 
     const validationSchema = Yup.object({
         title: Yup.string().required('Title is required'),
@@ -16,6 +21,7 @@ function PostRental() {
         pricePerDay: Yup.number().required('Price per Day is required'),
         location: Yup.string().required('Location is required'),
         pictures: Yup.mixed().required('Pictures are required'),
+        category: Yup.string().required('Category is required'),
     });
 
     const handleSubmit = async (values, { setSubmitting }) => {
@@ -26,6 +32,7 @@ function PostRental() {
             formDataToSend.append('pricePerDay', values.pricePerDay);
             formDataToSend.append('availability', true);
             formDataToSend.append('location', values.location);
+            formDataToSend.append('category', values.category);
             for (let i = 0; i < values.pictures.length; i++) {
                 formDataToSend.append('pictures', values.pictures[i]);
             }
@@ -33,143 +40,243 @@ function PostRental() {
             const response = await axios.post(baseUrl + '/api/rentals', formDataToSend);
 
             if (response.status === 201) {
-                alert('Rental posted successfully!');
+                toggleModal(); // Close the modal after successful submission
+                onPostSuccess();
             } else {
-                alert('Error posting rental. Please try again.');
+                setErrorAlertOpen(true);
+                setTimeout(() => {
+                    setErrorAlertOpen(false);
+                }, 3000);
             }
         } catch (error) {
             console.error('Error posting rental:', error);
-            alert('Error posting rental. Please try again.');
+            setErrorAlertOpen(true);
+            setTimeout(() => {
+                setErrorAlertOpen(false);
+            }, 3000);
         } finally {
             setSubmitting(false);
         }
     };
+    
 
     return (
-        <div>
-            <button onClick={() => setShowModal(true)} type="button" class=" w-50 flex  items-center text-center px-5 py-2.5 font-medium tracking-wide text-white capitalize   bg-black rounded-md hover:bg-gray-900  focus:outline-none   transition duration-300 transform active:scale-95 ease-in-out mb-10">
-            <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF">
-               <g>
-                  <rect fill="none" height="24" width="24"></rect>
-               </g>
-               <g>
-                  <g>
-                     <path d="M19,13h-6v6h-2v-6H5v-2h6V5h2v6h6V13z"></path>
-                  </g>
-               </g>
-            </svg>
-            <span className="pl-2 mx-1 ">Rent Out An Item</span>
-         </button>
-            {showModal && (
-                <div className="modal-overlay" onClick={() => setShowModal(false)}>
-                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                        <button className="modal-close-btn" onClick={() => setShowModal(false)}>X</button>
-                        <Formik
-                            initialValues={{
-                                title: '',
-                                description: '',
-                                pricePerDay: '',
-                                location: '',
-                                pictures: [],
-                            }}
-                            validationSchema={validationSchema}
-                            onSubmit={handleSubmit}
-                        >
-                            {({ isSubmitting, errors,setFieldValue }) => (
-                                <Form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-2/3 bg-gray-100">
-                                    <h2 id="form-title" className="text-center">Post</h2>
-                                    <div className="mb-4">
-                                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="title">
-                                            Title
-                                        </label>
-                                        <Field type="text" name="title" id="title" placeholder="Title"
-                                               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
-                                        <ErrorMessage name="title" component="i"
-                                                      className="error-message text-red-500 text-xs"/>
-                                    </div>
-                                    <div className="mb-4">
-                                        <label className="block text-gray-700 text-sm font-bold mb-2"
-                                               htmlFor="description">
-                                            Description
-                                        </label>
-                                        <Field as="textarea" name="description" id="description"
-                                               placeholder="Description"
-                                               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
-                                        <ErrorMessage name="description" component="i"
-                                                      className="error-message text-red-500 text-xs"/>
-                                    </div>
-                                    <div className="mb-4">
-                                        <label className="block text-gray-700 text-sm font-bold mb-2"
-                                               htmlFor="pricePerDay">
-                                            Price per Day
-                                        </label>
-                                        <Field type="number" name="pricePerDay" id="pricePerDay"
-                                               placeholder="Price per Day"
-                                               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
-                                        <ErrorMessage name="pricePerDay" component="i"
-                                                      className="error-message text-red-500 text-xs"/>
-                                    </div>
-                                    <div className="mb-4">
-                                        <label className="block text-gray-700 text-sm font-bold mb-2"
-                                               htmlFor="location">
-                                            Location
-                                        </label>
-                                        <Field as="select" name="location" id="location"
-                                               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                                            <option value="">Select Location</option>
-                                            <option value="Rabat">Rabat</option>
-                                            <option value="Casablanca">Casablanca</option>
-                                            <option value="Marrakech">Marrakech</option>
-                                        </Field>
-                                        <ErrorMessage name="location" component="i"
-                                                      className="error-message text-red-500 text-xs"/>
-                                    </div>
-                                    <div className="flex items-center justify-center w-full">
-                                        <label
-                                            htmlFor="dropzone-file"
-                                            className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-                                        >
-                                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                                <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
-                                                     aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                     viewBox="0 0 20 16">
-                                                    <path stroke="currentColor" strokeLinecap="round"
-                                                          strokeLinejoin="round" strokeWidth="2"
-                                                          d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-                                                </svg>
-                                                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span
-                                                    className="font-semibold">Click to upload</span> or drag and drop
-                                                </p>
-                                                <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or
-                                                    GIF (MAX. 800x400px)</p>
+        <div >
+            
+            <button
+                onClick={toggleModal}
+                data-modal-target="crud-modal"
+                data-modal-toggle="crud-modal"
+                className="block text-white bg-blue-800 hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                type="button"
+            >
+                Rent out an item
+            </button>
+
+            {isOpen && (
+                
+                <div
+                    id="crud-modal"
+                    tabIndex="-1"
+                    aria-hidden="true"
+                    className="fixed inset-0 z-50 overflow-y-auto bg-gray-600 bg-opacity-80 flex justify-center items-center "
+                >
+                    <div className="relative bg-white rounded-lg shadow-lg w-4/5  md:w-2/3 ">
+                        {/* Display error alert */}
+            {errorAlertOpen && (
+                <Alert severity="error" onClose={() => setErrorAlertOpen(false)}>
+                    <AlertTitle>Error</AlertTitle>
+                    Error posting rental. Please try again.
+                </Alert>
+            )}
+                        <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                            
+                            <div className="flex items-center justify-between p-4 border-b rounded-t dark:border-gray-600">
+                                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                                    Post item
+                                </h3>
+                                <button
+                                    onClick={toggleModal}
+                                    type="button"
+                                    className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                    data-modal-toggle="crud-modal"
+                                >
+                                    <svg
+                                        className="w-3 h-3"
+                                        aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 14 14"
+                                    >
+                                        <path
+                                            stroke="currentColor"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                                        />
+                                    </svg>
+                                    <span className="sr-only">Close modal</span>
+                                </button>
+                            </div>
+                            <Formik
+                                initialValues={{
+                                    title: '',
+                                    description: '',
+                                    pricePerDay: '',
+                                    location: '',
+                                    category: '',
+                                    pictures: [],
+                                }}
+                                validationSchema={validationSchema}
+                                onSubmit={handleSubmit}
+                            >
+                                {({ isSubmitting, errors, setFieldValue }) => (
+                                    <Form className="p-4 md:p-5">
+                                        <div className="grid gap-4 mb-2 grid-cols-2">
+                                            <div className="col-span-2 sm:col-span-1">
+                                                <label
+                                                    htmlFor="title"
+                                                    className="block mb-1 text-sm font-medium text-gray-900 dark:text-white"
+                                                >
+                                                    Title
+                                                </label>
+                                                <Field
+                                                    type="text"
+                                                    name="title"
+                                                    id="title"
+                                                    placeholder="Title"
+                                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                />
+                                                <ErrorMessage name="title" component="i" className="error-message text-red-500 text-xs"/>
                                             </div>
-                                            <input
-                                                id="dropzone-file"
-                                                type="file"
-                                                name="pictures"
-                                                multiple
-                                                className="hidden"
-                                                onChange={(event) => {
-                                                    const files = event.target.files;
-                                                    setFieldValue("pictures", files);
-                                                }}
-                                            />
-                                        </label>
-                                    </div>
-
-
-                                    <button type="submit" id="btn"
-                                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">
-                                        Post
-                                    </button>
-                                </Form>
-                            )}
-                        </Formik>
+                                            <div className="col-span-2 sm:col-span-1">
+                                                <label
+                                                    htmlFor="category"
+                                                    className="block mb-1 text-sm font-medium text-gray-900 dark:text-white"
+                                                >
+                                                    Category
+                                                </label>
+                                                <Field
+                                                    as="select"
+                                                    name="category"
+                                                    id="category"
+                                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                >
+                                                    <option value="">Select category</option>
+                                                    <option value="TV">TV/Monitors</option>
+                                                    <option value="PC">PC</option>
+                                                    <option value="GA">Gaming/Console</option>
+                                                    <option value="PH">Phones</option>
+                                                </Field>
+                                                <ErrorMessage name="category" component="i" className="error-message text-red-500 text-xs"/>
+                                            </div>
+                                
+                                            <div className="col-span-2 sm:col-span-1">
+                                                <label
+                                                    htmlFor="pricePerDay"
+                                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                                >
+                                                    Price per Day
+                                                </label>
+                                                <Field
+                                                    type="number"
+                                                    name="pricePerDay"
+                                                    id="pricePerDay"
+                                                    placeholder="Price per Day"
+                                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                />
+                                                <ErrorMessage name="pricePerDay" component="i" className="error-message text-red-500 text-xs"/>
+                                            </div>
+                                            <div className="col-span-2 sm:col-span-1">
+                                                <label
+                                                    htmlFor="location"
+                                                    className="block mb-1 text-sm font-medium text-gray-900 dark:text-white"
+                                                >
+                                                    Location
+                                                </label>
+                                                <Field
+                                                    as="select"
+                                                    name="location"
+                                                    id="location"
+                                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                >
+                                                    <option value="">Select Location</option>
+                                                    <option value="Rabat">Rabat</option>
+                                                    <option value="Casablanca">Casablanca</option>
+                                                    <option value="Marrakech">Marrakech</option>
+                                                </Field>
+                                                <ErrorMessage name="location" component="i" className="error-message text-red-500 text-xs"/>
+                                            </div>
+                                            <div className="col-span-2 sm:col-span-1">
+                                                <label
+                                                    htmlFor="description"
+                                                    className="block mb-1 text-sm font-medium text-gray-900 dark:text-white"
+                                                >
+                                                    Description
+                                                </label>
+                                                <Field
+                                                    as="textarea"
+                                                    name="description"
+                                                    id="description"
+                                                    placeholder="Description"
+                                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                />
+                                                <ErrorMessage name="description" component="i" className="error-message text-red-500 text-xs"/>
+                                            </div>
+                                            
+                                            <div className="col-span-2 sm:col-span-1">
+                                                <label
+                                                    htmlFor="pictures"
+                                                    className="block mb-1 text-sm font-medium text-gray-900 dark:text-white"
+                                                >
+                                                    Pictures
+                                                </label>
+                                                <input
+                                                    type="file"
+                                                    id="pictures"
+                                                    name="pictures"
+                                                    multiple
+                                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                    onChange={(event) => {
+                                                        const files = event.target.files;
+                                                        setFieldValue("pictures", files);
+                                                    }}
+                                                />
+                                                <ErrorMessage name="pictures" component="i" className="error-message text-red-500 text-xs"/>
+                                            </div>
+    
+                                        </div>
+                                        <div className="flex justify-center">
+                                            <button
+                                                type="submit"
+                                                className="text-white inline-flex items-center bg-blue-900 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                            >
+                                                <svg
+                                                    className="me-1 -ms-1 w-5 h-5"
+                                                    fill="currentColor"
+                                                    viewBox="0 0 20 20"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                >
+                                                    <path
+                                                        fillRule="evenodd"
+                                                        d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                                                        clipRule="evenodd"
+                                                    />
+                                                </svg>
+                                                Post
+                                            </button>
+                                            </div>
+                                    </Form>
+                                )}
+                            </Formik>
+                        </div>
                     </div>
                 </div>
             )}
+          
         </div>
     );
-}
+};
 
 export default PostRental;
