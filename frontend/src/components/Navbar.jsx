@@ -3,9 +3,6 @@ import React, { useState ,useEffect, useContext} from 'react';
 import {useNavigate,Link,useLocation } from 'react-router-dom';
 import { MyContext } from '../providers/UserProvider';
 import { FaUser } from 'react-icons/fa';
-import Profile from '../pages/Profile';
-
-
 function Navbar(){
   // const location = useLocation();
   // const isLoginPage = location.pathname === '/login';

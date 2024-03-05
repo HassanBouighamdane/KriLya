@@ -31,7 +31,6 @@ export default function Home() {
 
     useEffect(() => {
           fetchAllItems();
-        
       }, [searchQuery, sortBy, sortOrder]);
       
     const handlePostSuccess = () => {
@@ -49,7 +48,6 @@ export default function Home() {
 
     useEffect(() => {
         const Favourites = JSON.parse(localStorage.getItem('react-app-favourites'));
-
         if (Favourites) {
             setFavourites(Favourites);
         }
@@ -60,22 +58,22 @@ export default function Home() {
     };
 
     const addFavourite = (item) => {
-        const newFavouriteList = [...favourites, item];
+        const newFavouriteList = [...favourites, item.id];
         setFavourites(newFavouriteList);
         saveToLocalStorage(newFavouriteList);
     };
 
     const removeFavourite = (item) => {
         const newFavouriteList = favourites.filter(
-            (favourite) => favourite.id !== item.id
+            (favourite) => favourite !== item.id
         );
 
         setFavourites(newFavouriteList);
         saveToLocalStorage(newFavouriteList);
     };
 
-    const favoriteRentals = rentals.filter(rental => favourites.some(fav => fav.id === rental.id));
-    const otherRentals = rentals.filter(rental => !favourites.some(fav => fav.id === rental.id));
+    const favoriteRentals = rentals.filter(rental => favourites.some(fav => fav === rental.id));
+    const otherRentals = rentals.filter(rental => !favourites.some(fav => fav === rental.id));
 
     return (
         
