@@ -1,6 +1,5 @@
 import React from 'react';
-import AddToFavorites from '../components/AddToFavorites'; // Import AddToFavorites component
-import RemoveFromFavorites from '../components/RemoveFromFavorites'; // Import RemoveFromFavorites component
+import {AddToFavorites,RemoveFromFavorites} from '../components/FavouriteRemoveAdd'; 
 import { Link } from 'react-router-dom';
 import {
     Card,
