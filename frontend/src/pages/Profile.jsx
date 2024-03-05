@@ -117,7 +117,7 @@ function Profile() {
                             </div>
                             <div className="">
                             <div className="flex flex-col gap-3 mt-14">
-                           <Review avatar={avatar}></Review>
+                           <Review username="User" message="cool" rating="2"></Review>
                         </div>
                          </div>
                         </div>

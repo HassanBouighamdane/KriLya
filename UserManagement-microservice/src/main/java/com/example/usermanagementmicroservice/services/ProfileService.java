@@ -67,7 +67,7 @@ public class ProfileService {
                 existingProfile.setGender(updatedProfile.getGender());
             }
     
-            if (updatedProfile.getResponseRate() != null) {
+            if (updatedProfile.getResponseRate() != null) { 
                 existingProfile.setResponseRate(updatedProfile.getResponseRate());
             }
             return profileRepository.save(existingProfile);
