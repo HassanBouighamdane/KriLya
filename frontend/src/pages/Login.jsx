@@ -32,7 +32,8 @@ function Login() {
             .then((res)=> {
                 console.log(res);
                 localStorage.setItem('jwtToken', res.data.token);
-                setData(res.data.user);
+                // setData(res.data.user);
+                setData(true);
                 navigate("/")
             })
             .catch((err)=> {
