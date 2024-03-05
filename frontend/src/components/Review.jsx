@@ -2,7 +2,7 @@ import React from 'react'
 
 import profile from '../assets/images/avatar.jpg'
 
-function Review(userId, rating, comment, date) {
+function Review(user, rating, comment, date) {
 
   
   return (
@@ -13,7 +13,7 @@ function Review(userId, rating, comment, date) {
                                     <div className="flex gap-2">
                                     <img className='w-10 h-10 rounded-full mx-auto' src={profile} alt='avatar' />
                                         {/* <div className="w-7 h-7 text-center rounded-full">J</div> */}
-                                        <span>Ahmed Haroun</span>
+                                        <span>{user.username}</span>
                                     </div>
                                     <div className="flex p-1 gap-1 text-orange-300">
                                         <ion-icon name="star"></ion-icon>
@@ -21,11 +21,12 @@ function Review(userId, rating, comment, date) {
                                         <ion-icon name="star"></ion-icon>
                                         <ion-icon name="star"></ion-icon>
                                         <ion-icon name="star-half"></ion-icon>
+                                        
                                     </div>
                                 </div>
 
                                 <div>
-                                    Tres bon service !
+                                    {user.message}
                                 </div>
 
                                 <div className="flex justify-between">
