@@ -1,5 +1,6 @@
 
 import React, {useEffect, useState} from 'react';
+import { useNavigate } from 'react-router-dom';
 import RentalCard from "../components/RentalCard";
 import { FaDesktop, FaTools, FaMotorcycle , FaSearch } from 'react-icons/fa';
 import { GiClothes } from "react-icons/gi";
@@ -9,6 +10,7 @@ import {fetchRentals,fetchRental} from '../services/api'
 import PostRental from '../components/PostRental';
 
 export default function Home() {
+    const navigate = useNavigate();
     const [rentals, setRentals] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [sortBy, setSortBy] = useState('title');
@@ -28,9 +30,10 @@ export default function Home() {
     };
 
     useEffect(() => {
-        fetchAllItems();
-    }, [searchQuery, sortBy, sortOrder]);
-
+          fetchAllItems();
+        
+      }, [searchQuery, sortBy, sortOrder]);
+      
     const handlePostSuccess = () => {
         setSuccessAlertOpen(true);
         fetchAllItems(); 
@@ -76,7 +79,7 @@ export default function Home() {
 
     return (
         
-        <div className="container mx-auto  ">
+        <div className="container mx-auto  px-7">
             {/* Display success alert */}
          {successAlertOpen && (
                 <Alert severity="success" className='z-50' onClose={() => setSuccessAlertOpen(false)}>

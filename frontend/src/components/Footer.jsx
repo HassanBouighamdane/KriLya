@@ -16,7 +16,7 @@ function Footer(){
         </div>
 
         
-        <div className="md:order-2 grid grid-cols-2 text-center">
+        <div className="md:order-2 grid grid-cols-8 text-center items-center">
       
           <a href="#!" role="button">
               <svg

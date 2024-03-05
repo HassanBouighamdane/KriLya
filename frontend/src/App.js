@@ -17,8 +17,9 @@ function App() {
   return (
     <div className="App">
     <Router>
-    <MyProvider>
-     <Navbar />
+    <MyProvider >
+    <Navbar />
+
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route exact path="/signup" element={<Signup />} />
@@ -29,8 +30,10 @@ function App() {
         <Route exact path="/items/:id/details" element={<RenatlItemDetails/>} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
+      </MyProvider>
       <Footer />
-    </MyProvider>
+      
+    
     </Router>
   </div>
   );
