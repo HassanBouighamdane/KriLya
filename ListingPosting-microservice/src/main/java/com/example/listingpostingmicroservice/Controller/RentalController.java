@@ -1,8 +1,8 @@
 package com.example.listingpostingmicroservice.Controller;
 
 import com.example.listingpostingmicroservice.Model.Rental;
-import com.example.listingpostingmicroservice.Service.Interfaces.RentalService;
-import com.example.listingpostingmicroservice.Service.RentalServiceImp;
+import com.example.listingpostingmicroservice.Service.Interfaces.IRentalService;
+import com.example.listingpostingmicroservice.Service.RentalService;
 import com.example.listingpostingmicroservice.Service.SearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,18 +19,18 @@ import java.util.Optional;
 @CrossOrigin(origins = "http://localhost:3000")
 public class RentalController {
 
-    private final RentalService rentalService;
+    private final IRentalService rentalService;
     @Autowired
-    private RentalController(RentalServiceImp rentalService){
+    private RentalController(RentalService rentalService){
         this.rentalService=rentalService;
-    };
+    }
 
     @GetMapping
-    public ResponseEntity<List<Rental>> getAllRentals(
+    public ResponseEntity<Page<Rental>> getAllRentals(
             @RequestParam (defaultValue = "0") int pageNo,
             @RequestParam (defaultValue = "10") int pageSize,
             @RequestParam (defaultValue = "id") String SortBy) {
-        List<Rental> rentals = rentalService.getAllRentals(pageNo,pageSize,SortBy);
+        Page<Rental> rentals = rentalService.getAllRentals(pageNo,pageSize,SortBy);
         return new ResponseEntity<>(rentals, HttpStatus.OK);
     }
 
@@ -45,11 +45,12 @@ public class RentalController {
     public ResponseEntity<Rental> createRental(@RequestParam("title") String title,
                                                @RequestParam("description") String description,
                                                @RequestParam("pricePerDay") double pricePerDay,
-                                               @RequestParam("availability") boolean availability,
                                                @RequestParam("location") String location,
-                                                @RequestParam(value = "pictures", required = false) MultipartFile[] pictures) {
+                                                @RequestParam(value = "pictures", required = false) MultipartFile[] pictures,
+                                                @RequestParam("categoryIds") List<String> categoryIds,
+                                                @RequestParam("ownerId") String ownerId) {
         try {
-            Rental rental = rentalService.createRental(title,description, pricePerDay, availability, location, pictures);
+            Rental rental = rentalService.createRental(title,description, pricePerDay, location, pictures,ownerId,categoryIds);
             return new ResponseEntity<>(rental, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -70,14 +71,14 @@ public class RentalController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Rental>> dynamicSearch(
+    public ResponseEntity<Page<Rental>> dynamicSearch(
             @RequestParam String query,
             @RequestParam SearchCriteria criteria,
             @RequestParam(defaultValue = "0") int pageNo,
-            @RequestParam(defaultValue = "20") int pageSize,
+            @RequestParam(defaultValue = "10") int pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
 
-        List<Rental> result = rentalService.dynamicSearch(query, criteria, pageNo, pageSize, sortBy);
+        Page<Rental> result = rentalService.dynamicSearch(query, criteria, pageNo, pageSize, sortBy);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 /*
@@ -111,6 +112,5 @@ public class RentalController {
         }
         return new ResponseEntity<>(rentals, HttpStatus.OK);
     }
-
- */
+*/
 }
