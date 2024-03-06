@@ -10,6 +10,29 @@ const baseUrl = "http://localhost:8081";
 const PostRental = ({ onPostSuccess }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [errorAlertOpen, setErrorAlertOpen] = useState(false);
+    const [searchText, setSearchText] = useState('');
+    const [categorySuggestions, setCategorySuggestions] = useState([]);
+    const [selectedCategories, setSelectedCategories] = useState([]);
+
+
+    const handleCategorySearch = async (text) => {
+        setSearchText(text);
+        // Perform category search based on the text entered
+        // Here you would make an API call to fetch category suggestions
+        // Replace the following mock example with your actual API call
+        const response = await axios.get(baseUrl + `/api/categories/search?text=${text}`);
+        setCategorySuggestions(response.data); // Update category suggestions based on the response
+    };
+    const addSelectedCategory = (category) => {
+        setSelectedCategories([...selectedCategories, category]);
+    };
+
+    
+    const removeSelectedCategory = (index) => {
+        const updatedCategories = [...selectedCategories];
+        updatedCategories.splice(index, 1);
+        setSelectedCategories(updatedCategories);
+    };
 
     const toggleModal = () => {
         setIsOpen(!isOpen);
@@ -21,7 +44,7 @@ const PostRental = ({ onPostSuccess }) => {
         pricePerDay: Yup.number().required('Price per Day is required'),
         location: Yup.string().required('Location is required'),
         pictures: Yup.mixed().required('Pictures are required'),
-        category: Yup.string().required('Category is required'),
+        categories: Yup.string().required('Categories are required'),
     });
 
     const handleSubmit = async (values, { setSubmitting }) => {
@@ -32,16 +55,19 @@ const PostRental = ({ onPostSuccess }) => {
             formDataToSend.append('pricePerDay', values.pricePerDay);
             formDataToSend.append('availability', true);
             formDataToSend.append('location', values.location);
-            formDataToSend.append('category', values.category);
+            selectedCategories.forEach((category) => {
+                formDataToSend.append('categoryIds', category.id);
+            });
             for (let i = 0; i < values.pictures.length; i++) {
                 formDataToSend.append('pictures', values.pictures[i]);
             }
-
+            formDataToSend.append('ownerId',"1");
             const response = await axios.post(baseUrl + '/api/rentals', formDataToSend);
 
             if (response.status === 201) {
                 toggleModal(); // Close the modal after successful submission
                 onPostSuccess();
+                setSelectedCategories([]);
             } else {
                 setErrorAlertOpen(true);
                 setTimeout(() => {
@@ -61,8 +87,7 @@ const PostRental = ({ onPostSuccess }) => {
     
 
     return (
-        <div >
-            
+        <div > 
             <button
                 onClick={toggleModal}
                 data-modal-target="crud-modal"
@@ -125,7 +150,7 @@ const PostRental = ({ onPostSuccess }) => {
                                     description: '',
                                     pricePerDay: '',
                                     location: '',
-                                    category: '',
+                                    categories: [],
                                     pictures: [],
                                 }}
                                 validationSchema={validationSchema}
@@ -157,18 +182,56 @@ const PostRental = ({ onPostSuccess }) => {
                                                 >
                                                     Category
                                                 </label>
+                                                <div className="selected-categories">
+                                                    {selectedCategories.map((selectedCategory, index) => (
+                                                        <span key={index} className="selected-category">
+                                                            <span>{selectedCategory.name}</span>
+                                                            <button
+                                                                        onClick={() => removeSelectedCategory(index)}
+                                                                        type="button"
+                                                                        className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-4 h-4 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                                                        data-modal-toggle="crud-modal"
+                                                                    >
+                                                                        <svg
+                                                                            className="w-2 h-2"
+                                                                            aria-hidden="true"
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            fill="none"
+                                                                            viewBox="0 0 14 14"
+                                                                        >
+                                                                            <path
+                                                                                stroke="currentColor"
+                                                                                strokeLinecap="round"
+                                                                                strokeLinejoin="round"
+                                                                                strokeWidth="2"
+                                                                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                                                                            />
+                                                                        </svg>
+                                                                        <span className="sr-only">Close modal</span>
+                                                                    </button>
+                                                        </span>
+                                                    ))}
+                                                </div>
                                                 <Field
-                                                    as="select"
-                                                    name="category"
-                                                    id="category"
+                                                    type="text" 
+                                                    name="categories"
+                                                    id="categories"
+                                                    placeholder="Search categories"
                                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                >
-                                                    <option value="">Select category</option>
-                                                    <option value="TV">TV/Monitors</option>
-                                                    <option value="PC">PC</option>
-                                                    <option value="GA">Gaming/Console</option>
-                                                    <option value="PH">Phones</option>
-                                                </Field>
+                                                    onChange={(e) => {
+                                                        const searchTerm = e.target.value;
+                                                        handleCategorySearch(searchTerm);
+                                                        setFieldValue('categories', searchTerm);
+                                                    }}
+                                                    
+                                                />
+                                                <div className="category-suggestions">
+                                                    {categorySuggestions.map((category, index) => (
+                                                        <div key={index} className="category-suggestion" onClick={() => addSelectedCategory(category)}>
+                                                            {category.name}
+                                                        </div>
+                                                    ))}
+                                                </div>
                                                 <ErrorMessage name="category" component="i" className="error-message text-red-500 text-xs"/>
                                             </div>
                                 
