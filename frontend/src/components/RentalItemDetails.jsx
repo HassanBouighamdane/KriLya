@@ -2,12 +2,16 @@ import React, { useState,useEffect } from "react";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { useParams } from "react-router-dom";
 import { fetchRental,decodeImageBase64 } from "../services/api";
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 const RentalItemDetails = () => {
     const { id } = useParams(); 
     const [show, setShow] = useState(false);
     const [show2, setShow2] = useState(false);
     const [rental, setRental] = useState(null);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
     useEffect(() => {
         // Fetch item data based on the extracted ID
         fetchRental(id)
@@ -20,19 +24,24 @@ const RentalItemDetails = () => {
             });
     }, [id]); // Re-run effect when ID changes
     
+    const handleNextImage = () => {
+        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % rental.pictures.length);
+    };
+
+    const handlePrevImage = () => {
+        setCurrentImageIndex((prevIndex) => (prevIndex - 1 + rental.pictures.length) % rental.pictures.length);
+    };
    
     return (
         <div className="md:flex items-start justify-center py-12 2xl:px-20 md:px-6 px-4">
              
-                <div className="">
-                    <img className="w-full max-w-md max-h-md" alt="image not loaded" src={decodeImageBase64(rental?.pictures[0].data)}/>
-                    <div className="flex items-center justify-between mt-3 space-x-4 ">
-                        {rental?.pictures.map((image, index) => (
-                            index === 0 ? null : <img className="w-full max-w-md " key={index} alt="" src={decodeImageBase64(rental?.pictures[index].data)} />
-
-                    ))}
-                    </div>
+             <div className="relative">
+                <img className="w-full max-w-md max-h-md" alt="image not loaded" src={decodeImageBase64(rental?.pictures[currentImageIndex].data)}/>
+                <div className="absolute top-1/2 left-0 transform -translate-y-1/2 w-full flex items-center justify-between">
+                    <button onClick={handlePrevImage} className="cursor-pointer"><NavigateBeforeIcon sx={{ fontSize: 40 }} /></button>
+                    <button onClick={handleNextImage} className="cursor-pointer"><NavigateNextIcon sx={{ fontSize: 40 }} /></button>
                 </div>
+            </div>
             
             <div className="xl:w-2/5 md:w-1/2 lg:ml-8 md:ml-6 md:mt-0 mt-6">
                 <div className="flex items-center gap-4">
