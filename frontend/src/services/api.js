@@ -31,7 +31,7 @@ export async function fetchRentals(searchQuery,sortBy,sortOrder) {
           throw new Error('Failed to fetch rentals');
       }
       const data = await response.json();
-      return data;
+      return data.content;
   } catch (error) {
       console.error('Error fetching rentals:', error);
       throw error;

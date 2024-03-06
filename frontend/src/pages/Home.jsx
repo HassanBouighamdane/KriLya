@@ -1,6 +1,5 @@
 
 import React, {useEffect, useState} from 'react';
-import { useNavigate } from 'react-router-dom';
 import RentalCard from "../components/RentalCard";
 import { FaDesktop, FaTools, FaMotorcycle , FaSearch } from 'react-icons/fa';
 import { GiClothes } from "react-icons/gi";
@@ -8,9 +7,10 @@ import { Alert,AlertTitle } from '@mui/material';
 import '../assets/css/Home.css';
 import {fetchRentals,fetchRental} from '../services/api'
 import PostRental from '../components/PostRental';
+import PaginationComponent from '../components/PaginationComponent';
 
 export default function Home() {
-    const navigate = useNavigate();
+
     const [rentals, setRentals] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [sortBy, setSortBy] = useState('title');
@@ -150,7 +150,7 @@ export default function Home() {
                                 id={rental.id}
                                 title={rental.title}
                                 description={rental.description}
-                                images={rental.pictures[0].data}
+                                images={rental.pictures!=null ? rental.pictures[0].data:null}
                                 pricePerDay={rental.pricePerDay}
                                 location={rental.location}
                                 isFavorite={true}
@@ -171,7 +171,7 @@ export default function Home() {
                             id={rental.id}
                             title={rental.title}
                             description={rental.description}
-                            images={rental.pictures[0].data}
+                            images={rental.pictures!=null ? rental.pictures[0].data:null}
                             pricePerDay={rental.pricePerDay}
                             location={rental.location}
                             isFavorite={false}
@@ -181,6 +181,9 @@ export default function Home() {
                     ))}
                 </div>
             </div>
+            <div className="flex items-center justify-center">
+        <PaginationComponent  />
+                </div>
         </div>
     );
 }

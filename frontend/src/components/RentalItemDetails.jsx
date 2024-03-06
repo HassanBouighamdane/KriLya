@@ -22,7 +22,7 @@ const RentalItemDetails = () => {
         fetchRental(id)
             .then((data) => {
                 setRental(data); // Set the fetched item data to state
-                fetchUserById(data.ownerId) // Fetch user data based on ownerId
+                fetchRental(data.ownerId) // Fetch user data based on ownerId
                     .then(userData => setUser(userData))
                     .catch(error => console.error("Error fetching user:", error));
             })
