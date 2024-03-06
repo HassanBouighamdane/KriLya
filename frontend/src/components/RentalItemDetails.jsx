@@ -13,6 +13,9 @@ const RentalItemDetails = () => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [user, setUser] = useState(null); // State variable to store user data
 
+    const fetchUserById = (id)=>{
+        
+    }
 
     useEffect(() => {
         // Fetch item data based on the extracted ID
