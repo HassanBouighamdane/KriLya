@@ -24,7 +24,7 @@ export default function Home() {
         try {
             const data = await fetchRentals();
             console.log("data",data);
-            setRentals(data.content);
+            setRentals(data);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
