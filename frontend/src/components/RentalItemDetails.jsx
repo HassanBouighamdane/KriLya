@@ -11,12 +11,17 @@ const RentalItemDetails = () => {
     const [show2, setShow2] = useState(false);
     const [rental, setRental] = useState(null);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [user, setUser] = useState(null); // State variable to store user data
+
 
     useEffect(() => {
         // Fetch item data based on the extracted ID
         fetchRental(id)
             .then((data) => {
                 setRental(data); // Set the fetched item data to state
+                fetchUserById(data.ownerId) // Fetch user data based on ownerId
+                    .then(userData => setUser(userData))
+                    .catch(error => console.error("Error fetching user:", error));
             })
             .catch((error) => {
                 console.error("Error fetching item:", error);
@@ -52,9 +57,9 @@ const RentalItemDetails = () => {
                     <div className="w-fit transition-all transform duration-500">
                     
                      <h1 className="text-gray-600  font-bold">
-                            Hassan Boui
+                        {user?.username}
                         </h1>
-                        <p className="text-gray-400">1h</p>
+                        <p className="text-gray-400">{rental?.date && new Date(rental.date).toLocaleString()}</p>
                     </div>
                     <p className="text-sm leading-none text-gray-600 ml-auto"><LocationOnIcon/>{rental?.location}</p>
                 </div>
@@ -73,7 +78,7 @@ const RentalItemDetails = () => {
                     </div>
                     <div>
                         <span className="font-bold text-gray-700 ">Availability:</span>
-                        <span className="text-gray-600 ">In Stock</span>
+                        <span className="text-gray-600 ">{rental?.available}In Stock</span>
                     </div>
                 </div>
 
