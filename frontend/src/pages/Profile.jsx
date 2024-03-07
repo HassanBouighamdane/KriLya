@@ -5,7 +5,7 @@ import Review from '../components/Review';
 import { MdInsights } from "react-icons/md";
 import { IoCartSharp } from "react-icons/io5";
 import useFetch from '../hooks/useFetch';
-import API from '../services/UserManagementApi';
+import API from '../services/API';
 import { FaEdit } from 'react-icons/fa';
 import {useNavigate} from 'react-router-dom';
 import PostLoading from '../components/PostLoading';
@@ -14,8 +14,6 @@ import PostLoading from '../components/PostLoading';
 function Profile() {
 
     const navigate = useNavigate();
-   
-
 
     const {data: profile, loading: profileLoading, error: profileError} = useFetch(API.PROFILE.GET_ONE(1));
     const {data: user, loading: userLoading, error: userError} = useFetch(API.USER.GET_ONE(1));

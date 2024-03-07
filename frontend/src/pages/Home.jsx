@@ -5,38 +5,43 @@ import { FaDesktop, FaTools, FaMotorcycle , FaSearch } from 'react-icons/fa';
 import { GiClothes } from "react-icons/gi";
 import { Alert,AlertTitle } from '@mui/material';
 import '../assets/css/Home.css';
-import {fetchRentals,fetchRental} from '../services/api'
+import {fetchRentals,fetchRental} from '../services/apifetch'
 import PostRental from '../components/PostRental';
 import PaginationComponent from '../components/PaginationComponent';
 
 export default function Home() {
 
     const [rentals, setRentals] = useState([]);
+    const [pageNo,setPageNo]=useState(0);
+    const [totalPages,setTotalPages]=useState(0);
     const [searchQuery, setSearchQuery] = useState('');
-    const [sortBy, setSortBy] = useState('title');
-    const [sortOrder, setSortOrder] = useState('asc');
     const [activeFilter, setActiveFilter] = useState(null);
     const [favourites, setFavourites] = useState([]);
     const [successAlertOpen, setSuccessAlertOpen] = useState(false);
+
+    const handlePageChange = (page) => {
+        setPageNo(page-1); // Adjusting the page to be 0-based
+      };
     
 
-    const fetchAllItems = async () => {
+    const fetchAllItems = async (pageNumber,pageSize=10,sortBy='id') => {
         try {
-            const data = await fetchRentals();
-            console.log("data",data);
-            setRentals(data);
+            const data = await fetchRentals(pageNumber,pageSize,sortBy);
+            setRentals(data.content);
+            setTotalPages(data.totalPages);
+            setPageNo(pageNumber);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     };
 
     useEffect(() => {
-          fetchAllItems();
-      }, [searchQuery, sortBy, sortOrder]);
+          fetchAllItems(pageNo);
+      }, [rentals,pageNo]);
       
     const handlePostSuccess = () => {
         setSuccessAlertOpen(true);
-        fetchAllItems(); 
+        fetchAllItems();
         setTimeout(() => {
             setSuccessAlertOpen(false);
         }, 3000);
@@ -182,7 +187,7 @@ export default function Home() {
                 </div>
             </div>
             <div className="flex items-center justify-center">
-        <PaginationComponent  />
+        <PaginationComponent totalPages={totalPages} onPageChange={handlePageChange} />
                 </div>
         </div>
     );

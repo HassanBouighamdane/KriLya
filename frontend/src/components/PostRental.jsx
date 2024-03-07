@@ -227,7 +227,7 @@ const PostRental = ({ onPostSuccess }) => {
                                                     
                                                 />
                                                 <div className="category-suggestions">
-                                                    {categorySuggestions.map((category, index) => (
+                                                    {categorySuggestions.slice(0,5).map((category, index) => (
                                                         <div key={index} className="category-suggestion" onClick={() => addSelectedCategory(category)}>
                                                             {category.name}
                                                         </div>
