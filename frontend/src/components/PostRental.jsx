@@ -68,6 +68,7 @@ const PostRental = ({ onPostSuccess }) => {
                 toggleModal(); // Close the modal after successful submission
                 onPostSuccess();
                 setSelectedCategories([]);
+                setCategorySuggestions([]);
             } else {
                 setErrorAlertOpen(true);
                 setTimeout(() => {

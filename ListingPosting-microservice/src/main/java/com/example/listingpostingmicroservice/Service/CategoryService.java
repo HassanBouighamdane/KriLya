@@ -60,7 +60,7 @@ public class CategoryService implements ICategoryService {
 
     @Override
     public List<Category> findCategoryByName(String text) {
-        List<Category> categories = categoryRepository.findCategoriesByNameContaining(text);
+        List<Category> categories = categoryRepository.findCategoriesByNameContainingIgnoreCase(text);
         // Sort the categories by name in ascending order
         categories.sort(Comparator.comparing(Category::getName));
         return categories;

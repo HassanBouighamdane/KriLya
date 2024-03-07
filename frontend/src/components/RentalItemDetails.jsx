@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import { fetchRental,decodeImageBase64 } from "../services/api";
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import useFetch from '../hooks/useFetch';
+import API from '../services/UserManagementApi';
 
 const RentalItemDetails = () => {
     const { id } = useParams(); 
@@ -13,13 +15,20 @@ const RentalItemDetails = () => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [user, setUser] = useState(null); // State variable to store user data
 
-
+const FindUserById=(id)=>{
+    try {
+        const data=useFetch(API.USER.GET_ONE(id));
+        return data;
+    } catch (error) {
+        return "user not found";
+    }
+}
     useEffect(() => {
         // Fetch item data based on the extracted ID
         fetchRental(id)
             .then((data) => {
                 setRental(data); // Set the fetched item data to state
-                fetchRental(data.ownerId) // Fetch user data based on ownerId
+                FindUserById(data.ownerId) // Fetch user data based on ownerId
                     .then(userData => setUser(userData))
                     .catch(error => console.error("Error fetching user:", error));
             })
