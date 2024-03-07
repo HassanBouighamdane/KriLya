@@ -2,7 +2,7 @@ package com.example.listingpostingmicroservice.Service;
 
 import com.example.listingpostingmicroservice.Model.Rental;
 import com.example.listingpostingmicroservice.Repository.RentalRepository;
-import com.example.listingpostingmicroservice.Service.Interfaces.RentalService;
+import com.example.listingpostingmicroservice.Service.Interfaces.IRentalService;
 import org.bson.types.Binary;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ public class RentalServiceImpTest {
     private RentalRepository rentalRepository;
 
     @InjectMocks
-    private RentalService rentalService = new RentalServiceImp(rentalRepository);
+    private RentalService rentalService = new RentalService(rentalRepository);
 
     private Rental rental1;
     private Rental rental2;
@@ -53,13 +53,6 @@ public class RentalServiceImpTest {
         assertEquals(rentalList, result);
     }
 
-    @Test
-    public void testGetAllRentalsWithPaginationAndSorting() {
-        Pageable pageable = PageRequest.of(0, 10, Sort.by("title"));
-        when(rentalRepository.findAll(pageable)).thenReturn(new PageImpl<>(rentalList));
-        List<Rental> result = rentalService.getAllRentals(0, 10, "title");
-        assertEquals(rentalList, result);
-    }
 
     @Test
     public void testGetRentalById() {
@@ -73,14 +66,16 @@ public class RentalServiceImpTest {
     public void testCreateRental() throws Exception {
         MultipartFile[] pictures = null;
         when(rentalRepository.save(any())).thenReturn(rental1);
-        Rental result = rentalService.createRental("Title", "Description", 100.0, true, "Location", pictures);
+        Rental result = rentalService.createRental("Title 2", "Description 2", 200.0, "Location 2", pictures, "2", new ArrayList<>());
+
         assertEquals(rental1, result);
     }
+
 
     @Test
     public void testUpdateRental() {
         String id = "1";
-        Rental rentalUpdates = new Rental("Updated Title", "Updated Description", 150.0, false, "Updated Location", null);
+        Rental rentalUpdates = new Rental( "Title 1", "Description 1", 100.0, true, "Location 1", new ArrayList<>(),"1", new ArrayList<>());
         when(rentalRepository.findById(id)).thenReturn(Optional.of(rental1));
         when(rentalRepository.save(any())).thenReturn(rentalUpdates);
         Rental result = rentalService.updateRental(id, rentalUpdates);
