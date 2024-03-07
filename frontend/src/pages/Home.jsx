@@ -1,6 +1,5 @@
 
 import React, {useEffect, useState} from 'react';
-import { useNavigate } from 'react-router-dom';
 import RentalCard from "../components/RentalCard";
 import { FaDesktop, FaTools, FaMotorcycle , FaSearch } from 'react-icons/fa';
 import { GiClothes } from "react-icons/gi";
@@ -24,6 +23,7 @@ export default function Home() {
     const fetchAllItems = async () => {
         try {
             const data = await fetchRentals();
+            
             setRentals(data);
         } catch (error) {
             console.error('Error fetching data:', error);
