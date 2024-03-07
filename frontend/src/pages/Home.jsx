@@ -9,6 +9,7 @@ import {fetchRentals,fetchRental} from '../services/apifetch'
 import PostRental from '../components/PostRental';
 import PaginationComponent from '../components/PaginationComponent';
 import {searchRentals} from '../services/apifetch'
+import PostLoading from '../components/PostLoading';
 
 export default function Home() {
 
@@ -61,7 +62,6 @@ export default function Home() {
         setSearchQuery(query);
         setLoading(true);
         const data = await searchRentals(searchQuery, 'TITLE'); // Example: Searching by title
-        console.log(data);
         setRentals(data.content);
         setLoading(false);
         
@@ -185,7 +185,7 @@ export default function Home() {
             <div className="py-4">
                 <h2 className="text-2xl font-bold mb-4">Recommended For You</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {loading && <div>Loading...</div>}
+                {loading && <div><PostLoading/></div>}
                     {otherRentals.map((rental, index) => (
                         <RentalCard
                             key={index}

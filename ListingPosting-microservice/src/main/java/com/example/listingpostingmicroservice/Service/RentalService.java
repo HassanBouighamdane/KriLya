@@ -107,6 +107,9 @@ public class RentalService implements IRentalService {
                 Date dateBefore = new Date(Long.parseLong(query));
                 yield rentalRepository.findRentalByDateBefore(dateBefore, pageable);
             }
+            case OWNER_ID -> {
+                yield rentalRepository.findRentalByOwnerId(query, pageable);
+            }
             default -> throw new IllegalArgumentException("Invalid search criteria: " + criteria);
         };
     }
