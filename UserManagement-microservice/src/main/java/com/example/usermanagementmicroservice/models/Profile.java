@@ -1,10 +1,12 @@
 package com.example.usermanagementmicroservice.models;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 
 
 @Data
@@ -51,7 +53,7 @@ public class Profile {
         if (firstName != null && !firstName.isEmpty()) completedFields++;
         if (lastName != null && !lastName.isEmpty()) completedFields++;
         if (bio != null && !bio.isEmpty()) completedFields++;
-        if (picture != null && !picture.isEmpty()) completedFields++;
+        if (picture != null) completedFields++;
         if (location != null && !location.isEmpty()) completedFields++;
         if (status != null && !status.isEmpty()) completedFields++;
         if (gender != null && !gender.isEmpty()) completedFields++;

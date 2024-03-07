@@ -29,28 +29,18 @@ public class Rental {
     private Date date;
     @Indexed
     private String ownerId;
+    @Indexed
     private List<String> categoryIds;
 
-
-    public Rental(String title, String description, double pricePerDay, boolean availability, String location,List<Binary> pictures, String ownerId, List<String> categoryIds) {
+    public Rental(String title,String description, double pricePerDay, boolean availability, String location,List<Binary> pictures,String ownerId,List<String> categoryIds) {
         this.title = title;
         this.description = description;
         this.pricePerDay = pricePerDay;
         this.available = availability;
         this.location = location;
         this.pictures = pictures;
-        this.ownerId = ownerId;
-        this.categoryIds = categoryIds;
+        this.ownerId=ownerId;
         this.date = new Date();
-    }
-
-    public Rental(String title,String description, double pricePerDay, boolean availability, String location,List<Binary> pictures) {
-        this.title = title;
-        this.description = description;
-        this.pricePerDay = pricePerDay;
-        this.available = availability;
-        this.location = location;
-        this.pictures = pictures;
-        this.date = new Date();
+        this.categoryIds=categoryIds;
     }
 }

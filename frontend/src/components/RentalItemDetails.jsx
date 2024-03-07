@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from "react";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { useParams } from "react-router-dom";
-import { fetchRental,decodeImageBase64 } from "../services/api";
+import { fetchRental,decodeImageBase64 } from "../services/apifetch";
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
@@ -14,16 +14,15 @@ const RentalItemDetails = () => {
     const [user, setUser] = useState(null); // State variable to store user data
 
     const fetchUserById = (id)=>{
-        
-    }
 
+    }
 
     useEffect(() => {
         // Fetch item data based on the extracted ID
         fetchRental(id)
             .then((data) => {
                 setRental(data); // Set the fetched item data to state
-                fetchUserById(data.ownerId) // Fetch user data based on ownerId
+                fetchRental(data.ownerId) // Fetch user data based on ownerId
                     .then(userData => setUser(userData))
                     .catch(error => console.error("Error fetching user:", error));
             })

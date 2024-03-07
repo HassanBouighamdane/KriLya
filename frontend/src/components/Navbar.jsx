@@ -89,7 +89,7 @@ function Navbar(){
           </div>
         </div>
       </nav>
-      <div id="navbar-placeholder" class="h-28"></div> 
+      <div id="navbar-placeholder" className="h-28"></div> 
     </div>
       
     );
