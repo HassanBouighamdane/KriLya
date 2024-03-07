@@ -5,16 +5,15 @@ import Review from '../components/Review';
 import { MdInsights } from "react-icons/md";
 import { IoCartSharp } from "react-icons/io5";
 import useFetch from '../hooks/useFetch';
-import API from '../services/UserManagementApi';
+import API from '../services/API';
 import { FaEdit } from 'react-icons/fa';
 import {useNavigate} from 'react-router-dom';
+import PostLoading from '../components/PostLoading';
 
 
 function Profile() {
 
     const navigate = useNavigate();
-   
-
 
     const {data: profile, loading: profileLoading, error: profileError} = useFetch(API.PROFILE.GET_ONE(1));
     const {data: user, loading: userLoading, error: userError} = useFetch(API.USER.GET_ONE(1));
@@ -22,7 +21,6 @@ function Profile() {
     const [userEmail, setUserEmail] = useState('');
     const [username, setUsername] = useState('');
 
-    // Update User state when profile data is available
     useEffect(() => {
         if (profile) {
             setUser(prevUser => ({
@@ -33,7 +31,6 @@ function Profile() {
         console.log(profile);
     }, [profile]);
 
-    // Update userEmail state when user data is available
     useEffect(() => {
         if (user && user.email && user.username) {
             setUserEmail(user.email);
@@ -41,7 +38,6 @@ function Profile() {
         }
     }, [user]);
 
-    // Update User state with userEmail
     useEffect(() => {
         setUser(prevUser => ({
             ...prevUser,
@@ -162,14 +158,15 @@ function Profile() {
                                     </div>
                                     <ul className="list-inside grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                         <li>
-                                            <RentalCard images={avatar}></RentalCard>
+                                            {/* post */}
+                                            <PostLoading/>
                                         </li>
                                         <li>
-                                            <RentalCard></RentalCard>
+                                            {/* post */}
+                                            <PostLoading/>
                                         </li>
-                                        <li>
-                                            <RentalCard></RentalCard>
-                                        </li>
+                                       
+                                       
                                     </ul>
                                 </div>
                         </div>

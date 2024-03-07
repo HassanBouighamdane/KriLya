@@ -29,8 +29,8 @@ public class RentalController {
     public ResponseEntity<Page<Rental>> getAllRentals(
             @RequestParam (defaultValue = "0") int pageNo,
             @RequestParam (defaultValue = "10") int pageSize,
-            @RequestParam (defaultValue = "id") String SortBy) {
-        Page<Rental> rentals = rentalService.getAllRentals(pageNo,pageSize,SortBy);
+            @RequestParam (defaultValue = "id") String sortBy) {
+        Page<Rental> rentals = rentalService.getAllRentals(pageNo,pageSize,sortBy);
         return new ResponseEntity<>(rentals, HttpStatus.OK);
     }
 

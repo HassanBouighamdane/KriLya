@@ -50,7 +50,7 @@ export default function RentalCard({id,title, description, images, pricePerDay, 
                             </Typography>
                         </div>
                     </div>
-                    <Typography color="gray">
+                    <Typography color="gray" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} >
                         {description}
                     </Typography>
                     <Typography color="red" className="font-medium">
