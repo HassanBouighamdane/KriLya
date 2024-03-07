@@ -23,7 +23,7 @@ export default function Home() {
     const fetchAllItems = async () => {
         try {
             const data = await fetchRentals();
-            
+            console.log("data",data);
             setRentals(data);
         } catch (error) {
             console.error('Error fetching data:', error);
