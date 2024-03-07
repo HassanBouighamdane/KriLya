@@ -50,6 +50,24 @@ export async function fetchRental(id) {
   }
 }
 
+
+
+export async function searchRentals(query, criteria,pageNo=0,pageSize=10, sortBy='id') {
+  try {
+      let url = `http://localhost:8081/api/rentals/search?query=${query}&criteria=${criteria}&pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}`;
+      
+      const response = await fetch(url);
+      if (!response.ok) {
+          throw new Error('Failed to fetch rentals');
+      }
+      const data = await response.json();
+      return data;
+  } catch (error) {
+      console.error('Error fetching rentals:', error);
+      throw error;
+  }
+}
+
 export function decodeImageBase64(image){
   return `data:image/png;base64,${image}`;
 }

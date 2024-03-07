@@ -8,6 +8,7 @@ import '../assets/css/Home.css';
 import {fetchRentals,fetchRental} from '../services/apifetch'
 import PostRental from '../components/PostRental';
 import PaginationComponent from '../components/PaginationComponent';
+import {searchRentals} from '../services/apifetch'
 
 export default function Home() {
 
@@ -18,6 +19,7 @@ export default function Home() {
     const [activeFilter, setActiveFilter] = useState(null);
     const [favourites, setFavourites] = useState([]);
     const [successAlertOpen, setSuccessAlertOpen] = useState(false);
+    
 
     const handlePageChange = (page) => {
         setPageNo(page-1); // Adjusting the page to be 0-based
@@ -37,7 +39,7 @@ export default function Home() {
 
     useEffect(() => {
           fetchAllItems(pageNo);
-      }, [rentals,pageNo]);
+      }, []);
       
     const handlePostSuccess = () => {
         setSuccessAlertOpen(true);
@@ -51,6 +53,19 @@ export default function Home() {
         setSearchQuery(filter);
         setActiveFilter(filter);
     };
+    const [loading, setLoading] = useState(false);
+    const handleSearch = async (query)=>{
+        if(query == "") {
+            fetchAllItems(pageNo);
+        }
+        setSearchQuery(query);
+        setLoading(true);
+        const data = await searchRentals(searchQuery, 'TITLE'); // Example: Searching by title
+        console.log(data);
+        setRentals(data.content);
+        setLoading(false);
+        
+    }
 
     useEffect(() => {
         const Favourites = JSON.parse(localStorage.getItem('react-app-favourites'));
@@ -94,7 +109,7 @@ export default function Home() {
 
             
             <div className="hero-headline flex flex-col items-center justify-center pt-2 text-center mb-10">
-                <h1 className="font-bold text-3xl text-gray-900">Do you need to use items in a short time?</h1>
+                <h1 className="font-bold text-3xl text-gray-900">Do you need to use items for a short time?</h1>
                 <h2 className="font-base text-2xl text-gray-600">You are in the right place :)</h2>
             </div>
 
@@ -110,7 +125,7 @@ export default function Home() {
                             id="search"
                             placeholder="Search items..."
                             value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
+                            onChange={(e) => handleSearch(e.target.value)}
                         />
                     </div>
                 </div>
@@ -147,7 +162,7 @@ export default function Home() {
 
             {favoriteRentals.length > 0 && (
                 <div className="py-4">
-                    <h2 className="text-2xl font-bold mb-4">Featured Rentals</h2>
+                    <h2 className="text-2xl font-bold mb-4">Favourites</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         {favoriteRentals.map((rental, index) => (
                             <RentalCard
@@ -170,6 +185,7 @@ export default function Home() {
             <div className="py-4">
                 <h2 className="text-2xl font-bold mb-4">Recommended For You</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {loading && <div>Loading...</div>}
                     {otherRentals.map((rental, index) => (
                         <RentalCard
                             key={index}
