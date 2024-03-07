@@ -1,41 +1,49 @@
 
 import React, {useEffect, useState} from 'react';
-import { useNavigate } from 'react-router-dom';
 import RentalCard from "../components/RentalCard";
 import { FaDesktop, FaTools, FaMotorcycle , FaSearch } from 'react-icons/fa';
 import { GiClothes } from "react-icons/gi";
 import { Alert,AlertTitle } from '@mui/material';
 import '../assets/css/Home.css';
-import {fetchRentals,fetchRental} from '../services/api'
+import {fetchRentals,fetchRental} from '../services/apifetch'
 import PostRental from '../components/PostRental';
+import PaginationComponent from '../components/PaginationComponent';
+import {searchRentals} from '../services/apifetch'
 
 export default function Home() {
-    const navigate = useNavigate();
+
     const [rentals, setRentals] = useState([]);
+    const [pageNo,setPageNo]=useState(0);
+    const [totalPages,setTotalPages]=useState(0);
     const [searchQuery, setSearchQuery] = useState('');
-    const [sortBy, setSortBy] = useState('title');
-    const [sortOrder, setSortOrder] = useState('asc');
     const [activeFilter, setActiveFilter] = useState(null);
     const [favourites, setFavourites] = useState([]);
     const [successAlertOpen, setSuccessAlertOpen] = useState(false);
     
 
-    const fetchAllItems = async () => {
+    const handlePageChange = (page) => {
+        setPageNo(page-1); // Adjusting the page to be 0-based
+      };
+    
+
+    const fetchAllItems = async (pageNumber,pageSize=10,sortBy='id') => {
         try {
-            const data = await fetchRentals();
-            setRentals(data);
+            const data = await fetchRentals(pageNumber,pageSize,sortBy);
+            setRentals(data.content);
+            setTotalPages(data.totalPages);
+            setPageNo(pageNumber);
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     };
 
     useEffect(() => {
-          fetchAllItems();
-      }, [searchQuery, sortBy, sortOrder]);
+          fetchAllItems(pageNo);
+      }, []);
       
     const handlePostSuccess = () => {
         setSuccessAlertOpen(true);
-        fetchAllItems(); 
+        fetchAllItems();
         setTimeout(() => {
             setSuccessAlertOpen(false);
         }, 3000);
@@ -45,6 +53,19 @@ export default function Home() {
         setSearchQuery(filter);
         setActiveFilter(filter);
     };
+    const [loading, setLoading] = useState(false);
+    const handleSearch = async (query)=>{
+        if(query == "") {
+            fetchAllItems(pageNo);
+        }
+        setSearchQuery(query);
+        setLoading(true);
+        const data = await searchRentals(searchQuery, 'TITLE'); // Example: Searching by title
+        console.log(data);
+        setRentals(data.content);
+        setLoading(false);
+        
+    }
 
     useEffect(() => {
         const Favourites = JSON.parse(localStorage.getItem('react-app-favourites'));
@@ -88,7 +109,7 @@ export default function Home() {
 
             
             <div className="hero-headline flex flex-col items-center justify-center pt-2 text-center mb-10">
-                <h1 className="font-bold text-3xl text-gray-900">Do you need to use items in a short time?</h1>
+                <h1 className="font-bold text-3xl text-gray-900">Do you need to use items for a short time?</h1>
                 <h2 className="font-base text-2xl text-gray-600">You are in the right place :)</h2>
             </div>
 
@@ -104,7 +125,7 @@ export default function Home() {
                             id="search"
                             placeholder="Search items..."
                             value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
+                            onChange={(e) => handleSearch(e.target.value)}
                         />
                     </div>
                 </div>
@@ -141,7 +162,7 @@ export default function Home() {
 
             {favoriteRentals.length > 0 && (
                 <div className="py-4">
-                    <h2 className="text-2xl font-bold mb-4">Featured Rentals</h2>
+                    <h2 className="text-2xl font-bold mb-4">Favourites</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         {favoriteRentals.map((rental, index) => (
                             <RentalCard
@@ -149,7 +170,7 @@ export default function Home() {
                                 id={rental.id}
                                 title={rental.title}
                                 description={rental.description}
-                                images={rental.pictures[0].data}
+                                images={rental.pictures!=null ? rental.pictures[0].data:null}
                                 pricePerDay={rental.pricePerDay}
                                 location={rental.location}
                                 isFavorite={true}
@@ -164,13 +185,14 @@ export default function Home() {
             <div className="py-4">
                 <h2 className="text-2xl font-bold mb-4">Recommended For You</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {loading && <div>Loading...</div>}
                     {otherRentals.map((rental, index) => (
                         <RentalCard
                             key={index}
                             id={rental.id}
                             title={rental.title}
                             description={rental.description}
-                            images={rental.pictures[0].data}
+                            images={rental.pictures!=null ? rental.pictures[0].data:null}
                             pricePerDay={rental.pricePerDay}
                             location={rental.location}
                             isFavorite={false}
@@ -180,6 +202,9 @@ export default function Home() {
                     ))}
                 </div>
             </div>
+            <div className="flex items-center justify-center">
+        <PaginationComponent totalPages={totalPages} onPageChange={handlePageChange} />
+                </div>
         </div>
     );
 }
