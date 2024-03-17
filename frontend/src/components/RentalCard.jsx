@@ -1,6 +1,5 @@
 import React from 'react';
-import AddToFavorites from '../components/AddToFavorites'; // Import AddToFavorites component
-import RemoveFromFavorites from '../components/RemoveFromFavorites'; // Import RemoveFromFavorites component
+import {AddToFavorites,RemoveFromFavorites} from '../components/FavouriteRemoveAdd'; 
 import { Link } from 'react-router-dom';
 import {
     Card,
@@ -51,7 +50,7 @@ export default function RentalCard({id,title, description, images, pricePerDay, 
                             </Typography>
                         </div>
                     </div>
-                    <Typography color="gray">
+                    <Typography color="gray" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} >
                         {description}
                     </Typography>
                     <Typography color="red" className="font-medium">
