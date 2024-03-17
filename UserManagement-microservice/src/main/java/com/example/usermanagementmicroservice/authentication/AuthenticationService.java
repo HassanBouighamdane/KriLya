@@ -1,6 +1,7 @@
 package com.example.usermanagementmicroservice.authentication;
 
 import com.example.usermanagementmicroservice.config.JwtService;
+import com.example.usermanagementmicroservice.config.UserRegistrationDetails;
 import com.example.usermanagementmicroservice.models.Role;
 import com.example.usermanagementmicroservice.models.User;
 import com.example.usermanagementmicroservice.repository.UserRepository;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +40,16 @@ public class AuthenticationService {
                 .user(user)
                 .build();
     }
-
+    private void revokeAllUserTokens(User user) {
+        var validUserTokens = tokenRepository.findAllvalidTokensByUser(user.getId());
+        if (validUserTokens.isEmpty())
+            return;
+        validUserTokens.forEach(token -> {
+            token.setExpired(true);
+            token.setRevoked(true);
+        });
+        tokenRepository.saveAll(validUserTokens);
+    }
     private void saveUserToken(User user, String jwtToken) {
         var token = Token.builder()
                 .user(user)
@@ -57,13 +68,13 @@ public class AuthenticationService {
                         request.getPassword()
                 )
         );
-        var user =repository.findByEmail(request.getEmail())
-                .orElseThrow();
-        var jwtToken = jwtService.generateToken(user);
+        var user =repository.findByEmail(request.getEmail());
+        UserDetails userDetails = new UserRegistrationDetails(user);
+        var jwtToken = jwtService.generateToken(userDetails);
+        revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
-                .user(user)
                 .build();
     }
 }
