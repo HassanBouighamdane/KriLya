@@ -24,7 +24,11 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService ;
     private final AuthenticationManager authenticationManager;
-    public AuthenticationResponse register(RegisterRequest request) {
+    public AuthenticationResponse register(RegisterRequest request) throws Exception {
+        if (repository.existsByEmail(request.getEmail()) || repository.existsByUsername(request.getUsername())) {
+            throw new Exception("Email or Username is already in use");
+        }
+
         var user = User.builder()
                 .username(request.getUsername())
                 .email(request.getEmail())
