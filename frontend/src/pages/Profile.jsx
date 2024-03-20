@@ -5,24 +5,26 @@ import Review from '../components/Review';
 import { MdInsights } from "react-icons/md";
 import { IoCartSharp } from "react-icons/io5";
 import useFetch from '../hooks/useFetch';
-import API from '../services/UserManagementApi';
+import API from '../services/API';
 import { FaEdit } from 'react-icons/fa';
 import {useNavigate} from 'react-router-dom';
+import PostLoading from '../components/PostLoading';
+import { searchRentals } from '../services/apifetch';
+import axios from 'axios';
 
 
 function Profile() {
 
     const navigate = useNavigate();
-   
 
-
-    const {data: profile, loading: profileLoading, error: profileError} = useFetch(API.PROFILE.GET_ONE(1));
+    const {data: profile, loading: profileLoading, error: profileError} = useFetch(API.PROFILE.GET_ONE(2));
     const {data: user, loading: userLoading, error: userError} = useFetch(API.USER.GET_ONE(1));
     const [User, setUser] = useState({});
     const [userEmail, setUserEmail] = useState('');
     const [username, setUsername] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [rentals, setRentals] = useState([])
 
-    // Update User state when profile data is available
     useEffect(() => {
         if (profile) {
             setUser(prevUser => ({
@@ -33,7 +35,6 @@ function Profile() {
         console.log(profile);
     }, [profile]);
 
-    // Update userEmail state when user data is available
     useEffect(() => {
         if (user && user.email && user.username) {
             setUserEmail(user.email);
@@ -41,7 +42,6 @@ function Profile() {
         }
     }, [user]);
 
-    // Update User state with userEmail
     useEffect(() => {
         setUser(prevUser => ({
             ...prevUser,
@@ -49,6 +49,46 @@ function Profile() {
             username: username
         }));
     }, [userEmail]);
+
+    const [image, setImage] = useState(null);
+
+  useEffect(() => {
+        const fetchImage = async () => {
+        try {
+            const response = await axios.get(`${API.PROFILE.GET_ONE(2)}/image`, {
+            responseType: 'arraybuffer', // Ensure response is treated as a binary array buffer
+            });
+            console.log("image : ",response);
+            const imageBlob = new Blob([response.data], { type: 'image/jpeg' });
+            const imageUrl = URL.createObjectURL(imageBlob);
+            setImage(imageUrl);
+        } catch (error) {
+            console.error('Error fetching profile image:', error);
+        }
+        };
+
+        fetchImage();
+
+        return () => {
+        // Clean up resources when component unmounts
+        if (image) {
+            URL.revokeObjectURL(image);
+        }
+        };
+    }, []);
+    const searchUserRentals =async ()=>{
+        const data = await searchRentals("2", 'OWNER_ID');
+        setRentals(data.content)
+
+    }
+
+    useEffect( ()=>{
+        setLoading(true);
+        console.log(localStorage.getItem('userId'));
+        searchUserRentals();
+        setLoading(false);
+
+    },[])
 
     const handleEdit = ()=>{
         navigate("/updateprofile")
@@ -70,7 +110,7 @@ function Profile() {
                            <button onClick={handleEdit}><FaEdit className='ml-auto' /></button> 
                       
                             <div className="image overflow-hidden">
-                                   <img className='w-40 h-40 rounded-full mx-auto' src={avatar} alt='avatar' />
+                                   <img className='w-40 h-40 rounded-full mx-auto' src={image} alt='avatar' />
                         
                             </div>
                             <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">{User.firstname? User.firstname: User.username} {User.lastname}</h1>
@@ -117,7 +157,7 @@ function Profile() {
                             </div>
                             <div className="">
                             <div className="flex flex-col gap-3 mt-14">
-                           <Review avatar={avatar}></Review>
+                           <Review username="User" message="cool" rating="2"></Review>
                         </div>
                          </div>
                         </div>
@@ -162,14 +202,30 @@ function Profile() {
                                     </div>
                                     <ul className="list-inside grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                         <li>
-                                            <RentalCard images={avatar}></RentalCard>
+                                            {/* post */}
+                                           {loading && <PostLoading/>}
                                         </li>
                                         <li>
-                                            <RentalCard></RentalCard>
+                                            {/* post */}
+                                            {loading && <PostLoading/>}
                                         </li>
-                                        <li>
-                                            <RentalCard></RentalCard>
-                                        </li>
+                                        {rentals.map((rental, index) => (
+                                            <li>
+                                            <RentalCard
+                                                key={index}
+                                                id={rental.id}
+                                                title={rental.title}
+                                                description={rental.description}
+                                                images={rental.pictures!=null ? rental.pictures[0].data:null}
+                                                pricePerDay={rental.pricePerDay}
+                                                location={rental.location}
+                                                isFavorite={false}
+                                                handleDetailsClick={()=>rental.id}
+                                            />
+                                            </li>
+                                        ))}
+                                       
+                                       
                                     </ul>
                                 </div>
                         </div>

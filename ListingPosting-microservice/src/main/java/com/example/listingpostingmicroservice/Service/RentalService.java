@@ -2,7 +2,7 @@ package com.example.listingpostingmicroservice.Service;
 
 import com.example.listingpostingmicroservice.Model.Rental;
 import com.example.listingpostingmicroservice.Repository.RentalRepository;
-import com.example.listingpostingmicroservice.Service.Interfaces.RentalService;
+import com.example.listingpostingmicroservice.Service.Interfaces.IRentalService;
 import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,31 +16,31 @@ import java.io.IOException;
 import java.util.*;
 
 @Service
-public class RentalServiceImp implements RentalService {
+public class RentalService implements IRentalService {
 
     private final RentalRepository rentalRepository;
     @Autowired
-    public RentalServiceImp(RentalRepository rentalRepository) {
+    public RentalService(RentalRepository rentalRepository) {
         this.rentalRepository = rentalRepository;
     }
     //CRUD Operations
     public List<Rental> getAllRentals() {
         return rentalRepository.findAll();
     }
-    public List<Rental> getAllRentals(int pageNo,int pageSize,String sortBy) {
+    public Page<Rental> getAllRentals(int pageNo,int pageSize,String sortBy) {
         Pageable paging =PageRequest.of(pageNo,pageSize, Sort.by(sortBy));
-        Page<Rental> pageResult=rentalRepository.findAll(paging);
-        return pageResult.getContent();
+        return rentalRepository.findAll(paging);
     }
     public Optional<Rental> getRentalById(String id) {
         return rentalRepository.findById(id);
     }
-    public Rental createRental(String title, String description, double pricePerDay, boolean availability, String location, MultipartFile[] pictures) throws IOException {
+    public Rental createRental(String title, String description, double pricePerDay, String location, MultipartFile[] pictures,String ownerId,List<String> categoryIds) throws IOException {
         List<Binary> pictureDataList = null;
         if (pictures != null && pictures.length > 0) {
             pictureDataList = convertMultipartFilesToBinaries(pictures);
         }
-        Rental rental = new Rental(title, description, pricePerDay, availability, location, pictureDataList);
+
+        Rental rental = new Rental(title, description, pricePerDay, true, location, pictureDataList,ownerId,categoryIds);
         return rentalRepository.save(rental);
     }
     public Rental updateRental(String id, Rental rentalUpdates) {
@@ -74,8 +74,6 @@ public class RentalServiceImp implements RentalService {
     public void deleteRental(String id) {
         rentalRepository.deleteById(id);
     }
-    //pagination and Sorting
-
 
     public List<Binary> convertMultipartFilesToBinaries(MultipartFile[] files) throws IOException {
         List<Binary> binaries = new ArrayList<>();
@@ -85,29 +83,32 @@ public class RentalServiceImp implements RentalService {
         return binaries;
     }
 
-    public List<Rental> dynamicSearch(String query, SearchCriteria criteria, int pageNo, int pageSize, String sortBy) {
+    public Page<Rental> dynamicSearch(String query, SearchCriteria criteria, int pageNo, int pageSize, String sortBy) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
 
         return switch (criteria) {
-            case TITLE -> rentalRepository.findRentalByTitleContainingIgnoreCase(query, pageable).getContent();
+            case TITLE -> rentalRepository.findRentalByTitleContainingIgnoreCase(query, pageable);
             case DESCRIPTION ->
-                    rentalRepository.findRentalByDescriptionContainingIgnoreCase(query, pageable).getContent();
-            case LOCATION -> rentalRepository.findRentalByLocationContainingIgnoreCase(query, pageable).getContent();
+                    rentalRepository.findRentalByDescriptionContainingIgnoreCase(query, pageable);
+            case LOCATION -> rentalRepository.findRentalByLocationContainingIgnoreCase(query, pageable);
             case PRICE_PER_DAY_GREATER_THAN_EQUAL -> {
                 double pricePerDayGTE = Double.parseDouble(query);
-                yield rentalRepository.findRentalByPricePerDayGreaterThanEqual(pricePerDayGTE, pageable).getContent();
+                yield rentalRepository.findRentalByPricePerDayGreaterThanEqual(pricePerDayGTE, pageable);
             }
             case PRICE_PER_DAY_LESS_THAN_EQUAL -> {
                 double pricePerDayLTE = Double.parseDouble(query);
-                yield rentalRepository.findRentalByPricePerDayLessThanEqual(pricePerDayLTE, pageable).getContent();
+                yield rentalRepository.findRentalByPricePerDayLessThanEqual(pricePerDayLTE, pageable);
             }
             case DATE_AFTER -> {
                 Date dateAfter = new Date(Long.parseLong(query));
-                yield rentalRepository.findRentalByDateAfter(dateAfter, pageable).getContent();
+                yield rentalRepository.findRentalByDateAfter(dateAfter, pageable);
             }
             case DATE_BEFORE -> {
                 Date dateBefore = new Date(Long.parseLong(query));
-                yield rentalRepository.findRentalByDateBefore(dateBefore, pageable).getContent();
+                yield rentalRepository.findRentalByDateBefore(dateBefore, pageable);
+            }
+            case OWNER_ID -> {
+                yield rentalRepository.findRentalByOwnerId(query, pageable);
             }
             default -> throw new IllegalArgumentException("Invalid search criteria: " + criteria);
         };

@@ -11,11 +11,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class RentalServiceTests {
+public class IRentalServiceTests {
     @Mock
     private RentalRepository rentalRepository;
     @InjectMocks
-    private RentalServiceImp rentalService;
+    private RentalService rentalService;
 /*
     @Test
     void createRentalTests() throws IOException {
