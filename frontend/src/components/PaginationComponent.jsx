@@ -20,6 +20,7 @@ function PaginationComponent({totalPages, onPageChange}) {
   };
 
   return (
+    totalPages>1 &&
     <div className="flex items-center gap-4 mb-4 mt-20">
       <Button
         variant="text"
