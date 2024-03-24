@@ -29,7 +29,7 @@ function Signup() {
     });
 
     const handleSubmit = async (values, { setSubmitting }) => {
-        await axios.post(`${baseUrl}/api/auth/register`,{
+        await axios.post(`${baseUrl}/users/auth/register`,{
             "username" : values.username,
             "email" : values.email,
             "password"  : values.password

@@ -7,10 +7,7 @@ import Profile from '../pages/Profile';
 
 
 function Navbar(){
-  // const location = useLocation();
-  // const isLoginPage = location.pathname === '/login';
-  // const isSignupPage = location.pathname === '/signup';
-
+  
  
   const { data, setData } = useContext(MyContext);
   const navigate = useNavigate();
