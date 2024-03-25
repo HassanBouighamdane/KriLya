@@ -9,7 +9,7 @@ import API from '../services/API';
 import { FaEdit } from 'react-icons/fa';
 import {useNavigate} from 'react-router-dom';
 import PostLoading from '../components/PostLoading';
-import { searchRentals } from '../services/apifetch';
+import { fetchRentals } from '../services/apifetch';
 import axios from 'axios';
 
 
@@ -76,16 +76,19 @@ function Profile() {
         }
         };
     }, []);
-    const searchUserRentals =async ()=>{
-        const data = await searchRentals("2", 'OWNER_ID');
-        setRentals(data.content)
-
-    }
+    const fetchAllItems = async (pageNumber,pageSize=10,sortBy='id') => {
+        try {
+            const data = await fetchRentals(localStorage.getItem('userId'),pageNumber,pageSize,sortBy);
+            setRentals(data.content);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
 
     useEffect( ()=>{
         setLoading(true);
         console.log(localStorage.getItem('userId'));
-        searchUserRentals();
+        fetchAllItems();
         setLoading(false);
 
     },[])

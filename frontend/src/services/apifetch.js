@@ -1,4 +1,5 @@
 import axios from 'axios';
+import API from './API';
 
 const API_BASE_URL = 'http://localhost:8081/api/rentals) ';
 
@@ -20,10 +21,10 @@ export const getListings = async () => {
   }
   
 };
-export async function fetchRentals(pageNo,pageSize,sortBy) {
+export async function fetchRentals(id, pageNo,pageSize,sortBy) {
   try {
-      let url = 'http://localhost:8081/api/rentals';
-      url+=`?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}`
+      let url = API.RENTAL.GET_BY_USER(id,pageNo,pageSize,sortBy);
+      // url+=`?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}`
       const response = await fetch(url);
       if (!response.ok) {
           throw new Error('Failed to fetch rentals');

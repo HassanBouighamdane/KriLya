@@ -61,7 +61,7 @@ const PostRental = ({ onPostSuccess }) => {
             for (let i = 0; i < values.pictures.length; i++) {
                 formDataToSend.append('pictures', values.pictures[i]);
             }
-            formDataToSend.append('ownerId',"1");
+            formDataToSend.append('ownerId',localStorage.getItem('userId'));
             const response = await axios.post(baseUrl + '/api/rentals', formDataToSend);
 
             if (response.status === 201) {

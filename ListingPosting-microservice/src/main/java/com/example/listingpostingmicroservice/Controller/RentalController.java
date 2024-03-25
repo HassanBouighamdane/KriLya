@@ -41,6 +41,16 @@ public class RentalController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/user/{id}")
+    public ResponseEntity<Page<Rental>> getRentalsByOwnerId(
+            @PathVariable("id") String id,
+            @RequestParam (defaultValue = "0") int pageNo,
+            @RequestParam (defaultValue = "10") int pageSize,
+            @RequestParam (defaultValue = "id") String sortBy) {
+        Page<Rental> rentals = rentalService.getRentalsByUserId(id,pageNo,pageSize,sortBy);
+        return new ResponseEntity<>(rentals, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<Rental> createRental(@RequestParam("title") String title,
                                                @RequestParam("description") String description,
