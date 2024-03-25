@@ -34,6 +34,10 @@ public class RentalService implements IRentalService {
     public Optional<Rental> getRentalById(String id) {
         return rentalRepository.findById(id);
     }
+    public Page<Rental> getRentalsByUserId(String userId,int pageNo,int pageSize,String sortBy) {
+        Pageable paging =PageRequest.of(pageNo,pageSize, Sort.by(sortBy));
+        return rentalRepository.findRentalsByOwnerId(userId, paging);
+    }
     public Rental createRental(String title, String description, double pricePerDay, String location, MultipartFile[] pictures,String ownerId,List<String> categoryIds) throws IOException {
         List<Binary> pictureDataList = null;
         if (pictures != null && pictures.length > 0) {
@@ -108,7 +112,7 @@ public class RentalService implements IRentalService {
                 yield rentalRepository.findRentalByDateBefore(dateBefore, pageable);
             }
             case OWNER_ID -> {
-                yield rentalRepository.findRentalByOwnerId(query, pageable);
+                yield rentalRepository.findRentalsByOwnerId(query, pageable);
             }
             default -> throw new IllegalArgumentException("Invalid search criteria: " + criteria);
         };

@@ -6,6 +6,7 @@ import { GiClothes } from "react-icons/gi";
 import { Alert,AlertTitle } from '@mui/material';
 import '../assets/css/Home.css';
 import {fetchRentals,fetchRental} from '../services/apifetch'
+
 import PostRental from '../components/PostRental';
 import PaginationComponent from '../components/PaginationComponent';
 import {searchRentals} from '../services/apifetch'
@@ -28,7 +29,7 @@ export default function Home() {
 
     const fetchAllItems = async (pageNumber,pageSize=10,sortBy='id') => {
         try {
-            const data = await fetchRentals(pageNumber,pageSize,sortBy);
+            const data = await fetchRentals(localStorage.getItem('userId'),pageNumber,pageSize,sortBy);
             setRentals(data.content);
             setTotalPages(data.totalPages);
             setPageNo(pageNumber);

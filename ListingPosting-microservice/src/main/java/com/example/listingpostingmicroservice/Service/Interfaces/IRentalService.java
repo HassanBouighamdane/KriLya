@@ -14,6 +14,7 @@ public interface IRentalService {
     List<Rental> getAllRentals();
     Page<Rental> getAllRentals(int pageNo, int pageSize, String sortBy);
     Optional<Rental> getRentalById(String id);
+    Page<Rental> getRentalsByUserId(String userId, int pageNo, int pageSize, String sortBy);
     Rental createRental(String title, String description, double pricePerDay, String location, MultipartFile[] pictures,String ownerId,List<String> categoryIds) throws IOException;
     Rental updateRental(String id, Rental rentalUpdates);
     void deleteRental(String id);

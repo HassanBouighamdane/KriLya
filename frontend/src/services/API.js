@@ -19,6 +19,8 @@ const API = {
   RENTAL: {
     GET_ALL: (pageNo, pageSize, sortBy) =>
       `${BASE_URL_RENTAL}/rentals?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}`,
+    GET_BY_USER: (id,pageNo, pageSize, sortBy) =>
+      `${BASE_URL_RENTAL}/rentals/user/${id}?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}`,
     GET_ONE: (id) => `${BASE_URL_RENTAL}/rentals/${id}`,
     CREATE: `${BASE_URL_RENTAL}/rentals`,
     UPDATE: (id) => `${BASE_URL_RENTAL}/rentals/${id}`,

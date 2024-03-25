@@ -19,6 +19,6 @@ public interface RentalRepository extends MongoRepository<Rental, String>{
     Page<Rental> findRentalByPricePerDayLessThanEqual(double pricePerDay,Pageable pageable);
     Page<Rental> findRentalByDateAfter(Date date,Pageable pageable);
     Page<Rental> findRentalByDateBefore(Date date,Pageable pageable);
-    Page<Rental> findRentalByOwnerId(String ownerId,Pageable pageable);
+    Page<Rental> findRentalsByOwnerId(String ownerId,Pageable pageable);
 
 }
