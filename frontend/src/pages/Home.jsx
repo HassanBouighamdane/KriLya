@@ -13,7 +13,6 @@ import {searchRentals} from '../services/apifetch'
 import PostLoading from '../components/PostLoading';
 
 export default function Home() {
-
     const [rentals, setRentals] = useState([]);
     const [pageNo,setPageNo]=useState(0);
     const [totalPages,setTotalPages]=useState(0);
@@ -41,7 +40,7 @@ export default function Home() {
 
     useEffect(() => {
           fetchAllItems(pageNo);
-      }, []);
+      }, [pageNo]);
       
     const handlePostSuccess = () => {
         setSuccessAlertOpen(true);
@@ -57,8 +56,8 @@ export default function Home() {
     };
     const [loading, setLoading] = useState(false);
     const handleSearch = async (query)=>{
-        if(query == "") {
-            fetchAllItems(pageNo);
+        if(query === "") {
+            await fetchAllItems(pageNo);
         }
         setSearchQuery(query);
         setLoading(true);
