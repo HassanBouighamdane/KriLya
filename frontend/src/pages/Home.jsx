@@ -11,6 +11,7 @@ import PostRental from '../components/PostRental';
 import PaginationComponent from '../components/PaginationComponent';
 import {searchRentals} from '../services/apifetch'
 import PostLoading from '../components/PostLoading';
+import { INTERACTION_TYPES } from '../constants';
 
 export default function Home() {
     const [rentals, setRentals] = useState([]);
@@ -78,11 +79,16 @@ export default function Home() {
         localStorage.setItem('react-app-favourites', JSON.stringify(items));
     };
 
-    const addFavourite = (item) => {
+    const addFavourite = async (item) => {
         const newFavouriteList = [...favourites, item.id];
         setFavourites(newFavouriteList);
         saveToLocalStorage(newFavouriteList);
+        console.log(item);
+        // Log the "favorite" interaction to the backend
+        await logUserInteraction(INTERACTION_TYPES.FAVORITE, item.id);
     };
+    
+    
 
     const removeFavourite = (item) => {
         const newFavouriteList = favourites.filter(
@@ -95,7 +101,30 @@ export default function Home() {
 
     const favoriteRentals = rentals.filter(rental => favourites.some(fav => fav === rental.id));
     const otherRentals = rentals.filter(rental => !favourites.some(fav => fav === rental.id));
-
+    
+    const logUserInteraction = async (interactionType, itemId) => {
+        try {
+            const response = await fetch('http://localhost:8081/api/rentals/logUserInteraction', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    interactionType: interactionType,
+                    itemId: itemId,
+                }),
+            });
+    
+            if (response.ok) {
+                console.log(`Successfully logged ${interactionType} for item ${itemId}`);
+            } else {
+                console.error(`Failed to log ${interactionType} for item ${itemId}`);
+            }
+        } catch (error) {
+            console.error('Error logging user interaction:', error);
+        }
+    };
+    
     return (
         
         <div className="container mx-auto  px-7">
