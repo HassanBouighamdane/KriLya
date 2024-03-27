@@ -4,10 +4,7 @@ import {useNavigate,Link,useLocation } from 'react-router-dom';
 import { MyContext } from '../providers/UserProvider';
 import { FaUser } from 'react-icons/fa';
 function Navbar(){
-  // const location = useLocation();
-  // const isLoginPage = location.pathname === '/login';
-  // const isSignupPage = location.pathname === '/signup';
-
+  
  
   const { data, setData } = useContext(MyContext);
   const navigate = useNavigate();
