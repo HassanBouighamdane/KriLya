@@ -1,9 +1,13 @@
 package com.example.listingpostingmicroservice.Controller;
 
 import com.example.listingpostingmicroservice.Model.Rental;
+import com.example.listingpostingmicroservice.Model.UserInteraction;
+
 import com.example.listingpostingmicroservice.Service.Interfaces.IRentalService;
 import com.example.listingpostingmicroservice.Service.RentalService;
 import com.example.listingpostingmicroservice.Service.SearchCriteria;
+import com.example.listingpostingmicroservice.Service.UserInteractionService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -15,15 +19,42 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/rentals")
-@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/api/postes/rentals")
 public class RentalController {
 
+
+    private final UserInteractionService userInteractionService;
     private final IRentalService rentalService;
+
     @Autowired
-    private RentalController(RentalService rentalService){
-        this.rentalService=rentalService;
+    public RentalController(UserInteractionService userInteractionService, RentalService rentalService) {
+        this.userInteractionService = userInteractionService;
+        this.rentalService = rentalService;
     }
+
+    @PostMapping("/logUserInteraction")
+    public ResponseEntity<?> logUserInteraction(@RequestBody UserInteraction userInteractionRequest) {
+        //String userId = userInteractionRequest.getUserId();
+        String itemId = userInteractionRequest.getItemId();
+        String interactionType = userInteractionRequest.getInteractionType();
+
+        userInteractionService.logUserInteraction(/*userId,*/itemId, interactionType);
+
+        return ResponseEntity.ok().build();
+    }
+
+
+    @PostMapping("/rental")
+    public ResponseEntity<?> rentItem(/*@RequestParam String userId,*/ @RequestParam String itemId) {
+        // Logic to handle item rental
+
+        // Log the rental interaction
+        userInteractionService.logUserInteraction(/*userId,*/itemId, "rental");
+
+        return ResponseEntity.ok().build();
+    }
+
+
 
     @GetMapping
     public ResponseEntity<Page<Rental>> getAllRentals(

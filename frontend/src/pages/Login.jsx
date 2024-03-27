@@ -25,7 +25,7 @@ function Login() {
     });
 
     const handleSubmit = async (values, { setSubmitting }) => {
-        await axios.post(`${baseUrl}/api/auth/authenticate`,{
+        await axios.post(`${baseUrl}/users/auth/authenticate`,{
             "email" : values.email,
             "password"  : values.password
         })

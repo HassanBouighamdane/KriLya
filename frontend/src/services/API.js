@@ -1,5 +1,5 @@
-const BASE_URL_USER = 'http://localhost:8080/api';
-const BASE_URL_RENTAL = 'http://localhost:8081/api';
+const BASE_URL_USER = 'http://localhost:8080/users';
+const BASE_URL_RENTAL = 'http://localhost:8080/postes';
 
 const API = {
   PROFILE: {
