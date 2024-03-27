@@ -1,7 +1,7 @@
 import axios from 'axios';
-import API from './API';
+import API from './api.js';
 
-const API_BASE_URL = 'http://localhost:8080/rentals) ';
+const API_BASE_URL = 'http://localhost:8080/postes/rentals';
 
 export const createListing = async (listingData) => {
   try {
@@ -38,7 +38,7 @@ export async function fetchRentals(id, pageNo,pageSize,sortBy) {
 }
 export async function fetchRental(id) {
   try {
-      let url = `http://localhost:8080/rentals/${id}`;
+      let url = `http://localhost:8080/postes/rentals/${id}`;
       const response = await fetch(url);
       if (!response.ok) {
           throw new Error('Failed to fetch rentals');
@@ -55,7 +55,7 @@ export async function fetchRental(id) {
 
 export async function searchRentals(query, criteria,pageNo=0,pageSize=10, sortBy='id') {
   try {
-      let url = `http://localhost:8081/api/rentals/search?query=${query}&criteria=${criteria}&pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}`;
+      let url = `http://localhost:8080/postes/rentals/search?query=${query}&criteria=${criteria}&pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}`;
       
       const response = await fetch(url);
       if (!response.ok) {

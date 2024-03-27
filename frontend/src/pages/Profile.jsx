@@ -5,7 +5,7 @@ import Review from '../components/Review';
 import { MdInsights } from "react-icons/md";
 import { IoCartSharp } from "react-icons/io5";
 import useFetch from '../hooks/useFetch';
-import API from '../services/API';
+import API from '../services/api';
 import { FaEdit } from 'react-icons/fa';
 import {useNavigate} from 'react-router-dom';
 import PostLoading from '../components/PostLoading';

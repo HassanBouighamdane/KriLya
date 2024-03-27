@@ -1,18 +1,20 @@
 import React from 'react';
+import { useContext } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import img from '../assets/images/bg.jpg';
 import logo from '../assets/images/logo-nobg.png';
-
+import { MyContext } from '../providers/UserProvider';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import '../App.css'
-import API from '../services/API';
+import API from '../services/api';
 
 const baseUrl = "http://localhost:8080";
 
 function Signup() {
+    const { data, setData } = useContext(MyContext);
     const navigate = useNavigate();
     const validationSchema = Yup.object({
         username: Yup.string()
@@ -51,7 +53,9 @@ function Signup() {
             .then((res)=> {
                 console.log(res);
                 localStorage.setItem('jwtToken', res.data.token);
+                localStorage.setItem('userId', res.data.user.id);
                 createProfile()
+                setData(true);
                 navigate("/")
             })
             .catch((err)=> {

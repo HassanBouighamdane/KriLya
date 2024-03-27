@@ -32,7 +32,7 @@ function Login() {
             .then((res)=> {
                 console.log(res);
                 localStorage.setItem('jwtToken', res.data.token);
-                localStorage.setItem('userId', res.data.user.id)
+                localStorage.setItem('userId', res.data.user.id);
                 // setData(res.data.user);
                 setData(true);
                 navigate("/")
