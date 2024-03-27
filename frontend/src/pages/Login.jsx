@@ -32,7 +32,9 @@ function Login() {
             .then((res)=> {
                 console.log(res);
                 localStorage.setItem('jwtToken', res.data.token);
-                localStorage.setItem('userId', res.data.user.id)
+                localStorage.setItem('userId', res.data.user.id);
+                const parts = values.email.split("@");
+                localStorage.setItem('username', parts[0])
                 // setData(res.data.user);
                 setData(true);
                 navigate("/")
