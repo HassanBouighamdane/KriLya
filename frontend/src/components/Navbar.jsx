@@ -3,9 +3,6 @@ import React, { useState ,useEffect, useContext} from 'react';
 import {useNavigate,Link,useLocation } from 'react-router-dom';
 import { MyContext } from '../providers/UserProvider';
 import { FaUser } from 'react-icons/fa';
-import Profile from '../pages/Profile';
-
-
 function Navbar(){
   
  
@@ -89,7 +86,7 @@ function Navbar(){
           </div>
         </div>
       </nav>
-      <div id="navbar-placeholder" class="h-28"></div> 
+      <div id="navbar-placeholder" className="h-28"></div> 
     </div>
       
     );

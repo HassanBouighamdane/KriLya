@@ -13,6 +13,7 @@ import RenatlItemDetails from './components/RentalItemDetails';
 import PageNotFound from './pages/PageNotFound';
 import UpdateProfile from './pages/UpdateProfile';
 
+
 function App() {
   return (
     <div className="App">

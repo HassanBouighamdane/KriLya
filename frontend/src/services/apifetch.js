@@ -1,4 +1,5 @@
 import axios from 'axios';
+import API from './API';
 
 const API_BASE_URL = 'http://localhost:8080/rentals) ';
 
@@ -20,12 +21,10 @@ export const getListings = async () => {
   }
   
 };
-export async function fetchRentals(searchQuery,sortBy,sortOrder) {
+export async function fetchRentals(id, pageNo,pageSize,sortBy) {
   try {
-      let url = 'http://localhost:8080/rentals';
-
-      url += `?title=${searchQuery}&sortBy=${sortBy}&sortOrder=${sortOrder}`;
-
+      let url = API.RENTAL.GET_BY_USER(id,pageNo,pageSize,sortBy);
+      // url+=`?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}`
       const response = await fetch(url);
       if (!response.ok) {
           throw new Error('Failed to fetch rentals');
@@ -49,6 +48,24 @@ export async function fetchRental(id) {
   } catch (error) {
       console.error('Error fetching rentals:', error);
       throw error; 
+  }
+}
+
+
+
+export async function searchRentals(query, criteria,pageNo=0,pageSize=10, sortBy='id') {
+  try {
+      let url = `http://localhost:8081/api/rentals/search?query=${query}&criteria=${criteria}&pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}`;
+      
+      const response = await fetch(url);
+      if (!response.ok) {
+          throw new Error('Failed to fetch rentals');
+      }
+      const data = await response.json();
+      return data;
+  } catch (error) {
+      console.error('Error fetching rentals:', error);
+      throw error;
   }
 }
 

@@ -8,6 +8,7 @@ import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import '../App.css'
+import API from '../services/API';
 
 const baseUrl = "http://localhost:8080";
 
@@ -28,6 +29,19 @@ function Signup() {
             .required('Confirm Password is required'),
     });
 
+    const createProfile =async ()=> {
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({bio: ""}),
+        };
+        fetch(API.PROFILE.CREATE, options)
+        .then(response => console.log(response))
+        .catch(err => console.log(err));
+    }
+
     const handleSubmit = async (values, { setSubmitting }) => {
         await axios.post(`${baseUrl}/users/auth/register`,{
             "username" : values.username,
@@ -37,6 +51,7 @@ function Signup() {
             .then((res)=> {
                 console.log(res);
                 localStorage.setItem('jwtToken', res.data.token);
+                createProfile()
                 navigate("/")
             })
             .catch((err)=> {

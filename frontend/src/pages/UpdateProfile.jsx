@@ -1,34 +1,41 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import { Formik, Form, Field } from 'formik';
 import avatar from '../assets/images/avatar.jpg';
 import { FaArrowLeft } from 'react-icons/fa';
 import { useHandleBack } from '../hooks/useHandleBack';
-import API from '../services/UserManagementApi';
+import API from '../services/API';
+import axios from 'axios'
+import {useNavigate} from 'react-router-dom'
 
 
 function UpdateProfile() {
+    const navigate = useNavigate();
     
     const initialValues = {
-        firstname: "Jose",
-        lastname: "Morinho",
-        address: "12 rue xcvc rabat",
-        phone: "0678585858",
-        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus omnis, reiciendis aperiam numquam nam porro unde, iusto iste animi earum enim sapiente facere! Excepturi neque in eius expedita adipisci? Odit?",
-        gender: "Male",
-        email: "mail@gm.com",
+        firstname: "",
+        lastname: "",
+        address: "",
+        phone: "",
+        description: "",
+        gender: "",
+        email: "",
         createdAt: "",
         status: "Active",
-        rating: "4.89",
-        responseRate: "1h",
+        rating: "",
+        responseRate: "",
         picutre: ""
     };
 
     const fileInputRef = useRef(null);
     const handleBack = useHandleBack();
+    const [picture, setPicture] = useState(null);
 
     const handleFileInputChange = (e) => {
+        e.preventDefault();
         const file = e.target.files[0];
         // Do something with the selected file, such as uploading it
+        setPicture(file);
+        console.log(file);
         console.log('Selected file:', file);
     };
 
@@ -36,19 +43,54 @@ function UpdateProfile() {
         fileInputRef.current.click();
     };
 
-    const handleSubmit = (values) => {
-        console.log("Form submitted with values:", values);
-        const options = {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(values),
-        };
-        fetch(API.PROFILE.UPDATE(1), options)
-        .then(response => console.log(response))
-        .catch(err => console.log(err));
+    // const handleSubmit = async (values) => {
+    
+    //     const formData = new FormData();
+    //     // Append profile data to the formData
+    //     Object.entries(values).forEach(([key, value]) => {
+    //         formData.append(key, value);
+    //     });
+    //     // Append picture file to the formData
+    //     formData.append("picture", picture);
+    
+    //     try {
+    //         // Make a PUT request to the API endpoint with formData
+    //         const response = await axios.put(API.PROFILE.UPDATE(1), formData, {
+    //             headers: {
+    //                 'Content-Type': 'multipart/form-data'
+    //             }
+    //         });
+    //         console.log('Profile updated:', response.data);
+    //         // Navigate to the profile page after successful update
+    //         navigate('/profile');
+    //     } catch (error) {
+    //         console.error('Error updating profile:', error);
+    //     }
+    // };
 
+    const handleSubmit =async (values) => {
+        console.log("Form submitted with values:", {...values, picture : picture});
+        // const options = {
+        //     method: 'PUT',
+        //     headers: {
+        //         'Content-Type': 'multipart/form-data',
+        //     },
+        // };
+        const formData = new FormData();
+        Object.entries({...values, picture : picture}).forEach(([key, value]) => {
+            formData.append(key, value);
+        });
+        try {
+            const response = await axios.put(API.PROFILE.UPDATE(2), values, picture);
+            console.log('Profile created:', response.data);
+          } catch (error) {
+            console.error('Error creating profile:', error);
+          }
+        // fetch(API.PROFILE.UPDATE(2), options)
+        // .then(response => console.log(response))
+        // .catch(err => console.log(err));
+        
+        navigate('/profile')
         
     };
 
@@ -77,6 +119,7 @@ function UpdateProfile() {
                             <button
                                 className="bg-blue-900 hover:bg-blue-800 text-white  py-2 px-4 rounded"
                                 onClick={handleButtonClick}
+                                type='button'
                             >
                                 Change picture
                             </button>
