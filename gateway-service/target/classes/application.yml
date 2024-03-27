@@ -5,7 +5,7 @@ spring:
         - id: rentals-route
           uri: ${RENTALS_ROUTE_URI:http://localhost:8081}
           predicates:
-            - Path=/rentals/**
+            - Path=/postes/**
           filters:
             - PrefixPath=/api
             - AddResponseHeader=X-Powered-By, Krilya Gateway Service
@@ -16,6 +16,18 @@ spring:
           filters:
             - PrefixPath=/api
             - AddResponseHeader=X-Powered-By, Krilya Gateway Service
+      globalcors:
+        corsconfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedHeaders: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+
 management:
   endpoints:
     web:
