@@ -69,6 +69,7 @@ function Navbar(){
                 
               </li>
               </div>
+
               ) : (
                 <Link to="/signup"><button
                   // onClick={}

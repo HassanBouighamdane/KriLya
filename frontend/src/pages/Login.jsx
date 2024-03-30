@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import img from '../assets/images/bg.jpg';
@@ -13,7 +14,7 @@ import '../App.css'
 const baseUrl = "http://localhost:8080";
 
 function Login() {
-    const { data, setData } = useContext(MyContext);
+    const [loginError, setLoginerror] = useState('');
     const navigate = useNavigate();
     const validationSchema = Yup.object({
         email: Yup.string()
@@ -22,9 +23,10 @@ function Login() {
         password: Yup.string()
             .min(6, 'Password must be at least 6 characters')
             .required('Password is required'),
+        
     });
 
-    const handleSubmit = async (values, { setSubmitting }) => {
+    const handleSubmit = async (values, { setSubmitting, resetForm }) => {
         await axios.post(`${baseUrl}/users/auth/authenticate`,{
             "email" : values.email,
             "password"  : values.password
@@ -32,13 +34,18 @@ function Login() {
             .then((res)=> {
                 console.log(res);
                 localStorage.setItem('jwtToken', res.data.token);
-                localStorage.setItem('userId', res.data.user.id);
+
+                localStorage.setItem('userId', res.data.id);
+                //const parts = values.email.split("@");
+                //localStorage.setItem('username', parts[0])
+
                 // setData(res.data.user);
-                setData(true);
                 navigate("/")
             })
             .catch((err)=> {
                 console.log(err);
+                setLoginerror('Email or password are invalid !');
+                resetForm();
             })
         setSubmitting(false);
     };
@@ -62,6 +69,7 @@ function Login() {
                 {({ isSubmitting, errors }) => (
                 <Form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-2/3 bg-gray-100">
                     <img src={logo} alt="Logo" className="logo" />
+                    <div className="error-message text-xs text-red-500">{loginError}</div>
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" >
                             Email

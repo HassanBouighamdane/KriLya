@@ -21,10 +21,9 @@ export const getListings = async () => {
   }
   
 };
-export async function fetchRentals(id, pageNo,pageSize,sortBy) {
+export async function fetchRentals(pageNo,pageSize) {
   try {
-      let url = API.RENTAL.GET_BY_USER(id,pageNo,pageSize,sortBy);
-      // url+=`?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}`
+      let url = API.RENTAL.GET_ALL(pageNo,pageSize);
       const response = await fetch(url);
       if (!response.ok) {
           throw new Error('Failed to fetch rentals');
