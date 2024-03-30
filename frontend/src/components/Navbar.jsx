@@ -70,6 +70,7 @@ function Navbar(){
   {localStorage.getItem('username')}
 </li>
               </div>
+
               ) : (
                 <Link to="/signup"><button
                   // onClick={}

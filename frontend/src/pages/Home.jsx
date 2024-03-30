@@ -28,9 +28,9 @@ export default function Home() {
       };
     
 
-    const fetchAllItems = async (pageNumber,pageSize=10,sortBy='id') => {
+    const fetchAllItems = async (pageNumber,pageSize=10) => {
         try {
-            const data = await fetchRentals(localStorage.getItem('userId'),pageNumber,pageSize,sortBy);
+            const data = await fetchRentals(pageNumber,pageSize);
             setRentals(data.content);
             setTotalPages(data.totalPages);
             setPageNo(pageNumber);
@@ -237,3 +237,7 @@ export default function Home() {
         </div>
     );
 }
+
+
+
+

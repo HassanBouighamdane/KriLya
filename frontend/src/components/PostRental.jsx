@@ -5,7 +5,7 @@ import axios from 'axios';
 //import { useDropzone } from "react-dropzone";
 import { Alert,AlertTitle } from '@mui/material';
 
-const baseUrl = "http://localhost:8081";
+const baseUrl = "http://localhost:8080";
 
 const PostRental = ({ onPostSuccess }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -20,7 +20,7 @@ const PostRental = ({ onPostSuccess }) => {
         // Perform category search based on the text entered
         // Here you would make an API call to fetch category suggestions
         // Replace the following mock example with your actual API call
-        const response = await axios.get(baseUrl + `/api/categories/search?text=${text}`);
+        const response = await axios.get(baseUrl + `/postes/categories/search?text=${text}`);
         setCategorySuggestions(response.data); // Update category suggestions based on the response
     };
     const addSelectedCategory = (category) => {
@@ -53,17 +53,22 @@ const PostRental = ({ onPostSuccess }) => {
             formDataToSend.append('title', values.title);
             formDataToSend.append('description', values.description);
             formDataToSend.append('pricePerDay', values.pricePerDay);
-            formDataToSend.append('availability', true);
             formDataToSend.append('location', values.location);
-            selectedCategories.forEach((category) => {
-                formDataToSend.append('categoryIds', category.id);
+            formDataToSend.append('ownerId', localStorage.getItem('userId'));
+            values.categoryIds.forEach(categoryId => {
+                formDataToSend.append('categoryIds', categoryId);
             });
-            for (let i = 0; i < values.pictures.length; i++) {
-                formDataToSend.append('pictures', values.pictures[i]);
+            if (values.pictures) {
+                for (let i = 0; i < values.pictures.length; i++) {
+                    formDataToSend.append('pictures', values.pictures[i]);
+                }
             }
-            formDataToSend.append('ownerId',localStorage.getItem('userId'));
-            const response = await axios.post(baseUrl + '/api/rentals', formDataToSend);
-
+            const response = await axios.post(baseUrl + '/postes/rentals', formDataToSend, {
+                headers: {
+                    'Content-Type': 'multipart/form-data' // Ensure correct content type
+                }
+            });
+    
             if (response.status === 201) {
                 toggleModal(); // Close the modal after successful submission
                 onPostSuccess();
@@ -85,6 +90,7 @@ const PostRental = ({ onPostSuccess }) => {
             setSubmitting(false);
         }
     };
+    
     
 
     return (
