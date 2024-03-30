@@ -38,7 +38,6 @@ function Login() {
                 localStorage.setItem('userId', res.data.id);
                 //const parts = values.email.split("@");
                 //localStorage.setItem('username', parts[0])
-
                 // setData(res.data.user);
                 navigate("/")
             })

@@ -12,11 +12,11 @@ on:
   push:
     paths:
       - 'UserManagement-microservice/**'
-    branches: [ "master" ]
+    branches: [ "hassan" ]
   pull_request:
     paths:
       - 'UserManagement-microservice/**'
-    branches: [ "master" ]
+    branches: [ "hassan" ]
 
 
 jobs:

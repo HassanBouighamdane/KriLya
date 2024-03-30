@@ -23,6 +23,7 @@ function Navbar(){
 
   const handleLogout = () => {
     localStorage.removeItem('jwtToken');
+    localStorage.removeItem('userId')
     setUserLoggedIn(false);
     setData(false);
     navigate('/login');
@@ -57,17 +58,17 @@ function Navbar(){
               <li>
                 <Link to="/post" className="block py-2 px-3 text-gray-600 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 active">About us</Link>
               </li>
-              {data ? (
+              {localStorage.getItem('userId') ? (
                 <div className='flex flex-center items-center '>
                 <li className=''>
                 <button onClick={handleLogout} className="block py-2 px-3 text-gray-600 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 active">Logout</button>
               </li>
-              <li className='px-5'>
-                <Link to="/profile">
-                  <FaUser />
-                </Link>
-                
-              </li>
+              <li className='px-5 flex items-center flex-col'>
+  <Link to="/profile">
+    <FaUser className="mr-1" /> {/* Adjust margin if needed */}
+  </Link>
+  {localStorage.getItem('username')}
+</li>
               </div>
 
               ) : (

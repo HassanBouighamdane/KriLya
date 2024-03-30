@@ -12,11 +12,11 @@ on:
   push:
     paths:
       - 'frontend/**'
-    branches: [ "master","hassan" ]
+    branches: [ "hassan" ]
   pull_request:
     paths:
       - 'frontend/**'
-    branches: [ "master","hassan" ]
+    branches: [ "hassan" ]
 
 
 jobs:
