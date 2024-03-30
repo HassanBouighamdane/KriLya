@@ -3,7 +3,7 @@ import { Formik, Form, Field } from 'formik';
 import avatar from '../assets/images/avatar.jpg';
 import { FaArrowLeft } from 'react-icons/fa';
 import { useHandleBack } from '../hooks/useHandleBack';
-import API from '../services/api';
+import API from '../services/API';
 import axios from 'axios'
 import {useNavigate} from 'react-router-dom'
 
