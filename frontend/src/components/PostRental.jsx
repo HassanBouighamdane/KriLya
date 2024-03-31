@@ -55,14 +55,19 @@ const PostRental = ({ onPostSuccess }) => {
             formDataToSend.append('pricePerDay', values.pricePerDay);
             formDataToSend.append('location', values.location);
             formDataToSend.append('ownerId', localStorage.getItem('userId'));
-            values.categoryIds.forEach(categoryId => {
-                formDataToSend.append('categoryIds', categoryId);
-            });
+            
+            if (values.categoryIds && values.categoryIds.length > 0) {
+                values.categoryIds.forEach(categoryId => {
+                    formDataToSend.append('categoryIds', categoryId);
+                });
+            }
+    
             if (values.pictures) {
                 for (let i = 0; i < values.pictures.length; i++) {
                     formDataToSend.append('pictures', values.pictures[i]);
                 }
             }
+            
             const response = await axios.post(baseUrl + '/postes/rentals', formDataToSend, {
                 headers: {
                     'Content-Type': 'multipart/form-data' // Ensure correct content type
@@ -90,6 +95,7 @@ const PostRental = ({ onPostSuccess }) => {
             setSubmitting(false);
         }
     };
+    
     
     
 
