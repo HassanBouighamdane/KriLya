@@ -9,7 +9,7 @@ import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import '../App.css'
-import API from '../services/api';
+import API from '../services/API';
 
 const baseUrl = "http://localhost:8080";
 

@@ -8,6 +8,7 @@ import com.example.listingpostingmicroservice.Service.RentalService;
 import com.example.listingpostingmicroservice.Service.SearchCriteria;
 import com.example.listingpostingmicroservice.Service.UserInteractionService;
 
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -87,9 +88,9 @@ public class RentalController {
                                                @RequestParam("description") String description,
                                                @RequestParam("pricePerDay") double pricePerDay,
                                                @RequestParam("location") String location,
-                                                @RequestParam(value = "pictures", required = false) MultipartFile[] pictures,
-                                                @RequestParam("categoryIds") List<String> categoryIds,
-                                                @RequestParam("ownerId") String ownerId) {
+                                               @RequestParam(value = "pictures", required = false) MultipartFile[] pictures,
+                                               @RequestParam(value = "categoryIds", required = false) List<String> categoryIds ,
+                                               @RequestParam("ownerId") String ownerId) {
         try {
             Rental rental = rentalService.createRental(title,description, pricePerDay, location, pictures,ownerId,categoryIds);
             return new ResponseEntity<>(rental, HttpStatus.CREATED);
