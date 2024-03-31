@@ -1,1 +1,4 @@
 UserManagement-microservice/src/main/resources/application.properties
+ListingPosting-microservice/src/main/resources/application.properties
+.idea
+.vscode
