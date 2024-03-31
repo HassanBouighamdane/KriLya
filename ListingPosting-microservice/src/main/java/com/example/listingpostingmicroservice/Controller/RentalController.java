@@ -20,7 +20,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/postes/rentals")
-@CrossOrigin("http://localhost:8080")
 public class RentalController {
 
 
